@@ -1,0 +1,16 @@
+Package: ukbschema
+Type: Package
+Title: Download the UK Biobank data schema to an SQLite database
+Version: 0.1.0
+Author: Benjamin J. Cairns <ben.cairns@ndph.ox.ac.uk>
+Maintainer: Benjamin J. Cairns <ben.cairns@ndph.ox.ac.uk>
+Description: 
+License: MIT + file LICENSE
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
+Imports: 
+  DBI
+Suggests: 
+  tibble,
+  testthat
