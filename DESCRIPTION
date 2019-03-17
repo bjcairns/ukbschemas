@@ -12,6 +12,9 @@ RoxygenNote: 6.1.1
 Imports: 
     DBI,
     RSQLite,
-    tibble
+    tibble,
+    purrr,
+    magrittr,
+    readr
 Suggests: 
     testthat

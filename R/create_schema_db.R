@@ -29,6 +29,7 @@
 #' to diagnose and/or fix such failures. Fixes currently require changes to 
 #' the `.sql` files in the `sql/` subsdirectory of the package installation.
 #' 
+#' @importFrom magrittr "%>%"
 #' @export
 
 create_schema_db <- function(file = "", path = ".", date = Sys.Date(), 
@@ -58,10 +59,9 @@ create_schema_db <- function(file = "", path = ".", date = Sys.Date(),
   }
   
   # Create database
-  db <- 
-    DBI::dbConnect(RSQLite::SQLite(), full_path) %>% 
-    .create_tables() %>% 
-    .get_schemas() %>%
+  sch <- get_schemas()
+  db <- DBI::dbConnect(RSQLite::SQLite(), full_path) %>% 
+  db <- .create_tables(sch) %>%
     .tidy_schema_db()
   
   # Always close the connection
