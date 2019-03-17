@@ -46,12 +46,12 @@ VALUE_TYPES <- tibble::tribble(
   101, "Compound", "a set of values required as a whole to describe some compound property, for example an ECG trace",
   998, "Binary object", "a complex dataset (blob), for example an image",
   999, "Records", "a summary showing the volume of records data available via the secure portal",
-  0, NULL, NULL
+  0, "", ""
 )
 
 
 # Export to R/sysdata.rda
 usethis::use_data(
   UKB_SCHEMA_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, VALUE_TYPES,
-  internal = TRUE
+  internal = TRUE, overwrite = TRUE
 )

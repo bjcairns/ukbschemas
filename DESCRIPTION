@@ -15,6 +15,8 @@ Imports:
     tibble,
     purrr,
     magrittr,
-    readr
+    readr,
+    dbplyr,
+    dplyr
 Suggests: 
     testthat

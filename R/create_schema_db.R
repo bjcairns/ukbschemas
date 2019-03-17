@@ -32,10 +32,18 @@
 #' @importFrom magrittr "%>%"
 #' @export
 
-create_schema_db <- function(file = "", path = ".", date = Sys.Date(), 
-                             silent = FALSE, debug = FALSE, overwrite = FALSE) 
-{
+create_schema_db <- function(
+  file = "", 
+  path = ".", 
+  date = Sys.Date(), 
+  silent = FALSE, 
+  debug = FALSE, 
+  overwrite = FALSE,
+  as_is = FALSE
+) {
 
+  if (debug & !silent) silent <- FALSE
+  
   # Catch user attempts to force db creation in memory
   if (file == ":memory:" | file == "file::memory:") {
     file <- NULL
@@ -58,15 +66,25 @@ create_schema_db <- function(file = "", path = ".", date = Sys.Date(),
     else file.remove(full_path)
   }
   
+  # Download and tidy schema tables
+  sch <- .get_schemas(debug = debug, quote = "")
+  if (!silent) {
+    cat("Downloaded tables:\n")
+    print(names(sch))
+    cat("\n")
+  }
+  if (!as_is) {
+    sch <- .tidy_schemas(sch, silent = silent)
+  }
+  
   # Create database
-  sch <- get_schemas()
-  db <- DBI::dbConnect(RSQLite::SQLite(), full_path) %>% 
-  db <- .create_tables(sch) %>%
-    .tidy_schema_db()
+  db <- DBI::dbConnect(RSQLite::SQLite(), full_path)
+  .create_tables(db, sch)
   
   # Always close the connection
   if (!silent) print(db)
   DBI::dbDisconnect(db)
+  if (!silent) cat("...DISCONNECTED\n")
   
   invisible(db)
   

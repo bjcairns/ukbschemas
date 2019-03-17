@@ -5,7 +5,7 @@
 \title{Create UK Biobank data schema database}
 \usage{
 create_schema_db(file = "", path = ".", date = Sys.Date(),
-  silent = FALSE, debug = FALSE, overwrite = FALSE)
+  silent = FALSE, debug = FALSE, overwrite = FALSE, as_is = FALSE)
 }
 \arguments{
 \item{file}{The filename for the schema database. Defaults to \code{""}, which is
