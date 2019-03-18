@@ -120,3 +120,8 @@ CREATE TABLE recommended(
   "category_id" INTEGER,
   "field_id" INTEGER
 );
+CREATE TABLE valuetypes(
+  "value_type_id" INTEGER PRIMARY KEY,
+  "title" TEXT,
+  "description" TEXT
+);

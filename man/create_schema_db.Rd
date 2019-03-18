@@ -5,7 +5,8 @@
 \title{Create UK Biobank data schema database}
 \usage{
 create_schema_db(file = "", path = ".", date = Sys.Date(),
-  silent = FALSE, debug = FALSE, overwrite = FALSE, as_is = FALSE)
+  silent = !interactive(), debug = FALSE, overwrite = FALSE,
+  as_is = FALSE)
 }
 \arguments{
 \item{file}{The filename for the schema database. Defaults to \code{""}, which is
@@ -27,6 +28,9 @@ the schema files has changed). Defaults to \code{FALSE}.}
 
 \item{overwrite}{Always overwrite existing files? Helpful for non-interactive
 use. Defaults to \code{FALSE}.}
+
+\item{as_is}{Import the schemas into the database without tidying? Defaults
+to \code{FALSE}.}
 }
 \value{
 A database connection object of class

@@ -17,6 +17,8 @@
 #' the schema files has changed). Defaults to `FALSE`.
 #' @param overwrite Always overwrite existing files? Helpful for non-interactive 
 #' use. Defaults to `FALSE`.
+#' @param as_is Import the schemas into the database without tidying? Defaults 
+#' to `FALSE`.
 #' 
 #' @return A database connection object of class 
 #' [RSQLite::SQLiteConnection-class]
@@ -36,7 +38,7 @@ create_schema_db <- function(
   file = "", 
   path = ".", 
   date = Sys.Date(), 
-  silent = FALSE, 
+  silent = !interactive(), 
   debug = FALSE, 
   overwrite = FALSE,
   as_is = FALSE
@@ -79,7 +81,9 @@ create_schema_db <- function(
   
   # Create database
   db <- DBI::dbConnect(RSQLite::SQLite(), full_path)
-  .create_tables(db, sch)
+  
+  # Populate database
+  .create_tables(db, sch, as_is)
   
   # Always close the connection
   if (!silent) print(db)
