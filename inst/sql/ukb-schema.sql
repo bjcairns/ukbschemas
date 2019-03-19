@@ -41,7 +41,8 @@ CREATE TABLE categories(
   "availability" INTEGER,
   "group_type" INTEGER,
   "descript" TEXT,
-  "notes" TEXT
+  "notes" TEXT,
+  "parent_id" INTEGER
 );
 CREATE TABLE archives(
   "archive_id" INTEGER PRIMARY KEY,
@@ -50,34 +51,6 @@ CREATE TABLE archives(
   "availability" INTEGER,
   "personal" INTEGER,
   "notes" TEXT
-);
-CREATE TABLE esimpint(
-  "encoding_id" INTEGER,
-  "value" INTEGER,
-  "meaning" TEXT,
-  "showcase_order" INTEGER,
-  PRIMARY KEY ("encoding_id", "value")
-);
-CREATE TABLE esimpstring(
-  "encoding_id" INTEGER,
-  "value" TEXT,
-  "meaning" TEXT,
-  "showcase_order" INTEGER,
-  PRIMARY KEY ("encoding_id", "value")
-);
-CREATE TABLE esimpreal(
-  "encoding_id" INTEGER,
-  "value" INTEGER,
-  "meaning" TEXT,
-  "showcase_order" INTEGER,
-  PRIMARY KEY ("encoding_id", "value")
-);
-CREATE TABLE esimpdate(
-  "encoding_id" TEXT,
-  "value" TEXT,
-  "meaning" TEXT,
-  "showcase_order" INTEGER,
-  PRIMARY KEY ("encoding_id", "value")
 );
 CREATE TABLE instances(
   "instance_id" INTEGER PRIMARY KEY,
@@ -90,26 +63,6 @@ CREATE TABLE insvalues(
   "title" TEXT,
   "descript" TEXT,
   PRIMARY KEY ("instance_id", "index")
-);
-CREATE TABLE ehierint(
-  "encoding_id" INTEGER,
-  "code_id" INTEGER,
-  "parent_id" INTEGER,
-  "value" INTEGER,
-  "meaning" TEXT,
-  "selectable" INTEGER,
-  "showcase_order" INTEGER,
-  PRIMARY KEY ("encoding_id", "code_id")
-);
-CREATE TABLE ehierstring(
-  "encoding_id" INTEGER,
-  "code_id" INTEGER,
-  "parent_id" INTEGER,
-  "value" TEXT,
-  "meaning" TEXT,
-  "selectable" INTEGER,
-  "showcase_order" INTEGER,
-  PRIMARY KEY ("encoding_id", "code_id")
 );
 CREATE TABLE catbrowse(
   "parent_id" INTEGER,
@@ -124,4 +77,15 @@ CREATE TABLE valuetypes(
   "value_type_id" INTEGER PRIMARY KEY,
   "title" TEXT,
   "description" TEXT
+);
+CREATE TABLE encvalues(
+  "encoding_id" INTEGER,
+  "code_id" INTEGER,
+  "parent_id" INTEGER,
+  "type" TEXT,
+  "value" TEXT,
+  "meaning" TEXT,
+  "selectable" INTEGER,
+  "showcase_order" INTEGER,
+  PRIMARY KEY ("encoding_id", "code_id")
 );

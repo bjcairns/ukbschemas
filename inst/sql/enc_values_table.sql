@@ -6,8 +6,11 @@ CREATE TABLE encvalues(
   "encoding_id" INTEGER,
   "code_id" INTEGER,
   "parent_id" INTEGER,
+  "type" TEXT,
   "value" TEXT,
   "meaning" TEXT,
+  "selectable" INTEGER,
+  "showcase_order" INTEGER,
   PRIMARY KEY ("encoding_id", "code_id")
 );
 

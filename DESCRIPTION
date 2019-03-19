@@ -17,6 +17,7 @@ Imports:
     magrittr,
     readr,
     dbplyr,
-    dplyr
+    dplyr,
+    stringr
 Suggests: 
     testthat

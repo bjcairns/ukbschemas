@@ -50,8 +50,14 @@ VALUE_TYPES <- tibble::tribble(
 )
 
 
+CATEGORY_EXTRA <- tibble::tribble(
+  ~category_id, ~title, ~availability, ~group_type, ~descript, ~notes, ~parent_id,
+  119, "Reaction time test", 0, 1, "This category contains data on a test to assess reaction time and is based on 12 rounds of the card-game 'Snap'. The participant is shown two cards at a time; if both cards are the same, they press a button-box that is on the table in front of them as quickly as possible. For each of the 12 rounds, the following data were collected: the pictures shown on the cards (Index of card A, Index of card B), the number of times the participant clicked the 'snap' button, and the time it took to first click the 'snap' button. <p> This was a follow-up to touchscreen Category 100032.", NA, NA
+)
+
+
 # Export to R/sysdata.rda
 usethis::use_data(
-  UKB_SCHEMA_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, VALUE_TYPES,
+  UKB_SCHEMA_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, VALUE_TYPES, CATEGORY_EXTRA,
   internal = TRUE, overwrite = TRUE
 )

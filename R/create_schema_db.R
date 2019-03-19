@@ -64,7 +64,8 @@ create_schema_db <- function(
         default = FALSE
       )
     }
-    if (!isTRUE(overwrite)) stop("Could not overwrite existing file")
+    if (!isTRUE(overwrite)) 
+      stop("Will not overwrite existing file without 'overwrite=TRUE'")
     else file.remove(full_path)
   }
   
