@@ -25,7 +25,7 @@ The package exports two functions. The first is `create_schema_db()`, which down
 ``` r
 library(ukbschema)
 
-db <- create_schema_db(path = tempdir(), overwrite = TRUE)
+db <- create_schema_db(path = tempdir())
 #> Downloaded tables:
 #> fields, encodings, categories, archives, esimpint, esimpstring, esimpreal, esimpdate, instances, insvalues, ehierint, ehierstring, catbrowse, recommended, schema
 #> 
@@ -44,13 +44,28 @@ db <- create_schema_db(path = tempdir(), overwrite = TRUE)
 
 By default, the database is named `ukb-schema-YYYY-MM-DD.sqlite` and placed in the current working directory (`path = tempdir()` in the above example puts it in the current temporary directory instead). At time of writing (20 March 2019), the size of the .sqlite database file produced by `create_schema_db()` is approximately 7.9M.
 
-The second function loads the files from the database and stores them in a list of tibbles:
+The second function, `load_schemas()`, loads the tables from the database and stores them as tibbles in a named list:
 
 ``` r
 sch <- load_schemas(db)
 names(sch)
 #>  [1] "archives"    "categories"  "encodings"   "encvalues"   "fields"     
 #>  [6] "instances"   "insvalues"   "recommended" "schema"      "valuetypes"
+```
+
+Note that without further arguments, `create_schema_db()` tidies up the database to give it a more consistent relational structure (the changes are summarised in the output of the first example, above). Alternatively the raw data can be loaded with the `as_is` argument:
+
+``` r
+db <- create_schema_db(path = tempdir(), overwrite = TRUE, as_is = TRUE)
+#> Downloaded tables:
+#> fields, encodings, categories, archives, esimpint, esimpstring, esimpreal, esimpdate, instances, insvalues, ehierint, ehierstring, catbrowse, recommended, schema
+#> 
+#> [downloaded tables added to database as-is]
+#> 
+#> <SQLiteConnection>
+#>   Path: C:\Users\ben\AppData\Local\Temp\RtmpMTpxEh\ukb-schema-2019-03-20.sqlite
+#>   Extensions: TRUE
+#> ...DISCONNECTED
 ```
 
 Why R?
@@ -69,7 +84,7 @@ Notes
 
 #### Known code issues
 
--   The UK Biobank database schema are regularly updated as new data are added to the system. ukbschema does not currently include a facility for updating the database; it is necessary at present to create an entirely new version from the latest schema (however it will, as instructed, overwrite an existing file).
+-   The UK Biobank database schema are regularly updated as new data are added to the system. ukbschema does not currently include a facility for updating the database; it is necessary at present to create a new database.
 -   Any [other issues](https://github.com/bjcairns/ukbschema/issues).
 
 #### Known data issues
