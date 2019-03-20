@@ -26,16 +26,3 @@
   sch
 
 }
-
-.tidy_schemas <- function(sch, silent = FALSE) {
-  
-  if (!silent) cat("Tidying:\n")
-  
-  sch <- 
-    sch %>% append(list(value_types=VALUE_TYPES))
-  if (!silent) cat("... Added table `value_types`\n")
-  
-  if (!silent) cat("\n")
-  
-  invisible(sch)
-}

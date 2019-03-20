@@ -32,13 +32,16 @@ SCHEMA_FILENAMES <- tibble::tibble(id = ids, filename = filenames)
 
 # Value types from 
 #   http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=value_type
+# Note that the IDs for "Binary object" and "Records" have been set arbitrarily.
+# The value_type_id 0 has been added for consistency with the coded_as column 
+# of `encodings`.
 #
 # Last update: 2019-03-16
 VALUE_TYPES <- tibble::tribble(
   ~value_type_id, ~title, ~description,
   11, "Integer", "whole numbers, for example the age of a participant on a particular date",
   21, "Categorical (single)", "a single answer selected from a coded list or tree of mutually exclusive options, for example a yes/no choice",
-  22, "Categorical   multiple)", "sets of answers selected from a coded list or tree of options, for instance concurrent medications",
+  22, "Categorical (multiple)", "sets of answers selected from a coded list or tree of options, for instance concurrent medications",
   31, "Continuous", "floating-point numbers, for example the height of a participant",
   41, "Text", "data composed of alphanumeric characters, for example the first line of an address",
   51, "Date", "a calendar date, for example 14th October 2010",
@@ -49,7 +52,9 @@ VALUE_TYPES <- tibble::tribble(
   0, "", ""
 )
 
-
+# To add missing category 119
+#
+# Last update: 2019-03-19
 CATEGORY_EXTRA <- tibble::tribble(
   ~category_id, ~title, ~availability, ~group_type, ~descript, ~notes, ~parent_id,
   119, "Reaction time test", 0, 1, "This category contains data on a test to assess reaction time and is based on 12 rounds of the card-game 'Snap'. The participant is shown two cards at a time; if both cards are the same, they press a button-box that is on the table in front of them as quickly as possible. For each of the 12 rounds, the following data were collected: the pictures shown on the cards (Index of card A, Index of card B), the number of times the participant clicked the 'snap' button, and the time it took to first click the 'snap' button. <p> This was a follow-up to touchscreen Category 100032.", NA, NA

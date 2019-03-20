@@ -34,7 +34,7 @@ to \code{FALSE}.}
 }
 \value{
 A database connection object of class
-\link[RSQLite:SQLiteConnection-class]{RSQLite::SQLiteConnection}
+\link[RSQLite:SQLiteConnection-class]{RSQLite::SQLiteConnection}.
 }
 \description{
 \code{create_schema_db()} generates an SQLite database containing the UK Biobank
@@ -46,6 +46,5 @@ user; the function downloads all the schema files and loads them into
 an SQLite database with pre-defined table structure. Note that if the
 table structure has changed (i.e. has been changed by UK Biobank), then the
 function will fail partially or fully. Debugging information may be helpful
-to diagnose and/or fix such failures. Fixes currently require changes to
-the \code{.sql} files in the \code{sql/} subsdirectory of the package installation.
+to diagnose and/or fix such failures.
 }

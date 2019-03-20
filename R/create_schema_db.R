@@ -21,15 +21,14 @@
 #' to `FALSE`.
 #' 
 #' @return A database connection object of class 
-#' [RSQLite::SQLiteConnection-class]
+#' [RSQLite::SQLiteConnection-class].
 #' 
 #' @details Most of the workings of `create_schema_db()` are hidden from the 
 #' user; the function downloads all the schema files and loads them into 
 #' an SQLite database with pre-defined table structure. Note that if the 
 #' table structure has changed (i.e. has been changed by UK Biobank), then the 
 #' function will fail partially or fully. Debugging information may be helpful 
-#' to diagnose and/or fix such failures. Fixes currently require changes to 
-#' the `.sql` files in the `sql/` subsdirectory of the package installation.
+#' to diagnose and/or fix such failures. 
 #' 
 #' @importFrom magrittr "%>%"
 #' @export
@@ -66,25 +65,34 @@ create_schema_db <- function(
     }
     if (!isTRUE(overwrite)) 
       stop("Will not overwrite existing file without 'overwrite=TRUE'")
-    else file.remove(full_path)
+    else tryCatch(
+      file.remove(full_path),
+      error = function(err) {
+        stop(paste0("Could not overwrite existing file; ",
+                    "is there an existing database connection?"))
+      }
+    )
   }
   
-  # Download and tidy schema tables
+  # Download and tidy (?) schema tables
   sch <- .get_schemas(debug = debug, quote = "")
   if (!silent) {
     cat("Downloaded tables:\n")
-    print(names(sch))
-    cat("\n")
+    cat(paste(names(sch), collapse = ", "))
+    cat("\n\n")
   }
   if (!as_is) {
     sch <- .tidy_schemas(sch, silent = silent)
+  }
+  else {
+    cat("[downloaded tables added to database as-is]\n\n")
   }
   
   # Create database
   db <- DBI::dbConnect(RSQLite::SQLite(), full_path)
   
   # Populate database
-  .create_tables(db, sch, as_is)
+  .create_tables(db, sch, silent = silent, as_is = as_is)
   
   # Always close the connection
   if (!silent) print(db)

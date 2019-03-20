@@ -42,7 +42,8 @@ CREATE TABLE categories(
   "group_type" INTEGER,
   "descript" TEXT,
   "notes" TEXT,
-  "parent_id" INTEGER
+  "parent_id" INTEGER,
+  "showcase_order" INTEGER
 );
 CREATE TABLE archives(
   "archive_id" INTEGER PRIMARY KEY,
@@ -63,11 +64,6 @@ CREATE TABLE insvalues(
   "title" TEXT,
   "descript" TEXT,
   PRIMARY KEY ("instance_id", "index")
-);
-CREATE TABLE catbrowse(
-  "parent_id" INTEGER,
-  "child_id" INTEGER PRIMARY KEY,
-  "showcase_order" INTEGER
 );
 CREATE TABLE recommended(
   "category_id" INTEGER,
