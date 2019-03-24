@@ -27,8 +27,8 @@
 #' user; the function downloads all the schema files and loads them into 
 #' an SQLite database with pre-defined table structure. Note that if the 
 #' table structure has changed (i.e. has been changed by UK Biobank), then the 
-#' function will fail partially or fully. Debugging information may be helpful 
-#' to diagnose and/or fix such failures. 
+#' function will fail partially or fully. Debugging information (`debug = TRUE`) 
+#' may be helpful to diagnose and/or fix such failures. 
 #' 
 #' @importFrom magrittr "%>%"
 #' @export
@@ -48,12 +48,12 @@ create_schema_db <- function(
   # Catch user attempts to force db creation in memory
   if (file == ":memory:" | file == "file::memory:") {
     file <- NULL
-    error("ukbschema does not support in-memory databases")
+    stop(UKBSCHEMA_ERRORS$NO_IN_MEMORY)
   }
   
   # Parse file name and path
   if (file == "") file <- paste0("ukb-schema-", date, ".sqlite")
-  full_path <- paste0(path.expand(path), "/", file)
+  full_path <- paste0(path.expand(path), "\\", file)
   
   # If file exists, interactive() and !overwrite, prompt to overwrite
   if (file.exists(full_path)) {
@@ -64,12 +64,14 @@ create_schema_db <- function(
       )
     }
     if (!isTRUE(overwrite)) 
-      stop("Will not overwrite existing file without 'overwrite=TRUE'")
+      stop(UKBSCHEMA_ERRORS$OVERWRITE)
     else tryCatch(
       file.remove(full_path),
       error = function(err) {
-        stop(paste0("Could not overwrite existing file; ",
-                    "is there an existing database connection?"))
+        stop(UKBSCHEMA_ERRORS$FAILED_OVERWRITE)
+      },
+      warning = function(warn) {
+        stop(UKBSCHEMA_ERRORS$FAILED_OVERWRITE)
       }
     )
   }

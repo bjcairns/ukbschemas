@@ -21,11 +21,11 @@ load_schemas <- function(file = NULL, db = NULL) {
   
   if (!is.null(file)) {
     if (!is.character(file) | length(file) != 1 | !file.exists(file)) 
-      stop("Not a valid name of an existing file")
+      stop(UKBSCHEMA_ERRORS$FILE_NOT_EXISTS)
     tryCatch(
       db <- DBI::dbConnect(RSQLite::SQLite(), file),
       error = function(err) {
-        stop(paste0("Could not connect to database (", file, ")"))
+        stop(paste0(UKBSCHEMA_ERRORS$DB_NO_CONNECT, " (", file, ")"))
       }
     )
   }
@@ -33,7 +33,7 @@ load_schemas <- function(file = NULL, db = NULL) {
     if (!DBI::dbIsValid(db)) tryCatch(
       db <- DBI::dbConnect(db),
       error = function(err) {
-        stop("Could not connect to database")
+        stop(UKBSCHEMA_ERRORS$DB_NO_CONNECT)
       }
     )
   }

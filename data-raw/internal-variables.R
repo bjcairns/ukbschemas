@@ -61,8 +61,20 @@ CATEGORY_EXTRA <- tibble::tribble(
 )
 
 
+# Errors
+UKBSCHEMA_ERRORS <- list(
+  OVERWRITE = "Will not overwrite existing file without 'overwrite=TRUE'",
+  NO_IN_MEMORY = "ukbschema does not support in-memory databases",
+  FAILED_OVERWRITE = paste0("Could not overwrite existing file; ",
+                            "is there an existing database connection?"),
+  FILE_NOT_EXISTS = "Not a valid name of an existing file",
+  DB_NO_CONNECT = "Could not connect to database"
+)
+
+
 # Export to R/sysdata.rda
 usethis::use_data(
   UKB_SCHEMA_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, VALUE_TYPES, CATEGORY_EXTRA,
+  UKBSCHEMA_ERRORS,
   internal = TRUE, overwrite = TRUE
 )
