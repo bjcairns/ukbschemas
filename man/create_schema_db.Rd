@@ -45,6 +45,6 @@ Most of the workings of \code{create_schema_db()} are hidden from the
 user; the function downloads all the schema files and loads them into
 an SQLite database with pre-defined table structure. Note that if the
 table structure has changed (i.e. has been changed by UK Biobank), then the
-function will fail partially or fully. Debugging information may be helpful
-to diagnose and/or fix such failures.
+function will fail partially or fully. Debugging information (\code{debug = TRUE})
+may be helpful to diagnose and/or fix such failures.
 }

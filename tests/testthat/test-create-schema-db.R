@@ -1,6 +1,9 @@
 context("test-create-schema-db")
 
 # Preliminaries ----------------------------------------------------------------
+
+skip_if_not(curl::has_internet(), "Skipping tests; no internet")
+
 test_db_file <- basename(tempfile(fileext = ".sqlite"))
 test_db_path <- tempdir()
 
