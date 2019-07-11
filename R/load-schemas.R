@@ -6,10 +6,12 @@
 #' @param file Full path to an SQLite database, or `NULL`.
 #' @param db A (possibly disconnected) database connection, or `NULL`.
 #' 
-#' @details `load_schemas()` will attempt to open connection `db` (if closed) 
-#' and will throw an error if this is not possible. Tables are read with 
-#' [DBI::dbReadTable] and converted to data frames of class `tbl_df`. The 
-#' database connection is *always* closed after the tables are loaded.
+#' @details `load_schemas()` will attempt to open `file` as an SQLite database, 
+#' or will attempt to open connection `db` (if closed) and will throw errors if 
+#' the file is not a valid databse or it is impossible to create a valid 
+#' connection from `db`. Tables are read with [DBI::dbReadTable] and converted 
+#' to data frames of class `tbl_df`. The database connection is *always* closed 
+#' before the function returns its result.
 #' 
 #' @return A named list with elements of class [tibble::tbl_df], containing the 
 #' tables from `db`.
@@ -19,6 +21,7 @@
 
 load_schemas <- function(file = NULL, db = NULL) {
   
+  # Attempt to connect to the database and handle failures
   if (!is.null(file)) {
     if (!is.character(file) | length(file) != 1 | !file.exists(file)) 
       stop(UKBSCHEMA_ERRORS$FILE_NOT_EXISTS)
@@ -29,6 +32,8 @@ load_schemas <- function(file = NULL, db = NULL) {
       }
     )
   }
+  
+  # If no `file` was loaded or it is invalid, connect to `db`
   if (!is.null(db)) {
     if (!DBI::dbIsValid(db)) tryCatch(
       db <- DBI::dbConnect(db),
@@ -38,6 +43,7 @@ load_schemas <- function(file = NULL, db = NULL) {
     )
   }
   
+  # Load the tables from `db` by name
   sch_names <- DBI::dbListTables(db)
   sch <- sch_names %>%
     purrr::map(
@@ -45,6 +51,7 @@ load_schemas <- function(file = NULL, db = NULL) {
     )
   names(sch) <- sch_names
   
+  # Always disconnect
   DBI::dbDisconnect(db)
   
   sch

@@ -37,6 +37,9 @@
   .DropAll(db)
   
   if (as_is) {                       # as_is:  Tables as-is from UKB
+    
+    # For each tbl in sch and its name, copy the tbl to db to the table of 
+    # the same name
     purrr::walk2(
       sch,
       names(sch), 
@@ -50,9 +53,8 @@
     # CREATE TABLE(s)
     .SendStatement(db, "ukb-schema.sql")
     
-    # If we got here, schemas would have been tidied
-    
-    # Identify esimp* and ehier* tables
+    # Identify esimp* and ehier* tables to be compiled into a single table 
+    # encvalues
     is_esimp_table <- stringr::str_detect(names(sch), "esimp")
     is_ehier_table <- stringr::str_detect(names(sch), "ehier")
     is_encvalue_table <- (is_esimp_table | is_ehier_table)

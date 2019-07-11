@@ -5,9 +5,10 @@
   
   if (!silent) cat("Tidying:\n")
   
+  # Add the valuetypes table
   sch <- 
     sch %>% append(list(valuetypes=VALUE_TYPES))
-  if (!silent) cat("... Added table `value_types`\n")
+  if (!silent) cat("... Added table `valuetypes`\n")
   
   # Rename columns as needed
   sch$fields <- sch$fields %>%
@@ -38,7 +39,6 @@
   # Identify esimp* and ehier* tables
   is_esimp_table <- stringr::str_detect(names(sch), "esimp")
   is_ehier_table <- stringr::str_detect(names(sch), "ehier")
-  is_encvalue_table <- (is_esimp_table | is_ehier_table)
   
   # Add columns to esimp* tables
   sch[is_esimp_table] <- sch[is_esimp_table] %>%

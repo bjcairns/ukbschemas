@@ -55,7 +55,8 @@ create_schema_db <- function(
   if (file == "") file <- paste0("ukb-schema-", date, ".sqlite")
   full_path <- paste0(path.expand(path), "\\", file)
   
-  # If file exists, interactive() and !overwrite, prompt to overwrite
+  # If `file`` exists, session is `interactive()` and `!overwrite`, then prompt 
+  # to overwrite the file
   if (file.exists(full_path)) {
     if (interactive() & !isTRUE(overwrite)) {
       overwrite <- askYesNo(

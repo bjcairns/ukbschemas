@@ -9,8 +9,11 @@
   ...
 ) {
   
+  # Unless in debug mode, do not output tbl summaries when reading schemas 
+  # from file
   if (!debug) options(readr.num_columns = 0)
 
+  # Read each schema directly from the UK Biobank Data Showcase by ID
   sch <- files$id %>% 
     purrr::map(
       ~ {
@@ -22,7 +25,10 @@
         )
       }
     )
+  
+  # Name the tables
   names(sch) <- files$filename
+  
   sch
 
 }
