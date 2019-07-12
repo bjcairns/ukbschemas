@@ -5,8 +5,8 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.org/bjcairns/ukbschema.svg?branch=master)](https://travis-ci.org/bjcairns/ukbschema)
+[![Build
+Status](https://travis-ci.com/bjcairns/ukbschema.svg?token=tA2cYTLpigx5VuTgcHFd&branch=master)](https://travis-ci.com/bjcairns/ukbschema)
 <!-- badges: end -->
 
 This R package can be used to create and/or load the [UK Biobank Data
