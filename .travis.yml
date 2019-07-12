@@ -12,3 +12,10 @@ r:
 warnings_are_errors: true
 
 cache: packages
+
+script:
+  - R CMD build .
+  - R CMD INSTALL *tar.gz
+  - R CMD BATCH --vanilla ./tests/testthat.R
+  - R CMD check *tar.gz
+  
