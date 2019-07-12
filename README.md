@@ -78,6 +78,9 @@ software (not even SQLite).
   - To avoid redunancy, category parent-child relationships have been
     moved to table `categories`, as column `parent_id`, from table
     `catbrowse` (which has been deleted).
+  - Reference to the category to which a field belongs is in the
+    `main_category` column in the `fields` schema, but has been renamed
+    to `category_id` for consistency with the `categories` schema.
   - The value types described [on the UKB
     Showcase](http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=value_type)
     have been added manually to a table `valuetypes` and appropriate ID

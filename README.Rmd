@@ -71,6 +71,7 @@ This package was originally written in bash (a Unix shell scripting language). H
 
 * All the encoding value tables (`esimpint`, `esimpstring`, `esimpreal`, `esimpdate`, `ehierint`, `ehierstring`) have been harmonised and combined into a single table `encvalues`. The `value` column in `encvalues` has type `TEXT`, but a `type` column has been added in case the value is not clear from context. The original type-specific tables have been deleted.
 * To avoid redunancy, category parent-child relationships have been moved to table `categories`, as column `parent_id`, from table `catbrowse` (which has been deleted).
+* Reference to the category to which a field belongs is in the `main_category` column in the `fields` schema, but has been renamed to `category_id` for consistency with the `categories` schema.
 * The value types described [on the UKB Showcase](http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=value_type) have been added manually to a table `valuetypes` and appropriate ID references have been renamed to `value_type_id` in tables `fields` and `encodings`.
 
 #### Known code issues

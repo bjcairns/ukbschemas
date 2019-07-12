@@ -16,6 +16,8 @@
     dplyr::rename(value_type_id = .data$value_type)
   sch$encodings <- sch$encodings %>%
     dplyr::rename(value_type_id = .data$coded_as)
+  sch$fields <- sch$fields %>%
+    dplyr::rename(category_id = .data$main_category)
   if (!silent) {
     cat("... Rename to value_type_id in tables ")
     cat("`fields` and `encodings` \n")

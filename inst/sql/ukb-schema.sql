@@ -12,7 +12,7 @@ CREATE TABLE fields(
   "arrayed" INTEGER,
   "sexed" INTEGER,
   "units" TEXT,
-  "main_category" INTEGER,
+  "category_id" INTEGER,
   "encoding_id" INTEGER,
   "instance_id" INTEGER,
   "instance_min" INTEGER,
