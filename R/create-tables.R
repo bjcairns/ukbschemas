@@ -15,17 +15,20 @@
 # Helper to send a statment from an installed SQL file
 .SendStatement <- function(db, inst_sql_file) {
   
-  NCHAR <- 1e6
+  sql <- readr::read_file(
+    system.file("sql", inst_sql_file, package = "ukbschema")
+  )
+  sql <- unlist(strsplit(sql, ";", fixed = TRUE)) %>% 
+    purrr::map_chr(~ gsub("[\r\n]", "", .x))
   
-  DBI::dbClearResult(
-    DBI::dbSendStatement(
-      db, 
-      readChar(
-        system.file("sql", inst_sql_file, package = "ukbschema"), 
-        NCHAR
+  sql[sql != ""] %>%
+    purrr::walk(
+      ~ DBI::dbClearResult(
+        DBI::dbSendStatement(db, .x)
       )
     )
-  )
+  
+  invisible(TRUE)
   
 }
 
