@@ -60,6 +60,9 @@ test_that("create_schema_db() fails on overwrite = FALSE, non-interactive", {
 
 test_that("create_schema_db() fails to overwrite when db is connected", {
   
+  # This only seems to work on Windows
+  skip_if_not(.Platform$OS.type == "windows", "Skipping test if not Windows")
+  
   db_file <- test_db_file()
   
   expect_error(
@@ -68,6 +71,10 @@ test_that("create_schema_db() fails to overwrite when db is connected", {
       db1 <- DBI::dbConnect(db1)
     },
     NA
+  )
+  
+  expect_true(
+    DBI::dbIsValid(db1)
   )
   
   expect_error(
