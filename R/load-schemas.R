@@ -1,7 +1,7 @@
 #' Load schemas from a ukbschema database
 #' 
-#' `load_schemas()` is a simple front-end to [DBI::DBI] functions which can be 
-#' used to load tables from a ukbschema database.
+#' `load_schemas()` is a simple front-end to [DBI] functions which can be used 
+#' to load tables from a ukbschema database.
 #' 
 #' @param file Full path to an SQLite database, or `NULL`.
 #' @param db A (possibly disconnected) database connection, or `NULL`.
@@ -10,11 +10,11 @@
 #' or will attempt to open connection `db` (if closed) and will throw errors if 
 #' the file is not a valid databse or it is impossible to create a valid 
 #' connection from `db`. Tables are read with [DBI::dbReadTable] and converted 
-#' to data frames of class `tbl_df`. The database connection is *always* closed 
-#' before the function returns its result.
+#' to data frames of class `tbl_df` (see [tibble::tibble]). The database 
+#' connection is *always* closed before the function returns its result.
 #' 
-#' @return A named list with elements of class [tibble::tbl_df], containing the 
-#' tables from `db`.
+#' @return A named list with elements of class `tbl_df`, containing the tables 
+#' from `db`.
 #' 
 #' @importFrom magrittr "%>%"
 #' @export
