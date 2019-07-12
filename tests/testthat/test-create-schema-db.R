@@ -17,14 +17,14 @@ test_that("create_schema_db() runs without errors or warnings", {
     NA
   )
   expect_false(DBI::dbIsValid(db1))
-  tryCatch(file.remove(paste0(test_db_path, "\\", test_db_file)))
+  tryCatch(file.remove(paste0(test_db_path, "/", test_db_file)))
   
   expect_warning(
     db2 <- create_schema_db(file = test_db_file, path = test_db_path),
     NA
   )
   expect_false(DBI::dbIsValid(db2))
-  tryCatch(file.remove(paste0(test_db_path, "\\", test_db_file)))
+  tryCatch(file.remove(paste0(test_db_path, "/", test_db_file)))
   
 })
 
@@ -37,7 +37,7 @@ test_that("create_schema_db() runs silently if required", {
     )
   )
   expect_false(DBI::dbIsValid(db))
-  tryCatch(file.remove(paste0(test_db_path, "\\", test_db_file)))
+  tryCatch(file.remove(paste0(test_db_path, "/", test_db_file)))
 })
 
 test_that("create_schema_db() fails on overwrite = FALSE, non-interactive", {
@@ -50,7 +50,7 @@ test_that("create_schema_db() fails on overwrite = FALSE, non-interactive", {
     },
     UKBSCHEMA_ERRORS$OVERWRITE
   )
-  tryCatch(file.remove(paste0(test_db_path, "\\", test_db_file)))
+  tryCatch(file.remove(paste0(test_db_path, "/", test_db_file)))
 })
 
 test_that("create_schema_db() fails to overwrite when db is connected", {
@@ -68,7 +68,7 @@ test_that("create_schema_db() fails to overwrite when db is connected", {
     UKBSCHEMA_ERRORS$FAILED_OVERWRITE
   )
   DBI::dbDisconnect(db1)
-  tryCatch(file.remove(paste0(test_db_path, "\\", test_db_file)))
+  tryCatch(file.remove(paste0(test_db_path, "/", test_db_file)))
 })
 
 test_that("create_schema_db() won't allow in-memory databases", {
