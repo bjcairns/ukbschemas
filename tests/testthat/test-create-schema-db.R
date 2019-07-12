@@ -39,8 +39,10 @@ test_that("create_schema_db() runs silently if required", {
 
 test_that("create_schema_db() fails on overwrite = FALSE, non-interactive", {
   
+  db_file <- test_db_file()
+  
   expect_error(
-    db1 <- create_schema_db(file = test_db_file(), path = test_db_path),
+    db1 <- create_schema_db(file = db_file, path = test_db_path),
     NA
   )
   
@@ -48,7 +50,7 @@ test_that("create_schema_db() fails on overwrite = FALSE, non-interactive", {
   
   expect_error(
     {
-      db2 <- create_schema_db(file = test_db_file(), path = test_db_path)
+      db2 <- create_schema_db(file = db_file, path = test_db_path)
       suppressWarnings(DBI::dbDisconnect(db2))
     },
     UKBSCHEMA_ERRORS$OVERWRITE
@@ -58,9 +60,11 @@ test_that("create_schema_db() fails on overwrite = FALSE, non-interactive", {
 
 test_that("create_schema_db() fails to overwrite when db is connected", {
   
+  db_file <- test_db_file()
+  
   expect_error(
     {
-      db1 <- create_schema_db(file = test_db_file(), path = test_db_path)
+      db1 <- create_schema_db(file = db_file, path = test_db_path)
       db1 <- DBI::dbConnect(db1)
     },
     NA
@@ -69,7 +73,7 @@ test_that("create_schema_db() fails to overwrite when db is connected", {
   expect_error(
     {
       db2 <- create_schema_db(
-        file = test_db_file(), 
+        file = db_file, 
         path = test_db_path,
         overwrite = TRUE
       )

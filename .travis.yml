@@ -12,10 +12,4 @@ r:
 warnings_are_errors: true
 
 cache: packages
-
-script:
-  - R CMD build .
-  - R CMD INSTALL *tar.gz
-  - Rscript --vanilla ./tests/testthat.R
-  - R CMD check *tar.gz
   
