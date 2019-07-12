@@ -7,8 +7,11 @@ Maintainer: Benjamin J. Cairns <ben.cairns@ndph.ox.ac.uk>
 Description: ukbschema downloads the UK Biobank data dictionaries (schemas) from the UK Biobank Data Showcase and stores them in an SQLite database. The database can be loaded back into R, or queried using sqlite3 or any of a wide range of computing packages.
 License: MIT + file LICENSE
 LazyData: true
+Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
+Depends:
+    R (>= 2.10)
 Imports: 
     DBI,
     RSQLite,
@@ -16,9 +19,10 @@ Imports:
     purrr,
     magrittr,
     readr,
-    dbplyr,
     dplyr,
     stringr,
-    curl
+    utils,
+    rlang
 Suggests: 
-    testthat
+    testthat,
+    curl

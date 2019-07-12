@@ -20,8 +20,10 @@ tables from \code{db}.
 used to load tables from a ukbschema database.
 }
 \details{
-\code{load_schemas()} will attempt to open connection \code{db} (if closed)
-and will throw an error if this is not possible. Tables are read with
-\link[DBI:dbReadTable]{DBI::dbReadTable} and converted to data frames of class \code{tbl_df}. The
-database connection is \emph{always} closed after the tables are loaded.
+\code{load_schemas()} will attempt to open \code{file} as an SQLite database,
+or will attempt to open connection \code{db} (if closed) and will throw errors if
+the file is not a valid databse or it is impossible to create a valid
+connection from \code{db}. Tables are read with \link[DBI:dbReadTable]{DBI::dbReadTable} and converted
+to data frames of class \code{tbl_df}. The database connection is \emph{always} closed
+before the function returns its result.
 }

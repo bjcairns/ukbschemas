@@ -1,4 +1,5 @@
 #' @importFrom magrittr "%>%"
+#' @importFrom rlang .data
 
 # Help to tidy up the schemas
 .tidy_schemas <- function(sch, silent = FALSE) {
@@ -12,9 +13,9 @@
   
   # Rename columns as needed
   sch$fields <- sch$fields %>%
-    dplyr::rename(value_type_id = value_type)
+    dplyr::rename(value_type_id = .data$value_type)
   sch$encodings <- sch$encodings %>%
-    dplyr::rename(value_type_id = coded_as)
+    dplyr::rename(value_type_id = .data$coded_as)
   if (!silent) {
     cat("... Rename to value_type_id in tables ")
     cat("`fields` and `encodings` \n")

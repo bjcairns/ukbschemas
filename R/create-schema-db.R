@@ -59,7 +59,7 @@ create_schema_db <- function(
   # to overwrite the file
   if (file.exists(full_path)) {
     if (interactive() & !isTRUE(overwrite)) {
-      overwrite <- askYesNo(
+      overwrite <- utils::askYesNo(
         "Database file already exists. Overwrite?", 
         default = FALSE
       )
