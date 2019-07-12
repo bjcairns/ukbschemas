@@ -31,16 +31,20 @@ load_schemas <- function(file = NULL, db = NULL) {
         stop(paste0(UKBSCHEMA_ERRORS$DB_NO_CONNECT, " (", file, ")"))
       }
     )
+    on.exit(suppressWarnings(DBI::dbDisconnect(db)))
   }
   
   # If no `file` was loaded or it is invalid, connect to `db`
   if (!is.null(db)) {
-    if (!DBI::dbIsValid(db)) tryCatch(
-      db <- DBI::dbConnect(db),
-      error = function(err) {
-        stop(UKBSCHEMA_ERRORS$DB_NO_CONNECT)
-      }
-    )
+    if (!DBI::dbIsValid(db)) {
+      tryCatch(
+        db <- DBI::dbConnect(db),
+        error = function(err) {
+          stop(UKBSCHEMA_ERRORS$DB_NO_CONNECT)
+        }
+      )
+      on.exit(suppressWarnings(DBI::dbDisconnect(db)))
+    }
   }
   
   # Load the tables from `db` by name
@@ -52,7 +56,7 @@ load_schemas <- function(file = NULL, db = NULL) {
   names(sch) <- sch_names
   
   # Always disconnect
-  DBI::dbDisconnect(db)
+  suppressWarnings(DBI::dbDisconnect(db))
   
   sch
   

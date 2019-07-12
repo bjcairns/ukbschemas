@@ -93,13 +93,14 @@ create_schema_db <- function(
   
   # Create database
   db <- DBI::dbConnect(RSQLite::SQLite(), full_path)
+  on.exit(suppressWarnings(DBI::dbDisconnect(db)))
   
   # Populate database
   .create_tables(db, sch, silent = silent, as_is = as_is)
   
   # Always close the connection
   if (!silent) print(db)
-  DBI::dbDisconnect(db)
+  suppressWarnings(DBI::dbDisconnect(db))
   if (!silent) cat("...DISCONNECTED\n")
   
   invisible(db)
