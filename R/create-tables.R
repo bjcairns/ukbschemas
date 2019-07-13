@@ -12,7 +12,7 @@
 }
 
 
-# Helper to send a statment from an installed SQL file
+# Helper to send statement(s) from an installed SQL file
 .SendStatement <- function(db, inst_sql_file) {
   
   sql <- readr::read_file(
@@ -41,7 +41,7 @@
   
   if (as_is) {                       # as_is:  Tables as-is from UKB
     
-    # For each tbl in sch and its name, copy the tbl to db to the table of 
+    # For each tbl in sch and its name, copy the tbl to db to a table of 
     # the same name
     purrr::walk2(
       sch,

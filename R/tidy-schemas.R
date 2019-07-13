@@ -6,7 +6,7 @@
   
   if (!silent) cat("Tidying:\n")
   
-  # Add the valuetypes table
+  # Add the missing valuetypes table
   sch <- 
     sch %>% append(list(valuetypes=VALUE_TYPES))
   if (!silent) cat("... Added table `valuetypes`\n")
@@ -23,7 +23,7 @@
     cat("`fields` and `encodings` \n")
   }
   
-  # Add column to categories
+  # Add parent_id column to categories
   sch[["categories"]] <- 
     dplyr::left_join(sch[["categories"]], sch[["catbrowse"]], 
                      by = c("category_id" = "child_id"))
@@ -44,6 +44,8 @@
   is_ehier_table <- stringr::str_detect(names(sch), "ehier")
   
   # Add columns to esimp* tables
+  # value is converted to character after recording the (R) class as type
+  # code_id is generated as the position within encoding_id for harmonisation
   sch[is_esimp_table] <- sch[is_esimp_table] %>%
     purrr::map(
       ~ {
@@ -59,6 +61,7 @@
     )
   
   # Add columns to ehier* tables
+  # As with the esimp* tables, type records the (R) class of value
   sch[is_ehier_table] <- sch[is_ehier_table] %>%
     purrr::map(
       ~ {
