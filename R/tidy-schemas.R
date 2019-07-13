@@ -32,13 +32,6 @@
     cat("... Add parent_id from `catbrowse` to `categories` (delete former)\n")
   }
   
-  # Add category 119 to categories
-  sch[["categories"]] <-
-    dplyr::bind_rows(sch[["categories"]], CATEGORY_EXTRA)
-  if (!silent) {
-    cat("... Add missing category 119 (Reaction time test)\n")
-  }
-  
   # Identify esimp* and ehier* tables
   is_esimp_table <- stringr::str_detect(names(sch), "esimp")
   is_ehier_table <- stringr::str_detect(names(sch), "ehier")
