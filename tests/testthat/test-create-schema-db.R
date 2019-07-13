@@ -10,6 +10,8 @@ test_db_path <- tempdir()
 
 # Tests ------------------------------------------------------------------------
 
+# Note: closure of db connection after create_schema_db() is tested throughout
+
 test_that("create_schema_db() runs without errors or warnings", {
   
   expect_error(
@@ -53,7 +55,7 @@ test_that("create_schema_db() fails on overwrite = FALSE, non-interactive", {
       db2 <- create_schema_db(file = db_file, path = test_db_path)
       suppressWarnings(DBI::dbDisconnect(db2))
     },
-    UKBSCHEMA_ERRORS$OVERWRITE
+    UKBSCHEMAS_ERRORS$OVERWRITE
   )
   
 })
@@ -86,7 +88,7 @@ test_that("create_schema_db() fails to overwrite when db is connected", {
       )
       suppressWarnings(DBI::dbDisconnect(db2))
     },
-    UKBSCHEMA_ERRORS$FAILED_OVERWRITE
+    UKBSCHEMAS_ERRORS$FAILED_OVERWRITE
   )
   
   suppressWarnings(DBI::dbDisconnect(db1))
@@ -100,7 +102,7 @@ test_that("create_schema_db() won't allow in-memory databases", {
       db1 <- create_schema_db(file = ":memory:", path = test_db_path)
       suppressWarnings(DBI::dbDisconnect(db1))
     },
-    UKBSCHEMA_ERRORS$NO_IN_MEMORY
+    UKBSCHEMAS_ERRORS$NO_IN_MEMORY
   )
   
   expect_error(
@@ -108,7 +110,7 @@ test_that("create_schema_db() won't allow in-memory databases", {
       db2 <- create_schema_db(file = "file::memory:", path = test_db_path)
       suppressWarnings(DBI::dbDisconnect(db2))
     },
-    UKBSCHEMA_ERRORS$NO_IN_MEMORY
+    UKBSCHEMAS_ERRORS$NO_IN_MEMORY
   )
   
 })

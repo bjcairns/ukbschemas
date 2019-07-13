@@ -1,4 +1,4 @@
 library(testthat)
-library(ukbschema)
+library(ukbschemas)
 
-test_check("ukbschema")
+test_check("ukbschemas")

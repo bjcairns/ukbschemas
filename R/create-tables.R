@@ -16,7 +16,7 @@
 .SendStatement <- function(db, inst_sql_file) {
   
   sql <- readr::read_file(
-    system.file("sql", inst_sql_file, package = "ukbschema")
+    system.file("sql", inst_sql_file, package = "ukbschemas")
   )
   sql <- unlist(strsplit(sql, ";", fixed = TRUE)) %>% 
     purrr::map_chr(~ gsub("[\r\n]", "", .x))
@@ -54,7 +54,7 @@
   else {                             # !as_is: Tables were tidied
     
     # CREATE TABLE(s)
-    .SendStatement(db, "ukb-schema.sql")
+    .SendStatement(db, "ukb-schemas.sql")
     
     # Identify esimp* and ehier* tables to be compiled into a single table 
     # encvalues
