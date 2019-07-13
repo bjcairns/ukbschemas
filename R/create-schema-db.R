@@ -108,7 +108,7 @@ create_schema_db <- function(
   on.exit(.quiet_dbDisconnect(db))
   
   # Get and process the schemas
-  sch <- ukbschemas(silent, overwrite, as_is, debug)
+  sch <- ukbschemas(silent, as_is, debug)
   
   # Save to database
   db <- save_schema_db(sch, file, path, date_str, silent, overwrite, as_is)

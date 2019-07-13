@@ -3,8 +3,6 @@
 #' `ukbschemas()` loads the UK Biobank data schemas into a list
 #' 
 #' @param silent Do not report progress. Defaults to `FALSE`.
-#' @param overwrite Always overwrite existing files? Helpful for non-interactive 
-#' use. Defaults to `FALSE`.
 #' @param as_is Import the schemas into the database without tidying? Defaults 
 #' to `FALSE`.
 #' @param debug Report debugging information (useful when e.g. the structure of 
@@ -21,7 +19,6 @@
 
 ukbschemas <- function(
   silent = !interactive(), 
-  overwrite = FALSE,
   as_is = FALSE, 
   debug = FALSE
 ) {
