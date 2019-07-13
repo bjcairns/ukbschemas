@@ -34,7 +34,7 @@ devtools::install_github("bjcairns/ukbschemas")
 try(rm(list=c("db","sch")))
 ```
 
-The package exports two functions. The first is `create_schema_db()`, which downloads the schema tables and saves them to an SQLite database:
+The package supports two workflows. The recommended approach is to use `create_schema_db()` to download the schema tables and save them to an SQLite database:
 
 ```{r create}
 library(ukbschemas)
@@ -49,7 +49,7 @@ fsize <- round(file.info(file)$size/1e6, 1)
 
 By default, the database is named `ukb-schemas-YYYY-MM-DD.sqlite` (where `YYYY-MM-DD` is the current date) and placed in the current working directory. (`path = tempdir()` in the above example puts it in the current temporary directory instead.) At the most recent compilation of this README (`r format(Sys.Date(), "%d %b %Y")`), the size of the .sqlite database file produced by `create_schema_db()` was approximately `r fsize`MB.
 
-The second function, `load_schema_db()`, loads the tables from the database and stores them as tibbles in a named list:
+To retrieve the schemas from the database, use `load_schema_db()`, which loads the tables from the database and stores them as tibbles in a named list:
 
 ```{r load}
 sch <- load_schema_db(db = db)
@@ -60,6 +60,14 @@ Note that without further arguments, `create_schema_db()` tidies up the database
 
 ```{r create_as_is}
 db <- create_schema_db(path = tempdir(), overwrite = TRUE, as_is = TRUE)
+```
+
+The second approach is to download the schemas and store them in memory in a list, and save them to a database only as requried. This is not recommended, because it is better (for everyone) not to download the schema files every time they are needed, and because the the database assumes a certain structure that should be guaranteed when the database is saved. If you still want to take this approach, use:
+
+```{r inmemory}
+sch <- ukbschemas()
+names(sch)
+db <- save_schema_db(sch, path = tempdir(), overwrite = TRUE)
 ```
 
 ## Why R?

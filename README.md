@@ -25,8 +25,9 @@ devtools::install_github("bjcairns/ukbschemas")
 
 ## Examples
 
-The package exports two functions. The first is `create_schema_db()`,
-which downloads the schema tables and saves them to an SQLite database:
+The package supports two workflows. The recommended approach is to use
+`create_schema_db()` to download the schema tables and save them to an
+SQLite database:
 
 ``` r
 library(ukbschemas)
@@ -41,8 +42,9 @@ current temporary directory instead.) At the most recent compilation of
 this README (13 Jul 2019), the size of the .sqlite database file
 produced by `create_schema_db()` was approximately 10.1MB.
 
-The second function, `load_schema_db()`, loads the tables from the
-database and stores them as tibbles in a named list:
+To retrieve the schemas from the database, use `load_schema_db()`, which
+loads the tables from the database and stores them as tibbles in a named
+list:
 
 ``` r
 sch <- load_schema_db(db = db)
@@ -59,6 +61,22 @@ the raw data can be loaded with the `as_is` argument:
 ``` r
 db <- create_schema_db(path = tempdir(), overwrite = TRUE, as_is = TRUE)
 #> [downloaded tables added to database as-is]
+```
+
+The second approach is to download the schemas and store them in memory
+in a list, and save them to a database only as requried. This is not
+recommended, because it is better (for everyone) not to download the
+schema files every time they are needed, and because the the database
+assumes a certain structure that should be guaranteed when the database
+is saved. If you still want to take this approach, use:
+
+``` r
+sch <- ukbschemas()
+names(sch)
+#>  [1] "fields"      "encodings"   "categories"  "archives"    "esimpint"   
+#>  [6] "esimpstring" "esimpreal"   "esimpdate"   "instances"   "insvalues"  
+#> [11] "ehierint"    "ehierstring" "recommended" "schema"      "valuetypes"
+db <- save_schema_db(sch, path = tempdir(), overwrite = TRUE)
 ```
 
 ## Why R?
