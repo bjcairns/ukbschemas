@@ -52,14 +52,6 @@ VALUE_TYPES <- tibble::tribble(
   999L, "Records", "a summary showing the volume of records data available via the secure portal"
 )
 
-# To add missing category 119
-#
-# Last update: 2019-03-19
-CATEGORY_EXTRA <- tibble::tribble(
-  ~category_id, ~title, ~availability, ~group_type, ~descript, ~notes, ~parent_id,
-  119L, "Reaction time test", 0L, 1L, "This category contains data on a test to assess reaction time and is based on 12 rounds of the card-game 'Snap'. The participant is shown two cards at a time; if both cards are the same, they press a button-box that is on the table in front of them as quickly as possible. For each of the 12 rounds, the following data were collected: the pictures shown on the cards (Index of card A, Index of card B), the number of times the participant clicked the 'snap' button, and the time it took to first click the 'snap' button. <p> This was a follow-up to touchscreen Category 100032.", NA, NA
-)
-
 
 # Errors
 UKBSCHEMAS_ERRORS <- list(
@@ -74,7 +66,7 @@ UKBSCHEMAS_ERRORS <- list(
 
 # Export to R/sysdata.rda
 usethis::use_data(
-  UKB_SCHEMAS_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, VALUE_TYPES, CATEGORY_EXTRA,
+  UKB_SCHEMAS_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, VALUE_TYPES, 
   UKBSCHEMAS_ERRORS,
   internal = TRUE, overwrite = TRUE
 )

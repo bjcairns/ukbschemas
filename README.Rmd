@@ -47,7 +47,7 @@ file <- paste0(tempdir(), "\\ukb-schemas-", Sys.Date(), ".sqlite")
 fsize <- round(file.info(file)$size/1e6, 1)
 ```
 
-By default, the database is named `ukb-schemas-YYYY-MM-DD.sqlite` and placed in the current working directory (`path = tempdir()` in the above example puts it in the current temporary directory instead). At time of compilation of this README (`r format(Sys.Date(), "%d %b %Y")`), the size of the .sqlite database file produced by `create_schema_db()` is approximately `r fsize`MB.
+By default, the database is named `ukb-schemas-YYYY-MM-DD.sqlite` (where `YYYY-MM-DD` is the current date) and placed in the current working directory. (`path = tempdir()` in the above example puts it in the current temporary directory instead.) At the most recent compilation of this README (`r format(Sys.Date(), "%d %b %Y")`), the size of the .sqlite database file produced by `create_schema_db()` was approximately `r fsize`MB.
 
 The second function, `load_schema_db()`, loads the tables from the database and stores them as tibbles in a named list:
 
@@ -77,11 +77,6 @@ This package was originally written in bash (a Unix shell scripting language). H
 
 #### Known code issues
 
-* The UK Biobank data schemas are regularly updated as new data are added to the system. ukbschemas does not currently include a facility for updating the database; it is necessary at present to create a new database.
+* The UK Biobank data schemas are regularly updated as new data are added to the system. ukbschemas does not currently include a facility for updating the database; it is necessary to create a new database.
 * Any [other issues](https://github.com/bjcairns/ukbschemas/issues).
-
-#### Known data issues
-
-* Category 119 does not exist in the data file for categories, but is referenced in table `catbrowse`. As a work-around it has been manually added to the database (if `as_is = FALSE` in `create_schema_db()`) by inferring information about it from related category [100032](https://biobank.ctsu.ox.ac.uk/crystal/label.cgi?id=100032).
-* Value types as described in http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=value_type are not included in the UKB schemas. See [Design notes](https://github.com/bjcairns/ukbschemas#design-notes), above.
 
