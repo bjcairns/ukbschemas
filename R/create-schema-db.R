@@ -85,12 +85,9 @@
 #' @return A database connection object of class 
 #' [RSQLite::SQLiteConnection-class].
 #' 
-#' @details Most of the workings of `create_schema_db()` are hidden from the 
-#' user; the function downloads all the schema files and loads them into 
-#' an SQLite database with pre-defined table structure. Note that if the 
-#' table structure has changed (i.e. has been changed by UK Biobank), then the 
-#' function will fail partially or fully. Debugging information (`debug = TRUE`) 
-#' may be helpful to diagnose and/or fix such failures. 
+#' @details `create_schema_db()` uses [ukbschemas] to load the schemas and 
+#' [save_schema_db] to save the result. Debugging information (`debug = TRUE`) 
+#' may be helpful to diagnose and/or fix such failures.
 #' 
 #' @importFrom magrittr "%>%"
 #' @export
@@ -114,7 +111,7 @@ create_schema_db <- function(
   sch <- ukbschemas(silent, overwrite, as_is, debug)
   
   # Save to database
-  db <- save_schemas_db(sch, file, path, date_str, silent, overwrite, as_is)
+  db <- save_schema_db(sch, file, path, date_str, silent, overwrite, as_is)
   
   invisible(db)
   
