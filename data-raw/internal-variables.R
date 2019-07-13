@@ -1,6 +1,6 @@
 # URLs and other data for accessing the UKB Data Showcase
 
-UKB_SCHEMA_URL <- "http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi"
+UKB_SCHEMAS_URL <- "http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi"
 
 
 UKB_URL_PREFIX <- "http://biobank.ndph.ox.ac.uk/showcase/scdown.cgi?fmt=txt&id="
@@ -62,7 +62,7 @@ CATEGORY_EXTRA <- tibble::tribble(
 
 
 # Errors
-UKBSCHEMA_ERRORS <- list(
+UKBSCHEMAS_ERRORS <- list(
   OVERWRITE = "Will not overwrite existing file without 'overwrite=TRUE'",
   NO_IN_MEMORY = "ukbschema does not support in-memory databases",
   FAILED_OVERWRITE = paste0("Could not overwrite existing file; ",
@@ -74,7 +74,7 @@ UKBSCHEMA_ERRORS <- list(
 
 # Export to R/sysdata.rda
 usethis::use_data(
-  UKB_SCHEMA_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, VALUE_TYPES, CATEGORY_EXTRA,
-  UKBSCHEMA_ERRORS,
+  UKB_SCHEMAS_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, VALUE_TYPES, CATEGORY_EXTRA,
+  UKBSCHEMAS_ERRORS,
   internal = TRUE, overwrite = TRUE
 )

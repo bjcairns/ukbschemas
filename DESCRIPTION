@@ -1,6 +1,6 @@
-Package: ukbschema
+Package: ukbschemas
 Type: Package
-Title: Download the UK Biobank data schema to an SQLite database
+Title: Download the UK Biobank data schemas to an SQLite database
 Version: 0.1.0
 Author: Benjamin J. Cairns <ben.cairns@ndph.ox.ac.uk>
 Maintainer: Benjamin J. Cairns <ben.cairns@ndph.ox.ac.uk>

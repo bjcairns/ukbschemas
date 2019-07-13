@@ -10,10 +10,10 @@ create_schema_db(file = "", path = ".", date = Sys.Date(),
 }
 \arguments{
 \item{file}{The filename for the schema database. Defaults to \code{""}, which is
-interpreted as \code{paste0("ukb-schema-", date, ".sqlite")}. If this file already
-exists in directory \code{path}, the session is interactive, and \code{overwrite} is
-not \code{FALSE}, then the user will be prompted to decide whether the file should
-be overwritten.}
+interpreted as \code{paste0("ukb-schemas-", date, ".sqlite")}. If this file
+already exists in directory \code{path}, the session is interactive, and
+\code{overwrite} is not \code{FALSE}, then the user will be prompted to decide whether
+the file should be overwritten.}
 
 \item{path}{The path to the directory where the file will be saved. Defaults
 to \code{.} (the current directory).}
@@ -38,7 +38,7 @@ A database connection object of class
 }
 \description{
 \code{create_schema_db()} generates an SQLite database containing the UK Biobank
-data dictionaries from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
+data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
 }
 \details{
 Most of the workings of \code{create_schema_db()} are hidden from the

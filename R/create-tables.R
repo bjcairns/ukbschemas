@@ -12,11 +12,11 @@
 }
 
 
-# Helper to send a statment from an installed SQL file
+# Helper to send statement(s) from an installed SQL file
 .SendStatement <- function(db, inst_sql_file) {
   
   sql <- readr::read_file(
-    system.file("sql", inst_sql_file, package = "ukbschema")
+    system.file("sql", inst_sql_file, package = "ukbschemas")
   )
   sql <- unlist(strsplit(sql, ";", fixed = TRUE)) %>% 
     purrr::map_chr(~ gsub("[\r\n]", "", .x))
@@ -41,7 +41,7 @@
   
   if (as_is) {                       # as_is:  Tables as-is from UKB
     
-    # For each tbl in sch and its name, copy the tbl to db to the table of 
+    # For each tbl in sch and its name, copy the tbl to db to a table of 
     # the same name
     purrr::walk2(
       sch,
@@ -54,7 +54,7 @@
   else {                             # !as_is: Tables were tidied
     
     # CREATE TABLE(s)
-    .SendStatement(db, "ukb-schema.sql")
+    .SendStatement(db, "ukb-schemas.sql")
     
     # Identify esimp* and ehier* tables to be compiled into a single table 
     # encvalues

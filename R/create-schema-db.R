@@ -1,13 +1,13 @@
 #' Create UK Biobank data schema database
 #' 
 #' `create_schema_db()` generates an SQLite database containing the UK Biobank 
-#' data dictionaries from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
+#' data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
 #' 
 #' @param file The filename for the schema database. Defaults to `""`, which is 
-#' interpreted as `paste0("ukb-schema-", date, ".sqlite")`. If this file already
-#' exists in directory `path`, the session is interactive, and `overwrite` is 
-#' not `FALSE`, then the user will be prompted to decide whether the file should 
-#' be overwritten.
+#' interpreted as `paste0("ukb-schemas-", date, ".sqlite")`. If this file 
+#' already exists in directory `path`, the session is interactive, and 
+#' `overwrite` is not `FALSE`, then the user will be prompted to decide whether 
+#' the file should be overwritten.
 #' @param path The path to the directory where the file will be saved. Defaults 
 #' to `.` (the current directory).
 #' @param date The date-stamp for the default filename. Defaults to the current 
@@ -48,11 +48,11 @@ create_schema_db <- function(
   # Catch user attempts to force db creation in memory
   if (file == ":memory:" | file == "file::memory:") {
     file <- NULL
-    stop(UKBSCHEMA_ERRORS$NO_IN_MEMORY)
+    stop(UKBSCHEMAS_ERRORS$NO_IN_MEMORY)
   }
   
   # Parse file name and path
-  if (file == "") file <- paste0("ukb-schema-", date, ".sqlite")
+  if (file == "") file <- paste0("ukb-schemas-", date, ".sqlite")
   full_path <- paste0(path.expand(path), "\\", file)
   
   # If `file`` exists, session is `interactive()` and `!overwrite`, then prompt 
@@ -65,14 +65,14 @@ create_schema_db <- function(
       )
     }
     if (!isTRUE(overwrite)) 
-      stop(UKBSCHEMA_ERRORS$OVERWRITE)
+      stop(UKBSCHEMAS_ERRORS$OVERWRITE)
     else tryCatch(
       file.remove(full_path),
       error = function(err) {
-        stop(UKBSCHEMA_ERRORS$FAILED_OVERWRITE)
+        stop(UKBSCHEMAS_ERRORS$FAILED_OVERWRITE)
       },
       warning = function(warn) {
-        stop(UKBSCHEMA_ERRORS$FAILED_OVERWRITE)
+        stop(UKBSCHEMAS_ERRORS$FAILED_OVERWRITE)
       }
     )
   }

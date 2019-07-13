@@ -1,4 +1,4 @@
-context("test-load-schemas")
+context("test-load-schema-db")
 
 # Preliminaries ----------------------------------------------------------------
 
@@ -13,23 +13,23 @@ DBI::dbDisconnect(db)
 
 # Tests ------------------------------------------------------------------------
 
-test_that("load_schemas() opens from file", {
-  sch <- load_schemas(test_db_file)
+test_that("load_schema_db() opens from file", {
+  sch <- load_schema_db(test_db_file)
   expect_equal(sch[[1]], mtcars)
-  expect_error(load_schemas(tempfile(fileext = ".sqlite")))
+  expect_error(load_schema_db(tempfile(fileext = ".sqlite")))
 })
 
 
-test_that("load_schemas() opens from connected database connection", {
+test_that("load_schema_db() opens from connected database connection", {
   db <- suppressWarnings(DBI::dbConnect(db))
-  sch <- load_schemas(db = db)
+  sch <- load_schema_db(db = db)
   expect_equal(sch[[1]], mtcars)
 })
 
 
-test_that("load_schemas() opens from DISconnected database connection", {
+test_that("load_schema_db() opens from DISconnected database connection", {
   suppressWarnings(DBI::dbDisconnect(db))
-  sch <- load_schemas(db = db)
+  sch <- load_schema_db(db = db)
   expect_equal(sch[[1]], mtcars)
 })
 
