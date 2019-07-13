@@ -4,9 +4,9 @@
 \alias{create_schema_db}
 \title{Create UK Biobank data schema database}
 \usage{
-create_schema_db(file = "", path = ".", date = Sys.Date(),
-  silent = !interactive(), debug = FALSE, overwrite = FALSE,
-  as_is = FALSE)
+create_schema_db(file = "", path = ".", date_str = Sys.Date(),
+  silent = !interactive(), overwrite = FALSE, as_is = FALSE,
+  debug = FALSE)
 }
 \arguments{
 \item{file}{The filename for the schema database. Defaults to \code{""}, which is
@@ -18,19 +18,19 @@ the file should be overwritten.}
 \item{path}{The path to the directory where the file will be saved. Defaults
 to \code{.} (the current directory).}
 
-\item{date}{The date-stamp for the default filename. Defaults to the current
+\item{date_str}{The date-stamp for the default filename. Defaults to the current
 date in \code{YYYY-MM-DD} format.}
 
 \item{silent}{Do not report progress. Defaults to \code{FALSE}.}
-
-\item{debug}{Report debugging information (useful when e.g. the structure of
-the schema files has changed). Defaults to \code{FALSE}.}
 
 \item{overwrite}{Always overwrite existing files? Helpful for non-interactive
 use. Defaults to \code{FALSE}.}
 
 \item{as_is}{Import the schemas into the database without tidying? Defaults
 to \code{FALSE}.}
+
+\item{debug}{Report debugging information (useful when e.g. the structure of
+the schema files has changed). Defaults to \code{FALSE}.}
 }
 \value{
 A database connection object of class

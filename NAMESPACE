@@ -2,5 +2,7 @@
 
 export(create_schema_db)
 export(load_schema_db)
+export(save_schemas_db)
+export(ukbschemas)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)
