@@ -22,40 +22,18 @@
 load_schema_db <- function(file = NULL, db = NULL) {
   
   # Attempt to connect to the database and handle failures
-  if (!is.null(file)) {
-    if (!is.character(file) | length(file) != 1 | !file.exists(file)) 
-      stop(UKBSCHEMAS_ERRORS$FILE_NOT_EXISTS)
-    tryCatch(
-      db <- DBI::dbConnect(RSQLite::SQLite(), file),
-      error = function(err) {
-        stop(paste0(UKBSCHEMAS_ERRORS$DB_NO_CONNECT, " (", file, ")"))
-      }
-    )
-    on.exit(.quiet_dbDisconnect(db))
-  }
-  
-  # If no `file` was loaded or it is invalid, connect to `db`
-  if (!is.null(db)) {
-    if (!DBI::dbIsValid(db)) {
-      tryCatch(
-        db <- DBI::dbConnect(db),
-        error = function(err) {
-          stop(UKBSCHEMAS_ERRORS$DB_NO_CONNECT)
-        }
-      )
-      on.exit(.quiet_dbDisconnect(db))
-    }
-  }
-  
-  # Load the tables from `db` by name
-  sch_names <- DBI::dbListTables(db)
-  sch <- sch_names %>%
-    purrr::map(
-      ~ tibble::as_tibble(DBI::dbReadTable(db, .x))
-    )
-  names(sch) <- sch_names
+  if (!is.null(file)) 
+    db <- .graceful_dbConnect_file(file = file)
+  else if (!DBI::dbIsValid(db)) 
+    db <- .graceful_dbConnect_db(db = db)
   
   # Always disconnect
+  on.exit(.quiet_dbDisconnect(db))
+  
+  # Load the tables from `db`
+  sch <- .read_tables(db)
+  
+  # Always, definitely, disconnect
   .quiet_dbDisconnect(db)
   
   sch

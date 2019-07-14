@@ -4,14 +4,10 @@
 \alias{ukbschemas}
 \title{Fetch the UK Biobank data schemas via the internet}
 \usage{
-ukbschemas(silent = !interactive(), overwrite = FALSE, as_is = FALSE,
-  debug = FALSE)
+ukbschemas(silent = !interactive(), as_is = FALSE, debug = FALSE)
 }
 \arguments{
 \item{silent}{Do not report progress. Defaults to \code{FALSE}.}
-
-\item{overwrite}{Always overwrite existing files? Helpful for non-interactive
-use. Defaults to \code{FALSE}.}
 
 \item{as_is}{Import the schemas into the database without tidying? Defaults
 to \code{FALSE}.}
@@ -26,7 +22,8 @@ A list of objects of class \code{tbl_df} (see \link[tibble:tibble]{tibble::tibbl
 \code{ukbschemas()} loads the UK Biobank data schemas into a list
 }
 \details{
-Note that if the table structure has
-changed (i.e. has been changed by UK Biobank), then the function may fail
-partially or fully.
+The UK Biobank data schemas are fetched via the internet. If
+\code{!as_is}, they are tidied. Note that if the table structure has changed
+(i.e. has been changed by UK Biobank), then the function may fail partially
+or fully.
 }

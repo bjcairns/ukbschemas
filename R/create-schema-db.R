@@ -1,13 +1,3 @@
-# Function to quietly attempt to close a database connection
-.quiet_dbDisconnect <- function(db) {
-  tryCatch(
-    DBI::dbDisconnect(db),
-    error = function(err) NULL,
-    warning = function(warn) stop("")
-  )
-}
-
-
 # Confirm that the file and path are OK
 .check_file_path <- function(file, path, date_str, overwrite) {
   
@@ -45,18 +35,6 @@
   
   full_path
   
-}
-
-
-# Function to quietly attempt to close a database connection
-.quiet_dbDisconnect <- function(db) {
-  tryCatch(
-    DBI::dbDisconnect(db),
-    error = function(err) NULL,
-    warning = function(warn) NULL
-  )
-  
-  invisible(NULL)
 }
 
 

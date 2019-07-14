@@ -1,3 +1,27 @@
+# Create and populate the tables in the database
+.create_tables <- function(db, sch, as_is = FALSE) {
+  
+  # Start with a blank slate
+  .drop_tables(db)
+  
+  if (!as_is) {
+    
+    # CREATE TABLE(s)
+    .send_statements(
+      db, 
+      system.file("sql", "ukb-schemas.sql", package = "ukbschemas")
+    )
+    
+  }
+  
+  # Populate tables
+  .write_tables(sch, db)
+  
+  invisible(TRUE)
+  
+}
+
+
 #' Save a list of UK Biobank data schemas to an SQLite database
 #' 
 #' `save_schema_db()` saves a list of UK Biobank data schemas (or, if 
@@ -44,17 +68,17 @@ save_schema_db <- function(
   full_path <- .check_file_path(file, path, date_str, overwrite)
   
   # Create database
-  on.exit(.quiet_dbDisconnect(db))
   tryCatch(
     db <- DBI::dbConnect(RSQLite::SQLite(), full_path),
     error = function(err) {
       stop(UKBSCHEMAS_ERRORS$DB_NO_CONNECT)
     }
   )
+  on.exit(.quiet_dbDisconnect(db))
   
   # Populate database
   tryCatch(
-    .create_tables(db, sch, silent = silent, as_is = as_is),
+    .create_tables(db, sch, as_is = as_is),
     error = function(err) {
       stop(UKBSCHEMAS_ERRORS$DB_POPULATE_ERROR)
     }
@@ -62,7 +86,7 @@ save_schema_db <- function(
   
   # Wrap up and (extra careful) close the connection
   if (!silent) print(db)
-  suppressWarnings(DBI::dbDisconnect(db))
+  .quiet_dbDisconnect(db)
   if (!silent) cat("...DISCONNECTED\n")
   
   invisible(db)
