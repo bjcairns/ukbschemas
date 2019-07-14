@@ -40,7 +40,7 @@
 
 #' Create UK Biobank data schema database
 #' 
-#' `create_schema_db()` generates an SQLite database containing the UK Biobank 
+#' `ukbschemas_db()` generates an SQLite database containing the UK Biobank 
 #' data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
 #' 
 #' @param file The filename for the schema database. Defaults to `""`, which is 
@@ -63,14 +63,14 @@
 #' @return A database connection object of class 
 #' [RSQLite::SQLiteConnection-class].
 #' 
-#' @details `create_schema_db()` uses [ukbschemas] to load the schemas and 
-#' [save_schema_db] to save the result. Debugging information (`debug = TRUE`) 
+#' @details `ukbschemas_db()` uses [ukbschemas] to load the schemas and 
+#' [save_db] to save the result. Debugging information (`debug = TRUE`) 
 #' may be helpful to diagnose and/or fix such failures.
 #' 
 #' @importFrom magrittr "%>%"
 #' @export
 
-create_schema_db <- function(
+ukbschemas_db <- function(
   file = "", 
   path = ".", 
   date_str = Sys.Date(), 
@@ -89,7 +89,7 @@ create_schema_db <- function(
   sch <- ukbschemas(silent, as_is, debug)
   
   # Save to database
-  db <- save_schema_db(sch, file, path, date_str, silent, overwrite, as_is)
+  db <- save_db(sch, file, path, date_str, silent, overwrite, as_is)
   
   invisible(db)
   

@@ -9,7 +9,7 @@
     warning = function(warn) NULL
   )
   
-  invisible(NULL)
+  invisible(TRUE)
 }
 
 # Connect to db with error handling
@@ -70,12 +70,14 @@
 
 # Helper to clear the database of tables
 .drop_tables <- function(db) {
+  
   DBI::dbListTables(db) %>% 
     purrr::map(~ {
       DBI::dbClearResult(
         DBI::dbSendStatement(db, paste0("DROP TABLE ", .x))
       )
     })
+  
   invisible(DBI::dbListTables(db) == character())
 }
 
@@ -88,6 +90,8 @@
     ~ RSQLite::dbWriteTable(conn = db, name = .y, value = .x,
                             row.names = FALSE, append = TRUE)
   )
+  
+  invisible(TRUE)
   
 }
 

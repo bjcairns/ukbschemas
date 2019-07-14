@@ -1,12 +1,12 @@
 #' Load schemas from a ukbschemas database
 #' 
-#' `load_schema_db()` is a simple front-end to [DBI] functions which can be 
+#' `load_db()` is a simple front-end to [DBI] functions which can be 
 #' used to load tables from a ukbschemas database.
 #' 
 #' @param file Full path to an SQLite database, or `NULL`.
 #' @param db A (possibly disconnected) database connection, or `NULL`.
 #' 
-#' @details `load_schema_db()` will attempt to open `file` as an SQLite database, 
+#' @details `load_db()` will attempt to open `file` as an SQLite database, 
 #' or will attempt to open connection `db` (if closed) and will throw errors if 
 #' the file is not a valid databse or it is impossible to create a valid 
 #' connection from `db`. Tables are read with [DBI::dbReadTable] and converted 
@@ -19,7 +19,7 @@
 #' @importFrom magrittr "%>%"
 #' @export
 
-load_schema_db <- function(file = NULL, db = NULL) {
+load_db <- function(file = NULL, db = NULL) {
   
   # Attempt to connect to the database and handle failures
   if (!is.null(file)) 

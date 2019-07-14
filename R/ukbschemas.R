@@ -28,7 +28,7 @@
   # Name the tables
   names(sch) <- files$filename
   
-  sch
+  invisible(sch)
   
 }
 

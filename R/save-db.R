@@ -24,7 +24,7 @@
 
 #' Save a list of UK Biobank data schemas to an SQLite database
 #' 
-#' `save_schema_db()` saves a list of UK Biobank data schemas (or, if 
+#' `save_db()` saves a list of UK Biobank data schemas (or, if 
 #' `as_is == TRUE`, any list of tibbles) to an SQLite database
 #' 
 #' @param sch List of tibbles, representing UK Biobank data schemas (unless 
@@ -47,14 +47,14 @@
 #' @return A database connection object of class 
 #' [RSQLite::SQLiteConnection-class]. 
 #' 
-#' @details `save_schema_db()` takes a list of UK Biobank schemas and saves 
+#' @details `save_db()` takes a list of UK Biobank schemas and saves 
 #' them to an SQLite database. Note that if the table structure has 
 #' changed (i.e. has been changed by UK Biobank), then the function may fail 
 #' partially or fully. 
 #' 
 #' @export
 
-save_schema_db <- function(
+save_db <- function(
   sch, 
   file = "", 
   path = ".", 

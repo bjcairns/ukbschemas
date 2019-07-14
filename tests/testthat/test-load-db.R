@@ -1,4 +1,4 @@
-context("test-load-schema-db")
+context("test-load-db")
 
 # Preliminaries ----------------------------------------------------------------
 
@@ -10,27 +10,29 @@ db <- DBI::dbConnect(
 DBI::dbWriteTable(db, "mtcars", mtcars)
 DBI::dbDisconnect(db)
 
+mtcars_tbl <- tibble::as_tibble(mtcars)
+
 
 # Tests ------------------------------------------------------------------------
 
-test_that("load_schema_db() opens from file", {
-  sch <- load_schema_db(test_db_file)
-  expect_equal(sch[[1]], mtcars)
-  expect_error(load_schema_db(tempfile(fileext = ".sqlite")))
+test_that("load_db() opens from file", {
+  sch <- load_db(test_db_file)
+  expect_equal(sch[[1]], mtcars_tbl)
+  expect_error(load_db(tempfile(fileext = ".sqlite")))
 })
 
 
-test_that("load_schema_db() opens from connected database connection", {
+test_that("load_db() opens from connected database connection", {
   db <- suppressWarnings(DBI::dbConnect(db))
-  sch <- load_schema_db(db = db)
-  expect_equal(sch[[1]], mtcars)
+  sch <- load_db(db = db)
+  expect_equal(sch[[1]], mtcars_tbl)
 })
 
 
-test_that("load_schema_db() opens from DISconnected database connection", {
+test_that("load_db() opens from DISconnected database connection", {
   suppressWarnings(DBI::dbDisconnect(db))
-  sch <- load_schema_db(db = db)
-  expect_equal(sch[[1]], mtcars)
+  sch <- load_db(db = db)
+  expect_equal(sch[[1]], mtcars_tbl)
 })
 
 
