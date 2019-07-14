@@ -23,13 +23,16 @@ ukbschemas <- function(
   debug = FALSE
 ) {
   
-  # Download and tidy (if !as_is) schema tables
+  # Download schema tables
   sch <- .get_schemas(debug = debug, quote = "")
+  
   if (!silent) {
     cat("Downloaded tables:\n")
     cat(paste(names(sch), collapse = ", "))
     cat("\n\n")
   }
+  
+  # Tidy schemas as required
   if (!as_is) {
     sch <- .tidy_schemas(sch, silent = silent)
   }

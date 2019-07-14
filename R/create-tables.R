@@ -56,24 +56,11 @@
     # CREATE TABLE(s)
     .SendStatement(db, "ukb-schemas.sql")
     
-    # Identify esimp* and ehier* tables to be compiled into a single table 
-    # encvalues
-    is_esimp_table <- stringr::str_detect(names(sch), "esimp")
-    is_ehier_table <- stringr::str_detect(names(sch), "ehier")
-    is_encvalue_table <- (is_esimp_table | is_ehier_table)
-    
-    # Populate non-encvalue tables
+    # Populate tables
     purrr::walk2(
-      sch[!is_encvalue_table],
-      names(sch[!is_encvalue_table]),
+      sch,
+      names(sch),
       ~ RSQLite::dbWriteTable(conn = db, name = .y, value = .x,
-                              row.names = FALSE, append = TRUE)
-    )
-    
-    # Populate encvalues from esimp* and ehier* tables
-    purrr::walk(
-      sch[is_encvalue_table],
-      ~ RSQLite::dbWriteTable(conn = db, name = "encvalues", value = .x,
                               row.names = FALSE, append = TRUE)
     )
     

@@ -73,6 +73,15 @@
     cat("... Harmonise `esimp*` and `ehier*` tables to add to `encvalues`\n")
   }
   
+  # bind all the encoding values tables together and delete
+  encvalues <- dplyr::bind_rows(sch[is_esimp_table | is_ehier_table])
+  sch[is_esimp_table | is_ehier_table] <- NULL
+  sch$encvalues <- encvalues
+  
+  if (!silent) {
+    cat("... Bind `esimp*` and `ehier*` tables into `encvalues`\n")
+  }
+  
   if (!silent) cat("\n")
   
   invisible(sch)

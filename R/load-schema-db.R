@@ -31,7 +31,7 @@ load_schema_db <- function(file = NULL, db = NULL) {
         stop(paste0(UKBSCHEMAS_ERRORS$DB_NO_CONNECT, " (", file, ")"))
       }
     )
-    on.exit(suppressWarnings(DBI::dbDisconnect(db)))
+    on.exit(.quiet_dbDisconnect(db))
   }
   
   # If no `file` was loaded or it is invalid, connect to `db`
@@ -43,7 +43,7 @@ load_schema_db <- function(file = NULL, db = NULL) {
           stop(UKBSCHEMAS_ERRORS$DB_NO_CONNECT)
         }
       )
-      on.exit(suppressWarnings(DBI::dbDisconnect(db)))
+      on.exit(.quiet_dbDisconnect(db))
     }
   }
   
@@ -56,7 +56,7 @@ load_schema_db <- function(file = NULL, db = NULL) {
   names(sch) <- sch_names
   
   # Always disconnect
-  suppressWarnings(DBI::dbDisconnect(db))
+  .quiet_dbDisconnect(db)
   
   sch
   
