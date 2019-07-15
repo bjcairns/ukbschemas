@@ -85,3 +85,9 @@ CREATE TABLE encvalues(
   "showcase_order" INTEGER,
   PRIMARY KEY ("encoding_id", "code_id")
 );
+CREATE TABLE schema(
+  "schema_id" INTEGER PRIMARY KEY,
+  "name" TEXT,
+  "descript" TEXT,
+  "notes" TEXT
+);

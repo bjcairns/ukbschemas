@@ -84,5 +84,11 @@
   
   if (!silent) cat("\n")
   
+  if (!silent) {
+    cat("Tables after tidying:\n")
+    cat(paste(names(sch), collapse = ", "))
+    cat("\n\n")
+  }
+  
   invisible(sch)
 }

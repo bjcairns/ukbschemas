@@ -1,5 +1,5 @@
 # Create and populate the tables in the database
-.create_tables <- function(db, sch, as_is = FALSE) {
+.create_tables <- function(db, as_is = FALSE) {
   
   # Start with a blank slate
   .drop_tables(db)
@@ -13,9 +13,6 @@
     )
     
   }
-  
-  # Populate tables
-  .write_tables(sch, db)
   
   invisible(TRUE)
   
@@ -76,9 +73,12 @@ save_db <- function(
   )
   on.exit(.quiet_dbDisconnect(db))
   
-  # Populate database
+  # Create database
   tryCatch(
-    .create_tables(db, sch, as_is = as_is),
+    {
+      .create_tables(db, as_is = as_is)
+      .write_tables(sch, db)
+    },
     error = function(err) {
       stop(UKBSCHEMAS_ERRORS$DB_POPULATE_ERROR)
     }

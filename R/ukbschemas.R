@@ -2,15 +2,10 @@
 .get_schemas <- function(
   url_prefix = UKB_URL_PREFIX, 
   files = SCHEMA_FILENAMES,
-  debug = FALSE,
   delim = "\t",
   quote = "\"",
   ...
 ) {
-  
-  # Unless in debug mode, do not output tbl summaries when reading schemas 
-  # from file
-  if (!debug) options(readr.num_columns = 0)
   
   # Read each schema directly from the UK Biobank Data Showcase by ID
   sch <- files$id %>% 
@@ -54,12 +49,11 @@
 
 ukbschemas <- function(
   silent = !interactive(), 
-  as_is = FALSE, 
-  debug = FALSE
+  as_is = FALSE
 ) {
   
   # Download schema tables
-  sch <- .get_schemas(debug = debug, quote = "")
+  sch <- .get_schemas(quote = "")
   if (!silent) {
     cat("Downloaded tables:\n")
     cat(paste(names(sch), collapse = ", "))
@@ -68,7 +62,23 @@ ukbschemas <- function(
   
   # Tidy schemas as required
   if (!as_is) {
+    
     sch <- .tidy_schemas(sch, silent = silent)
+    
+    # Construct dummy sch for column order
+    db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+    on.exit(.quiet_dbDisconnect(db))
+    .create_tables(db)
+    dummy_sch <- load_db(db = db)
+    
+    # Fix column order
+    sch_names <- names(sch)
+    sch <- sch_names %>% 
+      purrr::map(
+        ~ sch[[.x]][names(dummy_sch[[.x]])]
+      )
+    names(sch) <- sch_names
+    
   }
   else {
     cat("[downloaded tables added to database as-is]\n\n")
