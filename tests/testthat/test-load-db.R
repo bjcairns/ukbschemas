@@ -24,7 +24,10 @@ test_that("load_db() opens from file", {
 
 test_that("load_db() opens from connected database connection", {
   db <- suppressWarnings(DBI::dbConnect(db))
-  sch <- load_db(db = db)
+  expect_warning(
+    sch <- load_db(db = db),
+    UKBSCHEMAS_ERRORS$WARN_DB_CONNECTED
+  )
   expect_equal(sch[[1]], mtcars_tbl)
 })
 

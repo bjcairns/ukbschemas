@@ -22,7 +22,7 @@
         stop(UKBSCHEMAS_ERRORS$DB_NO_CONNECT)
       }
     )
-  } else warning("Database object is already connected")
+  } else warning(UKBSCHEMAS_ERRORS$WARN_DB_CONNECTED)
   
   invisible(db)
 }

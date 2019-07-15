@@ -28,6 +28,7 @@ test_that("ukbschemas_db() runs without errors or warnings", {
   
 })
 
+
 test_that("ukbschemas_db() runs silently if required", {
   expect_silent(
     db <- ukbschemas_db(
@@ -38,6 +39,7 @@ test_that("ukbschemas_db() runs silently if required", {
   )
   expect_false(DBI::dbIsValid(db))
 })
+
 
 test_that("ukbschemas_db() fails on overwrite = FALSE, non-interactive", {
   
@@ -59,6 +61,7 @@ test_that("ukbschemas_db() fails on overwrite = FALSE, non-interactive", {
   )
   
 })
+
 
 test_that("ukbschemas_db() fails to overwrite when db is connected", {
   
@@ -94,6 +97,7 @@ test_that("ukbschemas_db() fails to overwrite when db is connected", {
   suppressWarnings(DBI::dbDisconnect(db1))
   
 })
+
 
 test_that("ukbschemas_db() won't allow in-memory databases", {
   
