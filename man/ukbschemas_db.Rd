@@ -5,8 +5,8 @@
 \title{Create UK Biobank data schema database}
 \usage{
 ukbschemas_db(file = "", path = ".", date_str = Sys.Date(),
-  silent = !interactive(), overwrite = FALSE, as_is = FALSE,
-  debug = FALSE)
+  overwrite = FALSE, silent = !interactive(), as_is = FALSE,
+  url_prefix = UKB_URL_PREFIX)
 }
 \arguments{
 \item{file}{The filename for the schema database. Defaults to \code{""}, which is
@@ -21,16 +21,17 @@ to \code{.} (the current directory).}
 \item{date_str}{The date-stamp for the default filename. Defaults to the current
 date in \code{YYYY-MM-DD} format.}
 
-\item{silent}{Do not report progress. Defaults to \code{FALSE}.}
-
 \item{overwrite}{Always overwrite existing files? Helpful for non-interactive
 use. Defaults to \code{FALSE}.}
+
+\item{silent}{Do not report progress. Defaults to \code{FALSE}.}
 
 \item{as_is}{Import the schemas into the database without tidying? Defaults
 to \code{FALSE}.}
 
-\item{debug}{Report debugging information (useful when e.g. the structure of
-the schema files has changed). Defaults to \code{FALSE}.}
+\item{url_prefix}{First part of the URL at which the schema files can be
+found. For local repositories, the directory with a trailing delimiter (i.e.
+\code{/} or \code{\\}).}
 }
 \value{
 A database connection object of class

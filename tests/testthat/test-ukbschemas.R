@@ -2,19 +2,7 @@ context("test-ukbschemas")
 
 # Preliminaries ----------------------------------------------------------------
 
-OLD_UKB_URL_PREFIX <- getFromNamespace("UKB_URL_PREFIX", "ukbschemas")
-assignInNamespace(
-  "UKB_URL_PREFIX", 
-  suppressWarnings(normalizePath("../test-data/")), 
-  "ukbschemas"
-)
-on.exit(
-  assignInNamespace(
-    "UKB_URL_PREFIX", 
-    OLD_UKB_URL_PREFIX, 
-    "ukbschemas"
-  )
-)
+use_prefix <- .test_data_path()
 
 skip_if_not(curl::has_internet(), "Skipping tests; no internet")
 
@@ -23,21 +11,34 @@ skip_if_not(curl::has_internet(), "Skipping tests; no internet")
 
 test_that("ukbschemas() runs without errors or warnings", {
   
-  expect_error(sch <- ukbschemas(), NA)
-  expect_warning(sch <- ukbschemas(), NA)
+  expect_error(sch <- ukbschemas(url_prefix = use_prefix), NA)
+  expect_warning(sch <- ukbschemas(url_prefix = use_prefix), NA)
   
 })
 
 test_that("ukbschemas() runs with as_is = TRUE without errors or warnings", {
   
-  expect_error(sch <- ukbschemas(as_is = TRUE, silent = TRUE), NA)
-  expect_warning(sch <- ukbschemas(as_is = TRUE, silent = TRUE), NA)
+  expect_error(
+    sch <- ukbschemas(
+      as_is = TRUE, 
+      silent = TRUE, 
+      url_prefix = use_prefix
+    ), 
+    NA
+  )
+  expect_warning(
+    sch <- ukbschemas(
+      as_is = TRUE, 
+      silent = TRUE, 
+      url_prefix = use_prefix), 
+    NA
+  )
   
 })
 
 test_that("ukbschemas() runs silently if required", {
   
-  expect_silent(sch <- ukbschemas(silent = TRUE))
+  expect_silent(sch <- ukbschemas(silent = TRUE, url_prefix = use_prefix))
   
 })
 
@@ -47,7 +48,7 @@ test_that("ukbschemas() returns schemas with columns in the right order", {
   .create_tables(db)
   dummy_sch <- load_db(db = db)
   
-  expect_error(sch <- ukbschemas(), NA)
+  expect_error(sch <- ukbschemas(url_prefix = use_prefix), NA)
   names(sch) %>% 
     purrr::walk(
       ~ expect_equal(names(sch[[.x]]), names(dummy_sch[[.x]]))

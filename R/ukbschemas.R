@@ -4,10 +4,17 @@
   files = SCHEMA_FILENAMES,
   delim = "\t",
   quote = "\"",
+  silent = TRUE,
   ...
 ) {
   
   # Read each schema directly from the UK Biobank Data Showcase by ID
+  if (silent) {
+    on.exit(options(readr.num_columns = getOption("readr.num_columns")))
+    options(readr.num_columns = 0)
+  }
+  
+  # Download the files
   sch <- files$id %>% 
     purrr::map(
       ~ {
@@ -35,8 +42,9 @@
 #' @param silent Do not report progress. Defaults to `FALSE`.
 #' @param as_is Import the schemas into the database without tidying? Defaults 
 #' to `FALSE`.
-#' @param debug Report debugging information (useful when e.g. the structure of 
-#' the schema files has changed). Defaults to `FALSE`.
+#' @param url_prefix First part of the URL at which the schema files can be 
+#' found. For local repositories, the directory with a trailing delimiter (i.e.
+#' `/` or `\\`).
 #' 
 #' @return A list of objects of class `tbl_df` (see [tibble::tibble]).
 #' 
@@ -49,11 +57,12 @@
 
 ukbschemas <- function(
   silent = !interactive(), 
-  as_is = FALSE
+  as_is = FALSE,
+  url_prefix = UKB_URL_PREFIX
 ) {
   
   # Download schema tables
-  sch <- .get_schemas(quote = "")
+  sch <- .get_schemas(url_prefix = url_prefix, quote = "", silent = silent)
   if (!silent) {
     cat("Downloaded tables:\n")
     cat(paste(names(sch), collapse = ", "))
@@ -81,7 +90,11 @@ ukbschemas <- function(
     
   }
   else {
-    cat("[downloaded tables added to database as-is]\n\n")
+    
+    if (!silent) {
+      cat("[downloaded tables added to database as-is]\n\n")
+    }
+    
   }
   
   sch

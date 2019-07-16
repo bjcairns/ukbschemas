@@ -2,19 +2,7 @@ context("test-save-db")
 
 # Preliminaries ----------------------------------------------------------------
 
-OLD_UKB_URL_PREFIX <- getFromNamespace("UKB_URL_PREFIX", "ukbschemas")
-assignInNamespace(
-  "UKB_URL_PREFIX", 
-  suppressWarnings(normalizePath("../test-data/")), 
-  "ukbschemas"
-)
-on.exit(
-  assignInNamespace(
-    "UKB_URL_PREFIX", 
-    OLD_UKB_URL_PREFIX, 
-    "ukbschemas"
-  )
-)
+use_prefix <- .test_data_path()
 
 mtcars_sch <- list(mtcars = tibble::as_tibble(mtcars))
 test_db_file <- function() basename(tempfile(fileext = ".sqlite"))
@@ -145,7 +133,7 @@ test_that("save_db() won't allow in-memory databases", {
 
 test_that("save_db() runs without errors or warnings with genuine data", {
   
-  sch <- ukbschemas()
+  sch <- ukbschemas(url_prefix = use_prefix)
   
   expect_error(
     db1 <- save_db(sch, file = test_db_file(), path = test_db_path),

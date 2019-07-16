@@ -52,13 +52,9 @@
 #' to `.` (the current directory).
 #' @param date_str The date-stamp for the default filename. Defaults to the current 
 #' date in `YYYY-MM-DD` format.
-#' @param silent Do not report progress. Defaults to `FALSE`.
 #' @param overwrite Always overwrite existing files? Helpful for non-interactive 
 #' use. Defaults to `FALSE`.
-#' @param as_is Import the schemas into the database without tidying? Defaults 
-#' to `FALSE`.
-#' @param debug Report debugging information (useful when e.g. the structure of 
-#' the schema files has changed). Defaults to `FALSE`.
+#' @inheritParams ukbschemas
 #' 
 #' @return A database connection object of class 
 #' [RSQLite::SQLiteConnection-class].
@@ -74,19 +70,17 @@ ukbschemas_db <- function(
   file = "", 
   path = ".", 
   date_str = Sys.Date(), 
-  silent = !interactive(), 
   overwrite = FALSE,
+  silent = !interactive(), 
   as_is = FALSE, 
-  debug = FALSE
+  url_prefix = UKB_URL_PREFIX
 ) {
-  
-  if (debug & silent) silent <- FALSE
   
   # Careful to disconnect the database after function is done
   on.exit(.quiet_dbDisconnect(db))
   
   # Get and process the schemas
-  sch <- ukbschemas(silent, as_is)
+  sch <- ukbschemas(silent, as_is, url_prefix)
   
   # Save to database
   db <- save_db(sch, file, path, date_str, silent, overwrite, as_is)
