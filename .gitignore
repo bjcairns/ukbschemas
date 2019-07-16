@@ -5,3 +5,5 @@
 *.Rproj
 *.sqlite
 README.html
+
+tests/test-data

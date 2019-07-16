@@ -2,6 +2,20 @@ context("test-load-db")
 
 # Preliminaries ----------------------------------------------------------------
 
+OLD_UKB_URL_PREFIX <- getFromNamespace("UKB_URL_PREFIX", "ukbschemas")
+assignInNamespace(
+  "UKB_URL_PREFIX", 
+  suppressWarnings(normalizePath("../test-data/")), 
+  "ukbschemas"
+  )
+on.exit(
+  assignInNamespace(
+    "UKB_URL_PREFIX", 
+    OLD_UKB_URL_PREFIX, 
+    "ukbschemas"
+  )
+)
+
 test_db_file <- tempfile(fileext = ".sqlite")
 db <- DBI::dbConnect(
   RSQLite::SQLite(), 

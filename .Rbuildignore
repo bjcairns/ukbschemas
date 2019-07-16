@@ -4,3 +4,4 @@
 ^README\.Rmd$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^tests/test-data$
