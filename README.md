@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Build
 Status](https://travis-ci.com/bjcairns/ukbschemas.svg?token=tA2cYTLpigx5VuTgcHFd&branch=master)](https://travis-ci.com/bjcairns/ukbschemas)
 <!-- badges: end -->
@@ -25,40 +27,57 @@ devtools::install_github("bjcairns/ukbschemas")
 
 ## Examples
 
-The package exports two functions. The first is `create_schema_db()`,
-which downloads the schema tables and saves them to an SQLite database:
+The package supports two workflows. The recommended approach is to use
+`ukbschemas_db()` to download the schema tables and save them to an
+SQLite database:
 
 ``` r
 library(ukbschemas)
 
-db <- create_schema_db(path = tempdir())
+db <- ukbschemas_db(path = tempdir())
 ```
 
 By default, the database is named `ukb-schemas-YYYY-MM-DD.sqlite` (where
 `YYYY-MM-DD` is the current date) and placed in the current working
 directory. (`path = tempdir()` in the above example puts it in the
 current temporary directory instead.) At the most recent compilation of
-this README (13 Jul 2019), the size of the .sqlite database file
-produced by `create_schema_db()` was approximately 10.1MB.
+this README (14 Jul 2019), the size of the .sqlite database file
+produced by `ukbschemas_db()` was approximately 10.1MB.
 
-The second function, `load_schema_db()`, loads the tables from the
-database and stores them as tibbles in a named list:
+To retrieve the schemas from the database, use `load_db()`, which loads
+the tables from the database and stores them as tibbles in a named list:
 
 ``` r
-sch <- load_schema_db(db = db)
+sch <- load_db(db = db)
 names(sch)
 #>  [1] "archives"    "categories"  "encodings"   "encvalues"   "fields"     
 #>  [6] "instances"   "insvalues"   "recommended" "schema"      "valuetypes"
 ```
 
-Note that without further arguments, `create_schema_db()` tidies up the
+Note that without further arguments, `ukbschemas_db()` tidies up the
 database to give it a more consistent relational structure (the changes
 are summarised in the output of the first example, above). Alternatively
 the raw data can be loaded with the `as_is` argument:
 
 ``` r
-db <- create_schema_db(path = tempdir(), overwrite = TRUE, as_is = TRUE)
+db <- ukbschemas_db(path = tempdir(), overwrite = TRUE, as_is = TRUE)
 #> [downloaded tables added to database as-is]
+```
+
+The second approach is to download the schemas and store them in memory
+in a list, and save them to a database only as requried. This is not
+recommended, because it is better (for everyone) not to download the
+schema files every time they are needed, and because the the database
+assumes a certain structure that should be guaranteed when the database
+is saved. If you still want to take this approach, use:
+
+``` r
+sch <- ukbschemas()
+names(sch)
+#>  [1] "fields"      "encodings"   "categories"  "archives"    "instances"  
+#>  [6] "insvalues"   "recommended" "schema"      "valuetypes"  "encvalues"
+
+db <- save_db(sch, path = tempdir(), overwrite = TRUE)
 ```
 
 ## Why R?

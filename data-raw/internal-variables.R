@@ -60,7 +60,9 @@ UKBSCHEMAS_ERRORS <- list(
   FAILED_OVERWRITE = paste0("Could not overwrite existing file; ",
                             "is there an existing database connection?"),
   FILE_NOT_EXISTS = "Not a valid name of an existing file",
-  DB_NO_CONNECT = "Could not connect to database"
+  DB_NO_CONNECT = "Could not connect to database",
+  DB_POPULATE_ERROR = "Error populating database",
+  WARN_DB_CONNECTED = "Database object is already connected"
 )
 
 
