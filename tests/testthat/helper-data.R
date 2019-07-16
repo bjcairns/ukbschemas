@@ -7,14 +7,12 @@
 # Function to locate local copy of downloaded files
 .test_data_path <- function() {
   
+  test_data_dir <- "ukbschemas-test-data/"
+  
   new_prefix <- ifelse(
     identical(Sys.getenv("TRAVIS"), "true"),
-    "/home/travis/ukbschemas-test-data/",
-    ifelse(
-      identical(Sys.getenv("NOT_CRAN"), "true"),
-      paste0("../../tests/test-data/"),
-      paste0(here::here(), "/tests/test-data/")
-    )
+    paste0("/home/travis/", test_data_dir),
+    paste0("~/", test_data_dir)
   )
   
   suppressWarnings(.quiet_normalizePath(new_prefix))

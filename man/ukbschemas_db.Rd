@@ -43,6 +43,5 @@ data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
 }
 \details{
 \code{ukbschemas_db()} uses \link{ukbschemas} to load the schemas and
-\link{save_db} to save the result. Debugging information (\code{debug = TRUE})
-may be helpful to diagnose and/or fix such failures.
+\link{save_db} to save the result.
 }

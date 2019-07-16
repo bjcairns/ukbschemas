@@ -60,8 +60,7 @@
 #' [RSQLite::SQLiteConnection-class].
 #' 
 #' @details `ukbschemas_db()` uses [ukbschemas] to load the schemas and 
-#' [save_db] to save the result. Debugging information (`debug = TRUE`) 
-#' may be helpful to diagnose and/or fix such failures.
+#' [save_db] to save the result.
 #' 
 #' @importFrom magrittr "%>%"
 #' @export
