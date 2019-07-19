@@ -1,40 +1,3 @@
-# Get the schemas from the UK Biobank web server
-.get_schemas <- function(
-  url_prefix = UKB_URL_PREFIX, 
-  files = SCHEMA_FILENAMES,
-  delim = "\t",
-  quote = "\"",
-  silent = TRUE,
-  ...
-) {
-  
-  # Read each schema directly from the UK Biobank Data Showcase by ID
-  if (silent) {
-    on.exit(options(readr.num_columns = getOption("readr.num_columns")))
-    options(readr.num_columns = 0)
-  }
-  
-  # Download the files
-  sch <- files$id %>% 
-    purrr::map(
-      ~ {
-        readr::read_delim(
-          paste0(url_prefix, .), 
-          delim = delim, 
-          quote = quote,
-          ...
-        )
-      }
-    )
-  
-  # Name the tables
-  names(sch) <- files$filename
-  
-  invisible(sch)
-  
-}
-
-
 #' Fetch the UK Biobank data schemas via the internet
 #' 
 #' `ukbschemas()` loads the UK Biobank data schemas into a list
@@ -96,6 +59,9 @@ ukbschemas <- function(
     }
     
   }
+  
+  # Sort schemas
+  sch <- sch[sort(names(sch))]
   
   sch
   
