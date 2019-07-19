@@ -1,24 +1,3 @@
-# Create and populate the tables in the database
-.create_tables <- function(db, as_is = FALSE) {
-  
-  # Start with a blank slate
-  .drop_tables(db)
-  
-  if (!as_is) {
-    
-    # CREATE TABLE(s)
-    .send_statements(
-      db, 
-      system.file("sql", "ukb-schemas.sql", package = "ukbschemas")
-    )
-    
-  }
-  
-  invisible(TRUE)
-  
-}
-
-
 #' Save a list of UK Biobank data schemas to an SQLite database
 #' 
 #' `save_db()` saves a list of UK Biobank data schemas (or, if 
