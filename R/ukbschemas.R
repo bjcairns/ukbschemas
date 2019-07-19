@@ -60,6 +60,9 @@ ukbschemas <- function(
     
   }
   
+  # Sort schemas
+  sch <- sch[sort(names(sch))]
+  
   sch
   
 }
