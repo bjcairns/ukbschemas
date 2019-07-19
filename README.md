@@ -11,9 +11,11 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 Status](https://travis-ci.com/bjcairns/ukbschemas.svg?token=tA2cYTLpigx5VuTgcHFd&branch=master)](https://travis-ci.com/bjcairns/ukbschemas)
 <!-- badges: end -->
 
-This R package can be used to create and/or load the [UK Biobank Data
-Showcase schemas](http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi) for
-further use.
+This R package can be used to create and/or load a database containing
+the [UK Biobank Data Showcase
+schemas](http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi), which are
+data dictionaries describing the structure of the UK Biobank main
+dataset.
 
 ## Installation
 
@@ -23,36 +25,32 @@ You can install the current version of ukbschemas from
 ``` r
 # install.packages("devtools")
 devtools::install_github("bjcairns/ukbschemas")
+
+library(ukbschemas)
 ```
 
 ## Examples
 
-The package supports two workflows. The recommended approach is to use
-`ukbschemas_db()` to download the schema tables and save them to an
-SQLite database:
+The package supports two workflows.
+
+#### Save-Load workflow (recommended)
+
+The recommended approach is to use `ukbschemas_db()` to download the
+schema tables and save them to an SQLite database, then use `load_db()`
+to load the tables from the database and store them as tibbles in a
+named list:
 
 ``` r
-library(ukbschemas)
-
 db <- ukbschemas_db(path = tempdir())
+sch <- load_db(db = db)
 ```
 
 By default, the database is named `ukb-schemas-YYYY-MM-DD.sqlite` (where
 `YYYY-MM-DD` is the current date) and placed in the current working
 directory. (`path = tempdir()` in the above example puts it in the
 current temporary directory instead.) At the most recent compilation of
-this README (14 Jul 2019), the size of the .sqlite database file
+the database (19 July 2019), the size of the .sqlite database file
 produced by `ukbschemas_db()` was approximately 10.1MB.
-
-To retrieve the schemas from the database, use `load_db()`, which loads
-the tables from the database and stores them as tibbles in a named list:
-
-``` r
-sch <- load_db(db = db)
-names(sch)
-#>  [1] "archives"    "categories"  "encodings"   "encvalues"   "fields"     
-#>  [6] "instances"   "insvalues"   "recommended" "schema"      "valuetypes"
-```
 
 Note that without further arguments, `ukbschemas_db()` tidies up the
 database to give it a more consistent relational structure (the changes
@@ -61,23 +59,26 @@ the raw data can be loaded with the `as_is` argument:
 
 ``` r
 db <- ukbschemas_db(path = tempdir(), overwrite = TRUE, as_is = TRUE)
-#> [downloaded tables added to database as-is]
 ```
 
+The `overwrite` option allows the database file to be overwritten (if
+`TRUE`), or prevents this (`FALSE`), or if not specified and the session
+is interactive (`interactive() == TRUE`) then the user is prompted to
+decide.
+
+#### Load-Save workflow
+
 The second approach is to download the schemas and store them in memory
-in a list, and save them to a database only as requried. This is not
-recommended, because it is better (for everyone) not to download the
-schema files every time they are needed, and because the the database
-assumes a certain structure that should be guaranteed when the database
-is saved. If you still want to take this approach, use:
+in a list, and save them to a database only as requried.
+
+This is **not** recommended, because it is better (for everyone) not to
+download the schema files every time they are needed, and because the
+database assumes a certain structure that should be guaranteed when the
+database is saved. If you still want to take this approach, use:
 
 ``` r
 sch <- ukbschemas()
-names(sch)
-#>  [1] "fields"      "encodings"   "categories"  "archives"    "instances"  
-#>  [6] "insvalues"   "recommended" "schema"      "valuetypes"  "encvalues"
-
-db <- save_db(sch, path = tempdir(), overwrite = TRUE)
+db <- save_db(sch, path = tempdir())
 ```
 
 ## Why R?
