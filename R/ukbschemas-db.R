@@ -22,6 +22,10 @@
 #' @details `ukbschemas_db()` uses [ukbschemas] to load the schemas and 
 #' [save_db] to save the result.
 #' 
+#' @examples 
+#' \dontrun{
+#' db <- ukbschemas_db(path = tempdir())
+#' }
 #' @importFrom magrittr "%>%"
 #' @export
 

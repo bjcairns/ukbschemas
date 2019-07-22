@@ -26,8 +26,13 @@
 #' @details `save_db()` takes a list of UK Biobank schemas and saves 
 #' them to an SQLite database. Note that if the table structure has 
 #' changed (i.e. has been changed by UK Biobank), then the function may fail 
-#' partially or fully. 
+#' partially or fully unless `as_is = TRUE`.
 #' 
+#' @examples 
+#' \dontrun{
+#' sch <- ukbschemas()
+#' db <- save_db(sch, path = tempdir())
+#' }
 #' @export
 
 save_db <- function(

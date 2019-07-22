@@ -45,3 +45,8 @@ data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
 \code{ukbschemas_db()} uses \link{ukbschemas} to load the schemas and
 \link{save_db} to save the result.
 }
+\examples{
+\dontrun{
+db <- ukbschemas_db(path = tempdir())
+}
+}

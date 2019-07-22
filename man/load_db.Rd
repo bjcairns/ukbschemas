@@ -27,3 +27,9 @@ connection from \code{db}. Tables are read with \link[DBI:dbReadTable]{DBI::dbRe
 to data frames of class \code{tbl_df} (see \link[tibble:tibble]{tibble::tibble}). The database
 connection is always closed before the function returns its result.
 }
+\examples{
+\dontrun{
+db <- ukbschemas_db(path = tempdir())
+sch <- load_db(db = db)
+}
+}

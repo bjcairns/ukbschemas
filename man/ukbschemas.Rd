@@ -29,3 +29,8 @@ The UK Biobank data schemas are fetched via the internet. If
 (i.e. has been changed by UK Biobank), then the function may fail partially
 or fully.
 }
+\examples{
+\dontrun{
+sch <- ukbschemas()
+}
+}

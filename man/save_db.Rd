@@ -45,3 +45,9 @@ them to an SQLite database. Note that if the table structure has
 changed (i.e. has been changed by UK Biobank), then the function may fail
 partially or fully.
 }
+\examples{
+\dontrun{
+sch <- ukbschemas()
+db <- save_db(sch, path = tempdir())
+}
+}

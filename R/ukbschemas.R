@@ -16,6 +16,10 @@
 #' (i.e. has been changed by UK Biobank), then the function may fail partially 
 #' or fully. 
 #' 
+#' @examples 
+#' \dontrun{
+#' sch <- ukbschemas()
+#' }
 #' @export
 
 ukbschemas <- function(
@@ -65,4 +69,3 @@ ukbschemas <- function(
   
   sch
   
-}

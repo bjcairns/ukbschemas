@@ -16,6 +16,11 @@
 #' @return A named list with elements of class `tbl_df`, containing the tables 
 #' from `db`.
 #' 
+#' @examples 
+#' \dontrun{
+#' db <- ukbschemas_db(path = tempdir())
+#' sch <- load_db(db = db)
+#' }
 #' @importFrom magrittr "%>%"
 #' @export
 
