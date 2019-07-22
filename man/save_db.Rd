@@ -43,7 +43,7 @@ A database connection object of class
 \code{save_db()} takes a list of UK Biobank schemas and saves
 them to an SQLite database. Note that if the table structure has
 changed (i.e. has been changed by UK Biobank), then the function may fail
-partially or fully.
+partially or fully unless \code{as_is = TRUE}.
 }
 \examples{
 \dontrun{

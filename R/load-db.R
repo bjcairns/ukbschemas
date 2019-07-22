@@ -6,12 +6,12 @@
 #' @param file Full path to an SQLite database, or `NULL`.
 #' @param db A (possibly disconnected) database connection, or `NULL`.
 #' 
-#' @details `load_db()` will attempt to open `file` as an SQLite database, 
-#' or will attempt to open connection `db` (if closed) and will throw errors if 
-#' the file is not a valid databse or it is impossible to create a valid 
-#' connection from `db`. Tables are read with [DBI::dbReadTable] and converted 
-#' to data frames of class `tbl_df` (see [tibble::tibble]). The database 
-#' connection is always closed before the function returns its result.
+#' @details `load_db()` will attempt to open an SQLite database from file 
+#' `file` or from connection `db`. It will throw errors if the file is not a 
+#' valid databse or it is impossible to create a valid connection from `db`. 
+#' Tables are read with [DBI::dbReadTable] and converted to data frames of 
+#' class `tbl_df` (see [tibble::tibble]). The database connection is always 
+#' closed before the function returns its result.
 #' 
 #' @return A named list with elements of class `tbl_df`, containing the tables 
 #' from `db`.

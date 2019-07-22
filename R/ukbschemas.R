@@ -1,6 +1,8 @@
 #' Fetch the UK Biobank data schemas via the internet
 #' 
-#' `ukbschemas()` loads the UK Biobank data schemas into a list
+#' `ukbschemas()` loads the UK Biobank data schemas into a list. \bold{Note:} 
+#' this is a convenience function. For most uses, it is recommended to use 
+#' [ukbschemas_db] and [load_db] instead.
 #' 
 #' @param silent Do not report progress. Defaults to `FALSE`.
 #' @param as_is Import the schemas into the database without tidying? Defaults 
@@ -69,3 +71,4 @@ ukbschemas <- function(
   
   sch
   
+}

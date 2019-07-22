@@ -21,7 +21,9 @@ found. For local repositories, the directory with a trailing delimiter (i.e.
 A list of objects of class \code{tbl_df} (see \link[tibble:tibble]{tibble::tibble}).
 }
 \description{
-\code{ukbschemas()} loads the UK Biobank data schemas into a list
+\code{ukbschemas()} loads the UK Biobank data schemas into a list. \bold{Note:}
+this is a convenience function. For most uses, it is recommended to use
+\link{ukbschemas_db} and \link{load_db} instead.
 }
 \details{
 The UK Biobank data schemas are fetched via the internet. If
