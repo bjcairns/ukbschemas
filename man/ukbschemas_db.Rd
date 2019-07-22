@@ -31,7 +31,7 @@ to \code{FALSE}.}
 
 \item{url_prefix}{First part of the URL at which the schema files can be
 found. For local repositories, the directory with a trailing delimiter (i.e.
-\code{/} or \code{\\}).}
+\code{/} or \code{\\} or \code{\\\\} as appropriate to your operating system).}
 }
 \value{
 A database connection object of class
@@ -44,4 +44,9 @@ data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
 \details{
 \code{ukbschemas_db()} uses \link{ukbschemas} to load the schemas and
 \link{save_db} to save the result.
+}
+\examples{
+\dontrun{
+db <- ukbschemas_db(path = tempdir())
+}
 }
