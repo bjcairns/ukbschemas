@@ -1,7 +1,8 @@
-#' Load schemas from a ukbschemas database
+#' Load schemas from a ukbschemas SQLite database
 #' 
 #' `load_db()` is a simple front-end to [DBI] functions which can be 
-#' used to load tables from a ukbschemas database.
+#' used to load tables from a ukbschemas database (or in fact, any database; 
+#' see [DBI::DBI-package]).
 #' 
 #' @param file Full path to an SQLite database, or `NULL`.
 #' @param db A (possibly disconnected) database connection, or `NULL`.

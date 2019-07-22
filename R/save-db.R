@@ -1,7 +1,7 @@
 #' Save a list of UK Biobank data schemas to an SQLite database
 #' 
-#' `save_db()` saves a list of UK Biobank data schemas (or, if 
-#' `as_is == TRUE`, any list of tibbles) to an SQLite database
+#' `save_db()` saves a list of UK Biobank data schemas (or, if `as_is == TRUE`, 
+#' any list of tibbles) to an SQLite database
 #' 
 #' @param sch List of tibbles, representing UK Biobank data schemas (unless 
 #' `as_is == TRUE`, in which case any list of tibbles is permitted)
@@ -12,11 +12,11 @@
 #' the file should be overwritten.
 #' @param path The path to the directory where the file will be saved. Defaults 
 #' to `.` (the current directory).
-#' @param date_str The date-stamp for the default filename. Defaults to the current 
-#' date in `YYYY-MM-DD` format.
+#' @param date_str The date-stamp for the default filename. Defaults to the 
+#' current date in `YYYY-MM-DD` format.
 #' @param silent Do not report progress. Defaults to `FALSE`.
-#' @param overwrite Always overwrite existing files? Helpful for non-interactive 
-#' use. Defaults to `FALSE`.
+#' @param overwrite Always overwrite existing files? Helpful for 
+#' non-interactive use. Defaults to `FALSE`.
 #' @param as_is Import the schemas into the database without tidying? Defaults 
 #' to `FALSE`.
 #' 
@@ -24,9 +24,9 @@
 #' [RSQLite::SQLiteConnection-class]. 
 #' 
 #' @details `save_db()` takes a list of UK Biobank schemas and saves 
-#' them to an SQLite database. Note that if the table structure has 
-#' changed (i.e. has been changed by UK Biobank), then the function may fail 
-#' partially or fully unless `as_is = TRUE`.
+#' them to an SQLite database. If `!as_is`, they are tidied. Note that if the 
+#' table structure has changed (i.e. has been changed by UK Biobank), then the 
+#' function may fail partially or fully unless `as_is == TRUE`.
 #' 
 #' @examples 
 #' \dontrun{

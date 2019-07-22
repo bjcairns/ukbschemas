@@ -1,7 +1,7 @@
-#' Fetch the UK Biobank data schemas via the internet
+#' Load the UK Biobank data schemas from the Internet or other repository
 #' 
-#' `ukbschemas()` loads the UK Biobank data schemas into a list. \bold{Note:} 
-#' this is a convenience function. For most uses, it is recommended to use 
+#' \bold{Note:} this is a convenience function to load the schemas directly 
+#' from the UK Biobank website. For most purposes, it is recommended to use 
 #' [ukbschemas_db] and [load_db] instead.
 #' 
 #' @param silent Do not report progress. Defaults to `FALSE`.
@@ -9,14 +9,14 @@
 #' to `FALSE`.
 #' @param url_prefix First part of the URL at which the schema files can be 
 #' found. For local repositories, the directory with a trailing delimiter (i.e.
-#' `/` or `\\`).
+#' `/` or `\\` or `\\\\` as appropriate to your operating system).
 #' 
 #' @return A list of objects of class `tbl_df` (see [tibble::tibble]).
 #' 
-#' @details The UK Biobank data schemas are fetched via the internet. If 
-#' `!as_is`, they are tidied. Note that if the table structure has changed 
-#' (i.e. has been changed by UK Biobank), then the function may fail partially 
-#' or fully. 
+#' @details The UK Biobank data schemas are fetched via the Internet unless a 
+#' different `url_prefix` is provided. If `!as_is`, they are tidied. Note that 
+#' if the table structure has changed (i.e. has been changed by UK Biobank), 
+#' then the function may fail partially or fully unless `as_is == TRUE`. 
 #' 
 #' @examples 
 #' \dontrun{

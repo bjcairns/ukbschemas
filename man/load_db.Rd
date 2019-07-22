@@ -2,7 +2,7 @@
 % Please edit documentation in R/load-db.R
 \name{load_db}
 \alias{load_db}
-\title{Load schemas from a ukbschemas database}
+\title{Load schemas from a ukbschemas SQLite database}
 \usage{
 load_db(file = NULL, db = NULL)
 }
@@ -17,7 +17,8 @@ from \code{db}.
 }
 \description{
 \code{load_db()} is a simple front-end to \link{DBI} functions which can be
-used to load tables from a ukbschemas database.
+used to load tables from a ukbschemas database (or in fact, any database;
+see \link[DBI:DBI-package]{DBI::DBI-package}).
 }
 \details{
 \code{load_db()} will attempt to open an SQLite database from file

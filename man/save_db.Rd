@@ -20,13 +20,13 @@ the file should be overwritten.}
 \item{path}{The path to the directory where the file will be saved. Defaults
 to \code{.} (the current directory).}
 
-\item{date_str}{The date-stamp for the default filename. Defaults to the current
-date in \code{YYYY-MM-DD} format.}
+\item{date_str}{The date-stamp for the default filename. Defaults to the
+current date in \code{YYYY-MM-DD} format.}
 
 \item{silent}{Do not report progress. Defaults to \code{FALSE}.}
 
-\item{overwrite}{Always overwrite existing files? Helpful for non-interactive
-use. Defaults to \code{FALSE}.}
+\item{overwrite}{Always overwrite existing files? Helpful for
+non-interactive use. Defaults to \code{FALSE}.}
 
 \item{as_is}{Import the schemas into the database without tidying? Defaults
 to \code{FALSE}.}
@@ -36,14 +36,14 @@ A database connection object of class
 \link[RSQLite:SQLiteConnection-class]{RSQLite::SQLiteConnection}.
 }
 \description{
-\code{save_db()} saves a list of UK Biobank data schemas (or, if
-\code{as_is == TRUE}, any list of tibbles) to an SQLite database
+\code{save_db()} saves a list of UK Biobank data schemas (or, if \code{as_is == TRUE},
+any list of tibbles) to an SQLite database
 }
 \details{
 \code{save_db()} takes a list of UK Biobank schemas and saves
-them to an SQLite database. Note that if the table structure has
-changed (i.e. has been changed by UK Biobank), then the function may fail
-partially or fully unless \code{as_is = TRUE}.
+them to an SQLite database. If \code{!as_is}, they are tidied. Note that if the
+table structure has changed (i.e. has been changed by UK Biobank), then the
+function may fail partially or fully unless \code{as_is == TRUE}.
 }
 \examples{
 \dontrun{

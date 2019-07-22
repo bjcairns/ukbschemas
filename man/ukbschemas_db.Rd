@@ -31,7 +31,7 @@ to \code{FALSE}.}
 
 \item{url_prefix}{First part of the URL at which the schema files can be
 found. For local repositories, the directory with a trailing delimiter (i.e.
-\code{/} or \code{\\}).}
+\code{/} or \code{\\} or \code{\\\\} as appropriate to your operating system).}
 }
 \value{
 A database connection object of class
