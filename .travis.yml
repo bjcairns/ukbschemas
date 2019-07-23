@@ -4,10 +4,12 @@ language: r
 
 os:
   - linux
+  - osx
 
 r:
   - oldrel
   - release
+  - devel
 
 warnings_are_errors: true
 
