@@ -11,7 +11,7 @@
   
   new_prefix <- ifelse(
     identical(Sys.getenv("TRAVIS"), "true"),
-    paste0("/home/travis/", test_data_dir),
+    paste0(Sys.getenv("HOME"), "/", test_data_dir),
     paste0("~/", test_data_dir)
   )
   
