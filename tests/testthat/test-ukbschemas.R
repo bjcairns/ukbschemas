@@ -42,13 +42,17 @@ test_that("ukbschemas() runs silently if required", {
   
 })
 
-test_that("ukbschemas() returns schemas with columns in the right order", {
+test_that("ukbschemas() returns schemas in the right order", {
   
   db <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
   .create_tables(db)
   dummy_sch <- load_db(db = db)
-  
   expect_error(sch <- ukbschemas(url_prefix = use_prefix), NA)
+  
+  # Schemas in the right order
+  expect_identical(names(dummy_sch), names(sch))
+  
+  # Columns of each in the right order
   names(sch) %>% 
     purrr::walk(
       ~ expect_equal(names(sch[[.x]]), names(dummy_sch[[.x]]))

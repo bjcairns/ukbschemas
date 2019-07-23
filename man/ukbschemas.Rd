@@ -2,7 +2,7 @@
 % Please edit documentation in R/ukbschemas.R
 \name{ukbschemas}
 \alias{ukbschemas}
-\title{Fetch the UK Biobank data schemas via the internet}
+\title{Load the UK Biobank data schemas from the Internet or other repository}
 \usage{
 ukbschemas(silent = !interactive(), as_is = FALSE,
   url_prefix = UKB_URL_PREFIX)
@@ -15,17 +15,24 @@ to \code{FALSE}.}
 
 \item{url_prefix}{First part of the URL at which the schema files can be
 found. For local repositories, the directory with a trailing delimiter (i.e.
-\code{/} or \code{\\}).}
+\code{/} or \code{\\} or \code{\\\\} as appropriate to your operating system).}
 }
 \value{
 A list of objects of class \code{tbl_df} (see \link[tibble:tibble]{tibble::tibble}).
 }
 \description{
-\code{ukbschemas()} loads the UK Biobank data schemas into a list
+\bold{Note:} this is a convenience function to load the schemas directly
+from the UK Biobank website. For most purposes, it is recommended to use
+\link{ukbschemas_db} and \link{load_db} instead.
 }
 \details{
-The UK Biobank data schemas are fetched via the internet. If
-\code{!as_is}, they are tidied. Note that if the table structure has changed
-(i.e. has been changed by UK Biobank), then the function may fail partially
-or fully.
+The UK Biobank data schemas are fetched via the Internet unless a
+different \code{url_prefix} is provided. If \code{!as_is}, they are tidied. Note that
+if the table structure has changed (i.e. has been changed by UK Biobank),
+then the function may fail partially or fully unless \code{as_is == TRUE}.
+}
+\examples{
+\dontrun{
+sch <- ukbschemas()
+}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/load-db.R
 \name{load_db}
 \alias{load_db}
-\title{Load schemas from a ukbschemas database}
+\title{Load schemas from a ukbschemas SQLite database}
 \usage{
 load_db(file = NULL, db = NULL)
 }
@@ -17,13 +17,20 @@ from \code{db}.
 }
 \description{
 \code{load_db()} is a simple front-end to \link{DBI} functions which can be
-used to load tables from a ukbschemas database.
+used to load tables from a ukbschemas database (or in fact, any database;
+see \link[DBI:DBI-package]{DBI::DBI-package}).
 }
 \details{
-\code{load_db()} will attempt to open \code{file} as an SQLite database,
-or will attempt to open connection \code{db} (if closed) and will throw errors if
-the file is not a valid databse or it is impossible to create a valid
-connection from \code{db}. Tables are read with \link[DBI:dbReadTable]{DBI::dbReadTable} and converted
-to data frames of class \code{tbl_df} (see \link[tibble:tibble]{tibble::tibble}). The database
-connection is always closed before the function returns its result.
+\code{load_db()} will attempt to open an SQLite database from file
+\code{file} or from connection \code{db}. It will throw errors if the file is not a
+valid databse or it is impossible to create a valid connection from \code{db}.
+Tables are read with \link[DBI:dbReadTable]{DBI::dbReadTable} and converted to data frames of
+class \code{tbl_df} (see \link[tibble:tibble]{tibble::tibble}). The database connection is always
+closed before the function returns its result.
+}
+\examples{
+\dontrun{
+db <- ukbschemas_db(path = tempdir())
+sch <- load_db(db = db)
+}
 }

@@ -4,14 +4,22 @@ language: r
 
 os:
   - linux
+  - osx
 
 r:
   - oldrel
   - release
+  - devel
+  
+# Seems to be a problem with the osx-devel build (2019-07-23)
+matrix:
+  exclude:
+  - os: osx
+    r: devel
 
 warnings_are_errors: true
 
 cache:
   directories:
-    - /home/travis/ukbschemas-test-data/
+    - $HOME/ukbschemas-test-data/
   packages: true

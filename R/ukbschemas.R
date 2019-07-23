@@ -1,58 +1,27 @@
-# Get the schemas from the UK Biobank web server
-.get_schemas <- function(
-  url_prefix = UKB_URL_PREFIX, 
-  files = SCHEMA_FILENAMES,
-  delim = "\t",
-  quote = "\"",
-  silent = TRUE,
-  ...
-) {
-  
-  # Read each schema directly from the UK Biobank Data Showcase by ID
-  if (silent) {
-    on.exit(options(readr.num_columns = getOption("readr.num_columns")))
-    options(readr.num_columns = 0)
-  }
-  
-  # Download the files
-  sch <- files$id %>% 
-    purrr::map(
-      ~ {
-        readr::read_delim(
-          paste0(url_prefix, .), 
-          delim = delim, 
-          quote = quote,
-          ...
-        )
-      }
-    )
-  
-  # Name the tables
-  names(sch) <- files$filename
-  
-  invisible(sch)
-  
-}
-
-
-#' Fetch the UK Biobank data schemas via the internet
+#' Load the UK Biobank data schemas from the Internet or other repository
 #' 
-#' `ukbschemas()` loads the UK Biobank data schemas into a list
+#' \bold{Note:} this is a convenience function to load the schemas directly 
+#' from the UK Biobank website. For most purposes, it is recommended to use 
+#' [ukbschemas_db] and [load_db] instead.
 #' 
 #' @param silent Do not report progress. Defaults to `FALSE`.
 #' @param as_is Import the schemas into the database without tidying? Defaults 
 #' to `FALSE`.
 #' @param url_prefix First part of the URL at which the schema files can be 
 #' found. For local repositories, the directory with a trailing delimiter (i.e.
-#' `/` or `\\`).
+#' `/` or `\\` or `\\\\` as appropriate to your operating system).
 #' 
 #' @return A list of objects of class `tbl_df` (see [tibble::tibble]).
 #' 
-#' @details The UK Biobank data schemas are fetched via the internet. If 
-#' `!as_is`, they are tidied. Note that if the table structure has changed 
-#' (i.e. has been changed by UK Biobank), then the function may fail partially 
-#' or fully. 
+#' @details The UK Biobank data schemas are fetched via the Internet unless a 
+#' different `url_prefix` is provided. If `!as_is`, they are tidied. Note that 
+#' if the table structure has changed (i.e. has been changed by UK Biobank), 
+#' then the function may fail partially or fully unless `as_is == TRUE`. 
 #' 
+#' @examples 
+#' \dontrun{
+#' sch <- ukbschemas()
+#' }
 #' @export
 
 ukbschemas <- function(
@@ -96,6 +65,9 @@ ukbschemas <- function(
     }
     
   }
+  
+  # Sort schemas
+  sch <- sch[sort(names(sch))]
   
   sch
   
