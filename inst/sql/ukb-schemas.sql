@@ -2,15 +2,15 @@ CREATE TABLE fields(
   "field_id" INTEGER PRIMARY KEY,
   "title" TEXT,
   "availability" INTEGER,
-  "stability" INTEGER,
+  "stability_id" INTEGER,
   "private" INTEGER,
   "value_type_id" INTEGER, /* In the original table this column is called "value_type" */
   "base_type" INTEGER,
-  "item_type" INTEGER,
-  "strata" INTEGER,
+  "item_type_id" INTEGER,
+  "strata_id" INTEGER,
   "instanced" INTEGER,
   "arrayed" INTEGER,
-  "sexed" INTEGER,
+  "sexed_id" INTEGER,
   "units" TEXT,
   "category_id" INTEGER,
   "encoding_id" INTEGER,
@@ -69,11 +69,6 @@ CREATE TABLE recommended(
   "category_id" INTEGER,
   "field_id" INTEGER
 );
-CREATE TABLE valuetypes(
-  "value_type_id" INTEGER PRIMARY KEY,
-  "title" TEXT,
-  "description" TEXT
-);
 CREATE TABLE encvalues(
   "encoding_id" INTEGER,
   "code_id" INTEGER,
@@ -90,4 +85,29 @@ CREATE TABLE schema(
   "name" TEXT,
   "descript" TEXT,
   "notes" TEXT
+);
+CREATE TABLE valuetypes(
+  "value_type_id" INTEGER PRIMARY KEY,
+  "title" TEXT,
+  "description" TEXT
+);
+CREATE TABLE stability(
+  "stability_id" INTEGER PRIMARY KEY,
+  "title" TEXT,
+  "description" TEXT
+);
+CREATE TABLE itemtypes(
+  "item_type_id" INTEGER PRIMARY KEY,
+  "title" TEXT,
+  "description" TEXT
+);
+CREATE TABLE strata(
+  "strata_id" INTEGER PRIMARY KEY,
+  "title" TEXT,
+  "description" TEXT
+);
+CREATE TABLE sexed(
+  "sexed_id" INTEGER PRIMARY KEY,
+  "title" TEXT,
+  "description" TEXT
 );
