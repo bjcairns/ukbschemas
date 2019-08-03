@@ -1,7 +1,7 @@
 Package: ukbschemas
 Type: Package
 Title: Download the UK Biobank data schemas to an SQLite database
-Version: 0.2.0
+Version: 0.2.1
 Author: Benjamin J. Cairns <ben.cairns@ndph.ox.ac.uk>
 Maintainer: Benjamin J. Cairns <ben.cairns@ndph.ox.ac.uk>
 Description: ukbschema downloads the UK Biobank data dictionaries (schemas) from the UK Biobank Data Showcase and stores them in an SQLite database. The database can be loaded back into R, or queried using sqlite3 or any of a wide range of computing packages.
