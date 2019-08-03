@@ -53,9 +53,9 @@ ITEM_TYPES <- tibble::tribble(
 STRATA <- tibble::tribble(
   ~strata_id, ~title, ~description,
   0L, "Primary", "the key clinically/scientifically relevant data-fields",
-  3L, "Derived", "data which has been constructed by combining/processing values from one or more other data-fields",
   1L, "Supporting", "data which is clinical/scientific in nature, but largely superceded by a Primary data-field",
-  2L, "Auxiliary", "data which describes the systems or processes used to acquire the data"
+  2L, "Auxiliary", "data which describes the systems or processes used to acquire the data",
+  3L, "Derived", "data which has been constructed by combining/processing values from one or more other data-fields"
 )
 
 # Sexed from
