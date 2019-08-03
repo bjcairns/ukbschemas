@@ -8,18 +8,31 @@
   
   # Add the missing valuetypes table
   sch <- 
-    sch %>% append(list(valuetypes=VALUE_TYPES))
-  if (!silent) cat("... Added table `valuetypes`\n")
+    sch %>% append(
+      list(
+        valuetypes = VALUE_TYPES,
+        stability = STABILITY,
+        itemtypes = ITEM_TYPES,
+        strata = STRATA,
+        sexed = SEXED
+      )
+    )
+  if (!silent) cat("... Added property type tables\n")
   
   # Rename columns as needed
   sch$fields <- sch$fields %>%
-    dplyr::rename(value_type_id = .data$value_type)
+    dplyr::rename(
+      value_type_id = .data$value_type,
+      stability_id = .data$stability,
+      item_type_id = .data$item_type,
+      strata_id = .data$strata,
+      sexed_id = .data$sexed,
+      category_id = .data$main_category
+    )
   sch$encodings <- sch$encodings %>%
     dplyr::rename(value_type_id = .data$coded_as)
-  sch$fields <- sch$fields %>%
-    dplyr::rename(category_id = .data$main_category)
   if (!silent) {
-    cat("... Rename to value_type_id in tables ")
+    cat("... Rename coded properties in tables ")
     cat("`fields` and `encodings` \n")
   }
   
