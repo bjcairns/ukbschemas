@@ -49,7 +49,7 @@ By default, the database is named `ukb-schemas-YYYY-MM-DD.sqlite` (where
 `YYYY-MM-DD` is the current date) and placed in the current working
 directory. (`path = tempdir()` in the above example puts it in the
 current temporary directory instead.) At the most recent compilation of
-the database (19 July 2019), the size of the .sqlite database file
+the database (03 August 2019), the size of the .sqlite database file
 produced by `ukbschemas_db()` was approximately 10.1MB.
 
 Note that without further arguments, `ukbschemas_db()` tidies up the
@@ -65,6 +65,11 @@ The `overwrite` option allows the database file to be overwritten (if
 `TRUE`), or prevents this (`FALSE`), or if not specified and the session
 is interactive (`interactive() == TRUE`) then the user is prompted to
 decide.
+
+**Note:** If you have created a schemas database with an earlier version
+of ukbschemas, it should be possible to load that database with the
+latest version of `load_db()`, which (currently) should load any SQLite
+database, regardless of contents.
 
 #### Load-Save workflow
 
@@ -104,11 +109,17 @@ software (not even SQLite).
   - Reference to the category to which a field belongs is in the
     `main_category` column in the `fields` schema, but has been renamed
     to `category_id` for consistency with the `categories` schema.
-  - The value types described [on the UKB
-    Showcase](http://biobank.ctsu.ox.ac.uk/crystal/help.cgi?cd=value_type)
-    have been added manually to a table `valuetypes` and appropriate ID
-    references have been renamed to `value_type_id` in tables `fields`
-    and `encodings`.
+  - Details of several of the field properties (`value_type`,
+    `stability`, `item_type`, `strata` and `sexed`) are available
+    elsewhere on the Data Showcase. These have been added manually to
+    tables `valuetypes`, `stability`, `itemtypes`, `strata` and `sexed`,
+    and appropriate ID references have been renamed with the `_id`
+    suffix in tables `fields` and `encodings`.
+  - There are several columns in the tables which are not
+    well-documented (e.g. `base_type` in fields, `availability` in
+    `encodings` and `categories`, and others). Additional tables
+    documenting these encoded values may be included in future versions
+    (and suggestions are welcome).
 
 #### Known code issues
 
@@ -116,4 +127,10 @@ software (not even SQLite).
     added to the system. ukbschemas does not currently include a
     facility for updating the database; it is necessary to create a new
     database.
+  - Because `readr::read_csv()` reads whole numbers as type `double`,
+    not `integer` (allowing 64-bit integers without loss of
+    information), column types in schemas loaded in R will differ
+    depending on whether the schemas are loaded directly to R or first
+    saved to a database. This should make little or no difference for
+    most applications.
   - Any [other issues](https://github.com/bjcairns/ukbschemas/issues).
