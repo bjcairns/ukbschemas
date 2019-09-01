@@ -22,8 +22,18 @@
     }
     if (!isTRUE(overwrite)) 
       stop(UKBSCHEMAS_ERRORS$OVERWRITE)
-    else tryCatch(
-      file.remove(full_path),
+    else tryCatch({
+      if (.Platform$OS.type == "unix"){
+          sys_command <- paste("lsof", full_path, "| wc -l")
+          processes_using_file <- as.numeric(system(sys_command, intern = TRUE,
+                                                    ignore.stdout = TRUE,
+                                                    ignore.stderr = TRUE))
+          if (processes_using_file>1) {
+            stop(UKBSCHEMAS_ERRORS$FAILED_OVERWRITE)
+          }
+        }
+        file.remove(full_path)
+      },
       error = function(err) {
         stop(UKBSCHEMAS_ERRORS$FAILED_OVERWRITE)
       },
