@@ -9,7 +9,7 @@
   
   # Parse file name and path
   if (file == "") file <- paste0("ukb-schemas-", date_str, ".sqlite")
-  full_path <- paste0(path.expand(path), "\\", file)
+  full_path <- paste0(path.expand(path), "/", file)
   
   # If `file`` exists, session is `interactive()` and `!overwrite`, then prompt 
   # to overwrite the file
