@@ -84,9 +84,6 @@ test_that("ukbschemas_db() fails on overwrite = FALSE, non-interactive", {
 
 test_that("ukbschemas_db() fails to overwrite when db is connected", {
   
-  # This only seems to work on Windows
-  skip_if_not(.Platform$OS.type == "windows", "Skipping test if not Windows")
-  
   db_file <- test_db_file()
   
   expect_error(
