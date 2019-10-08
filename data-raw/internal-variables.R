@@ -13,7 +13,7 @@ filenames <- c(
   "fields",
   "encodings",
   "categories",
-  "archives",
+  "returns",
   "esimpint",
   "esimpstring",
   "esimpreal",
@@ -24,9 +24,10 @@ filenames <- c(
   "ehierstring",
   "catbrowse",
   "recommended",
+  "snps",
   "schema"
 )
-ids <- as.integer(c(1:14, 999))
+ids <- as.integer(c(1:15, 999))
 SCHEMA_FILENAMES <- tibble::tibble(id = ids, filename = filenames)
 
 
