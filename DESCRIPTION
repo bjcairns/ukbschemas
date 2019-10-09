@@ -26,4 +26,5 @@ Imports:
 Suggests: 
     testthat,
     curl,
-    here
+    here,
+    rmarkdown
