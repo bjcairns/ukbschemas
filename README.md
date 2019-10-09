@@ -23,8 +23,10 @@ You can install the current version of ukbschemas from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("bjcairns/ukbschemas")
+# install.packages("remotes")
+remotes::install_github("bjcairns/ukbschemas")
+# or, for current development version:
+#   remotes::install_github("bjcairns/ukbschemas", ref = "dev")
 
 library(ukbschemas)
 ```
@@ -49,8 +51,10 @@ By default, the database is named `ukb-schemas-YYYY-MM-DD.sqlite` (where
 `YYYY-MM-DD` is the current date) and placed in the current working
 directory. (`path = tempdir()` in the above example puts it in the
 current temporary directory instead.) At the most recent compilation of
-the database (03 August 2019), the size of the .sqlite database file
-produced by `ukbschemas_db()` was approximately 10.1MB.
+the database (09 October 2019), the size of the .sqlite database file
+produced by `ukbschemas_db()` was approximately 63.5MB. (Note that
+\>50MB of the database size is due to the `snps` table of genotyped
+single nucleotide polymorphisms.)
 
 Note that without further arguments, `ukbschemas_db()` tidies up the
 database to give it a more consistent relational structure (the changes
