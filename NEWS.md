@@ -3,6 +3,7 @@
 * Updated to latest schema structure (add 'snps' table, and rename 'archives' to 'returns')
 * Updated `README.md` to reflect schema changes
 * Added rmarkdown to 'Suggests' in `DESCRIPTION` for `README.Rmd` rendering
+* Fixed progress bars appearing when `silent = TRUE`
 
 # [ukbschemas 0.2.1](https://github.com/bjcairns/ukbschemas/tree/v0.2.1|)
 
