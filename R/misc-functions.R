@@ -59,9 +59,19 @@
 ) {
   
   # Read each schema directly from the UK Biobank Data Showcase by ID
+  
+  # Hide column parsing report and progress bars if silent = TRUE
   if (silent) {
-    on.exit(options(readr.num_columns = getOption("readr.num_columns")))
-    options(readr.num_columns = 0)
+    on.exit(
+      options(
+        readr.num_columns = getOption("readr.num_columns"),
+        readr.show_progress = getOption("readr.show_progress")
+      )
+    )
+    options(
+      readr.num_columns = 0, 
+      readr.show_progress = FALSE
+    )
   }
   
   # Download the files
