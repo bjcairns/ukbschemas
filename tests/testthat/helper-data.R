@@ -30,12 +30,13 @@ new_prefix <- .test_data_path()
 if (!dir.exists(new_prefix)) dir.create(new_prefix)
 
 # Get the files
-SCHEMA_FILENAMES$id %>%
+seq(1, nrow(SCHEMA_FILENAMES)) %>%
   purrr::walk(
-    ~ if (!file.exists(paste0(new_prefix, .))) {
-      curl::curl_download(
-        url = paste0(UKB_URL_PREFIX, .),
-        destfile = paste0(new_prefix, .)
+    ~ if (!file.exists(paste0(new_prefix, SCHEMA_FILENAMES$id[.]))) {
+      readr::write_delim(
+        test_schemas[[SCHEMA_FILENAMES$filename[.]]], 
+        paste0(new_prefix, SCHEMA_FILENAMES$id[.]),
+        delim = "\t"
       )
     }
   )

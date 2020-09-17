@@ -4,8 +4,15 @@
 \alias{save_db}
 \title{Save a list of UK Biobank data schemas to an SQLite database}
 \usage{
-save_db(sch, file = "", path = ".", date_str = Sys.Date(),
-  silent = !interactive(), overwrite = FALSE, as_is = FALSE)
+save_db(
+  sch,
+  file = "",
+  path = ".",
+  date_str = Sys.Date(),
+  silent = !interactive(),
+  overwrite = FALSE,
+  as_is = FALSE
+)
 }
 \arguments{
 \item{sch}{List of tibbles, representing UK Biobank data schemas (unless

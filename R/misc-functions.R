@@ -79,7 +79,7 @@
     purrr::map(
       ~ {
         readr::read_delim(
-          paste0(url_prefix, .), 
+          paste0(url_prefix, "/", .), 
           delim = delim, 
           quote = quote,
           ...

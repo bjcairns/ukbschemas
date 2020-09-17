@@ -128,7 +128,7 @@ test_that("save_db() won't allow in-memory databases", {
 })
 
 
-test_that("save_db() runs without errors or warnings with genuine data", {
+test_that("save_db() runs without errors or warnings with synthetic data", {
   
   sch <- ukbschemas(url_prefix = use_prefix)
   

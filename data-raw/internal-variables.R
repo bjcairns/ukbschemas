@@ -44,12 +44,16 @@ UKBSCHEMAS_ERRORS <- list(
 )
 
 # Additional tables to add to the schemas
-source("data-raw/aux_tables.R")
+source("data-raw/aux-tables.R")
+
+# Generate test data
+source("data-raw/test-data.R")
 
 
 # Export to R/sysdata.rda
 usethis::use_data(
   VALUE_TYPES, STABILITY, ITEM_TYPES, STRATA, SEXED,
   UKB_SCHEMAS_URL, UKB_URL_PREFIX, SCHEMA_FILENAMES, UKBSCHEMAS_ERRORS,
+  test_schemas,
   internal = TRUE, overwrite = TRUE
 )

@@ -4,8 +4,7 @@
 \alias{ukbschemas}
 \title{Load the UK Biobank data schemas from the Internet or other repository}
 \usage{
-ukbschemas(silent = !interactive(), as_is = FALSE,
-  url_prefix = UKB_URL_PREFIX)
+ukbschemas(silent = !interactive(), as_is = FALSE, url_prefix = UKB_URL_PREFIX)
 }
 \arguments{
 \item{silent}{Do not report progress. Defaults to \code{FALSE}.}
@@ -15,7 +14,7 @@ to \code{FALSE}.}
 
 \item{url_prefix}{First part of the URL at which the schema files can be
 found. For local repositories, the directory with a trailing delimiter (i.e.
-\code{/} or \code{\\} or \code{\\\\} as appropriate to your operating system).}
+\code{/} or \verb{\\\\} or \verb{\\\\\\\\} as appropriate to your operating system).}
 }
 \value{
 A list of objects of class \code{tbl_df} (see \link[tibble:tibble]{tibble::tibble}).

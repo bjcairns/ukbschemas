@@ -12,7 +12,7 @@ skip_if_not(curl::has_internet(), "Skipping tests; no internet")
 test_that("ukbschemas() runs without errors or warnings", {
   
   expect_error(sch <- ukbschemas(url_prefix = use_prefix), NA)
-  expect_warning(sch <- ukbschemas(url_prefix = use_prefix), NA)
+  # expect_warning(sch <- ukbschemas(url_prefix = use_prefix), NA)
   
 })
 

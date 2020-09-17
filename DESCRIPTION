@@ -14,7 +14,7 @@ License: MIT + file LICENSE
 LazyData: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Depends:
     R (>= 2.10)
 Imports: 
