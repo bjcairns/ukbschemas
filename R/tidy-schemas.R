@@ -61,7 +61,7 @@
         dplyr::mutate(.x, parent_id = NA, selectable = NA) %>%
           dplyr::mutate(type = type, value = as.character(value)) %>%
           dplyr::group_by(encoding_id) %>%
-          dplyr::mutate(code_id = row_number()) %>%
+          dplyr::mutate(code_id = dplyr::row_number()) %>%
           dplyr::ungroup()
       }
     )

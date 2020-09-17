@@ -4,9 +4,15 @@
 \alias{ukbschemas_db}
 \title{Create UK Biobank data schema database}
 \usage{
-ukbschemas_db(file = "", path = ".", date_str = Sys.Date(),
-  overwrite = FALSE, silent = !interactive(), as_is = FALSE,
-  url_prefix = UKB_URL_PREFIX)
+ukbschemas_db(
+  file = "",
+  path = ".",
+  date_str = Sys.Date(),
+  overwrite = FALSE,
+  silent = !interactive(),
+  as_is = FALSE,
+  url_prefix = UKB_URL_PREFIX
+)
 }
 \arguments{
 \item{file}{The filename for the schema database. Defaults to \code{""}, which is
@@ -31,7 +37,7 @@ to \code{FALSE}.}
 
 \item{url_prefix}{First part of the URL at which the schema files can be
 found. For local repositories, the directory with a trailing delimiter (i.e.
-\code{/} or \code{\\} or \code{\\\\} as appropriate to your operating system).}
+\code{/} or \verb{\\\\} or \verb{\\\\\\\\} as appropriate to your operating system).}
 }
 \value{
 A database connection object of class
