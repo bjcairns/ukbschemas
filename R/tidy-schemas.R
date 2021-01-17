@@ -1,107 +1,115 @@
-#' @importFrom magrittr "%>%"
-#' @importFrom rlang .data
+#' @importFrom stats ave
 
 # Help to tidy up the schemas
+### .tidy_schemas() ###
 .tidy_schemas <- function(sch, silent = FALSE) {
   
-  if (!silent) cat("Tidying:\n")
+  if (!silent) message("Tidying:")
   
   # Add the missing valuetypes table
-  sch <- 
-    sch %>% append(
-      list(
-        valuetypes = VALUE_TYPES,
-        stability = STABILITY,
-        itemtypes = ITEM_TYPES,
-        strata = STRATA,
-        sexed = SEXED
-      )
+  sch <- append(
+    sch,
+    list(
+      valuetypes = VALUE_TYPES,
+      stability = STABILITY,
+      itemtypes = ITEM_TYPES,
+      strata = STRATA,
+      sexed = SEXED
     )
-  if (!silent) cat("... Added property type tables\n")
+  )
+  if (!silent) message("... Added property type tables")
   
   # Rename columns as needed
-  sch$fields <- sch$fields %>%
-    dplyr::rename(
-      value_type_id = .data$value_type,
-      stability_id = .data$stability,
-      item_type_id = .data$item_type,
-      strata_id = .data$strata,
-      sexed_id = .data$sexed,
-      category_id = .data$main_category
-    )
-  sch$encodings <- sch$encodings %>%
-    dplyr::rename(value_type_id = .data$coded_as)
+  vars <- c("value_type", "stability", "item_type", "strata", "sexed")
+  names(sch[["fields"]])[match(vars, names(sch[["fields"]]))] <- paste(vars, "id", sep = "_")
+  names(sch[["fields"]])[names(sch[["fields"]]) == "main_category"] <- "category_id"
+  
+  names(sch[["encodings"]])[names(sch[["encodings"]]) == "coded_as"] <- "value_type_id"
   if (!silent) {
-    cat("... Rename coded properties in tables ")
-    cat("`fields` and `encodings` \n")
+    message("... Rename coded properties in tables: `fields` and `encodings`")
   }
   
   # Add parent_id column to categories
-  sch[["categories"]] <- 
-    dplyr::left_join(sch[["categories"]], sch[["catbrowse"]], 
-                     by = c("category_id" = "child_id"))
+  sch[["categories"]] <- merge(
+    x = sch[["categories"]],
+    y = sch[["catbrowse"]],
+    by.x = "category_id",
+    by.y = "child_id",
+    all.x = TRUE
+  )
+  rownames(sch[["categories"]]) <- seq.int(nrow(sch[["categories"]]))
   sch["catbrowse"] <- NULL
   if (!silent) {
-    cat("... Add parent_id from `catbrowse` to `categories` (delete former)\n")
+    message("... Add parent_id from `catbrowse` to `categories` (delete former)")
   }
   
   # Identify esimp* and ehier* tables
-  is_esimp_table <- stringr::str_detect(names(sch), "esimp")
-  is_ehier_table <- stringr::str_detect(names(sch), "ehier")
+  is_esimp_table <- grepl("^esimp", names(sch))
+  is_ehier_table <- grepl("^ehier", names(sch))
   
   # Add columns to esimp* tables
   # value is converted to character after recording the (R) class as type
   # code_id is generated as the position within encoding_id for harmonisation
-  sch[is_esimp_table] <- sch[is_esimp_table] %>%
-    purrr::map(
-      ~ {
-        type <- as.character(
-          dplyr::select(.x, value) %>% dplyr::summarise_all(class)
-        )
-        dplyr::mutate(.x, parent_id = NA, selectable = NA) %>%
-          dplyr::mutate(type = type, value = as.character(value)) %>%
-          dplyr::group_by(encoding_id) %>%
-          dplyr::mutate(code_id = dplyr::row_number()) %>%
-          dplyr::ungroup()
-      }
-    )
+  sch[is_esimp_table] <- lapply(
+    X = sch[is_esimp_table],
+    FUN = .format_esimp
+  )
   
   # Add columns to ehier* tables
   # As with the esimp* tables, type records the (R) class of value
-  sch[is_ehier_table] <- sch[is_ehier_table] %>%
-    purrr::map(
-      ~ {
-        type <- as.character(
-          dplyr::select(.x, value) %>% dplyr::summarise_all(class)
-        )
-        dplyr::mutate(
-          .x,
-          type = type, 
-          value = as.character(value)
-        )
-      }
-    )
+  sch[is_ehier_table] <- lapply(
+    X = sch[is_ehier_table],
+    FUN = .format_eheir
+  )
   
   if (!silent) {
-    cat("... Harmonise `esimp*` and `ehier*` tables to add to `encvalues`\n")
+    message("... Harmonise `esimp*` and `ehier*` tables to add to `encvalues`")
   }
   
   # bind all the encoding values tables together and delete
-  encvalues <- dplyr::bind_rows(sch[is_esimp_table | is_ehier_table])
+  encvalues <- do.call(rbind, sch[is_esimp_table | is_ehier_table])
   sch[is_esimp_table | is_ehier_table] <- NULL
-  sch$encvalues <- encvalues
+  sch[["encvalues"]] <- encvalues
+  rownames(sch[["encvalues"]]) <- seq.int(nrow(sch[["encvalues"]]))
   
   if (!silent) {
-    cat("... Bind `esimp*` and `ehier*` tables into `encvalues`\n")
-  }
-  
-  if (!silent) cat("\n")
-  
-  if (!silent) {
-    cat("Tables after tidying:\n")
-    cat(paste(names(sch), collapse = ", "))
+    message("... Bind `esimp*` and `ehier*` tables into `encvalues`")
     cat("\n\n")
+    message("Tables after tidying:")
+    message(paste(names(sch), collapse = ", "), "\n")
   }
   
-  invisible(sch)
+  ## Sort schemas ##
+  sch <- sch[sort(names(sch))]
+  
+  ## Output ##
+  return(sch)
+}
+
+
+### .format_esimp() ###
+.format_esimp <- function(dat){
+  
+  ## Data Management ##
+  dat[c("parent_id", "selectable")] <- NA_integer_
+  dat[["type"]] <- class(dat[["value"]])[1]
+  dat[["value"]] <- as.character(dat[["value"]])
+  dat[["code_id"]] <- ave(x = seq.int(nrow(dat)), dat[["encoding_id"]], FUN = seq_along)
+  
+  ## Output ##
+  return(dat)
+  
+}
+
+
+### .format_eheir() ###
+.format_eheir <- function(dat){
+  
+  ## Data Management ##
+  dat[["type"]] <- class(dat[["value"]])[1]
+  dat[["value"]] <- as.character(dat[["value"]])
+  
+  ## Output ##
+  return(dat)
+  
 }

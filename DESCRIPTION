@@ -1,35 +1,27 @@
 Package: ukbschemas
-Type: Package
+Version: 0.3.0
+Date: 2021-01-17
 Title: Download the UK Biobank data schemas to an SQLite database
-Version: 0.2.1
-Authors@R: c(
-      person(c("Benjamin", "J."), "Cairns", role = c("aut", "cre"), 
-        email = "ben.cairns@ndph.ox.ac.uk", 
-        comment = c(ORCID = "0000-0001-7994-8213")),
-      person("University of Oxford", role = "cph")
-    )
+Authors@R: c(person(c("Benjamin", "J."), "Cairns", role = c("aut", "cre"), email = "ben.cairns@ndph.ox.ac.uk", comment = c(ORCID = "0000-0001-7994-8213")),
+             person(c("Benjamin", "G."), "Feakins", role = "ctb", email = "benjamin.feakins@ndph.ox.ac.uk", comment = c(ORCID = "0000-0002-3928-6750")),
+             person("University of Oxford", role = c("cph", "sht")))
 Maintainer: Benjamin J. Cairns <ben.cairns@ndph.ox.ac.uk>
-Description: ukbschema downloads the UK Biobank data dictionaries (schemas) from the UK Biobank Data Showcase and stores them in an SQLite database. The database can be loaded back into R, or queried using sqlite3 or any of a wide range of computing packages.
+Description: ukbschemas downloads the UK Biobank data dictionaries (schemas) from the UK Biobank Data Showcase and stores them in an SQLite database. The database can be loaded back into R, or queried using sqlite3 or any of a wide range of computing packages.
 License: MIT + file LICENSE
-LazyData: true
+LazyData: false
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 Depends:
     R (>= 2.10)
-Imports: 
+Imports:
     DBI,
+    data.table,
+    parallel,
     RSQLite,
-    tibble,
-    purrr,
-    magrittr,
-    readr,
-    dplyr,
-    stringr,
-    utils,
-    rlang
-Suggests: 
-    testthat,
+    stats,
+    utils
+Suggests:
     curl,
-    here,
-    rmarkdown
+    rmarkdown,
+    testthat

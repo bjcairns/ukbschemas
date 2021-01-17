@@ -15,3 +15,8 @@
 
 * First public release
 * Create a database containing a curated set of tables storing the UK Biobank data schemas
+
+# [ukbschemas 0.3.0](https://github.com/bjcairns/ukbschemas/tree/v0.3.0)
+
+* Bug fixes
+* Trimmed package dependencies

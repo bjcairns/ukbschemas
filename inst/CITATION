@@ -1,0 +1,19 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+url <- meta$URL
+
+bibentry(bibtype = "Manual",
+         title = "{ukbschemas}: Download the UK Biobank data schemas to an SQLite database",
+         author = person(c("Benjamin", "J."), "Cairns", role = c("aut", "cre"), email = "ben.cairns@ndph.ox.ac.uk", comment = c(ORCID = "0000-0001-7994-8213")),
+         year = year,
+         note = note,
+         url = url,
+         header = "To cite ukbschemas in publications use:",
+         key = "ukbschemas-package",
+
+         textVersion = paste("Benjamin J. Cairns",
+                             paste0("(", year, ")."),
+                             "ukbschemas: Download the UK Biobank data schemas to an SQLite database.",
+                             paste0(note, ", "),
+                             url)
+)

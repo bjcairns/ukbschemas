@@ -4,49 +4,63 @@
 \alias{ukbschemas_db}
 \title{Create UK Biobank data schema database}
 \usage{
-ukbschemas_db(file = "", path = ".", date_str = Sys.Date(),
-  overwrite = FALSE, silent = !interactive(), as_is = FALSE,
-  url_prefix = UKB_URL_PREFIX)
+ukbschemas_db(
+  db_file = "",
+  db_path = ".",
+  sch_id = SCHEMA_FILENAMES[["id"]],
+  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  date_str = Sys.Date(),
+  overwrite = FALSE,
+  as_is = FALSE,
+  nThread = detectCores(),
+  silent = !interactive()
+)
 }
 \arguments{
-\item{file}{The filename for the schema database. Defaults to \code{""}, which is
+\item{db_file}{The filename for the schema database. Defaults to \code{""}, which is
 interpreted as \code{paste0("ukb-schemas-", date, ".sqlite")}. If this file
 already exists in directory \code{path}, the session is interactive, and
 \code{overwrite} is not \code{FALSE}, then the user will be prompted to decide whether
 the file should be overwritten.}
 
-\item{path}{The path to the directory where the file will be saved. Defaults
+\item{db_path}{The path to the directory where the file will be saved. Defaults
 to \code{.} (the current directory).}
 
-\item{date_str}{The date-stamp for the default filename. Defaults to the current
-date in \code{YYYY-MM-DD} format.}
+\item{sch_id}{The id numbers of the schemas to download. Type
+\code{SCHEMA_FILENAMES} for reference. Defaults to all.}
+
+\item{sch_path}{The directory path of the schema download cache. Defaults to
+/tmp/RtmpKCAHiF/ukbschemas/schemas.}
+
+\item{date_str}{The date-stamp for the default filename. Defaults to the
+current date in \code{YYYY-MM-DD} format.}
 
 \item{overwrite}{Always overwrite existing files? Helpful for non-interactive
 use. Defaults to \code{FALSE}.}
 
-\item{silent}{Do not report progress. Defaults to \code{FALSE}.}
-
 \item{as_is}{Import the schemas into the database without tidying? Defaults
 to \code{FALSE}.}
 
-\item{url_prefix}{First part of the URL at which the schema files can be
-found. For local repositories, the directory with a trailing delimiter (i.e.
-\code{/} or \code{\\} or \code{\\\\} as appropriate to your operating system).}
+\item{nThread}{Number of threads to spawn for parallelisable tasks, such as
+the downloading and importing of the schemas. Defaults to the number of
+logical cores present on the system.}
+
+\item{silent}{Do not report progress. Defaults to \code{FALSE}.}
 }
 \value{
-A database connection object of class
-\link[RSQLite:SQLiteConnection-class]{RSQLite::SQLiteConnection}.
+A database connection object of class \link[RSQLite:SQLiteConnection-class]{RSQLite::SQLiteConnection}.
 }
 \description{
 \code{ukbschemas_db()} generates an SQLite database containing the UK Biobank
-data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi
+data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi.
 }
 \details{
-\code{ukbschemas_db()} uses \link{ukbschemas} to load the schemas and
-\link{save_db} to save the result.
+\code{ukbschemas_db()} uses \link{ukbschemas} to load the schemas and \link{save_db} to save
+the result.
 }
 \examples{
 \dontrun{
 db <- ukbschemas_db(path = tempdir())
 }
+
 }

@@ -1,112 +1,160 @@
-## DB CONNECTION HELPERS
+#' @importFrom DBI dbConnect dbClearResult dbDisconnect dbIsValid dbListTables dbReadTable dbSendStatement dbWriteTable
+#' @importFrom RSQLite SQLite
+
+
+#############################
+### DB CONNECTION HELPERS ###
+#############################
+
 
 # Function to quietly attempt to close a database connection
 .quiet_dbDisconnect <- function(db) {
   
-  tryCatch(
-    DBI::dbDisconnect(db),
+  rc <- tryCatch(
+    expr = dbDisconnect(db),
     error = function(err) NULL,
     warning = function(warn) NULL
   )
   
-  invisible(TRUE)
+  ## Output ##
+  return(invisible(rc))
+  
 }
+
 
 # Connect to db with error handling
 .graceful_dbConnect_db <- function(db) {
   
-  if (!DBI::dbIsValid(db)) {
-    tryCatch(
-      db <- DBI::dbConnect(db),
+  if (!dbIsValid(db)) {
+    
+    rc <- tryCatch(
+      expr = dbConnect(db),
       error = function(err) {
-        stop(UKBSCHEMAS_ERRORS$DB_NO_CONNECT)
+        stop(UKBSCHEMAS_ERRORS[["DB_NO_CONNECT"]])
       }
     )
-  } else warning(UKBSCHEMAS_ERRORS$WARN_DB_CONNECTED)
+    
+  } else {
+    
+    warning(UKBSCHEMAS_ERRORS[["WARN_DB_CONNECTED"]])
+    
+  }
   
-  invisible(db)
+  ## Output ##
+  return(invisible(rc))
+  
 }
+
 
 # Connect to db at file
 .graceful_dbConnect_file <- function(file) {
   
   if (!is.character(file) | length(file) != 1 | !file.exists(file)) 
-    stop(UKBSCHEMAS_ERRORS$FILE_NOT_EXISTS)
+    stop(UKBSCHEMAS_ERRORS[["FILE_NOT_EXISTS"]])
   
-  tryCatch(
-    db <- DBI::dbConnect(RSQLite::SQLite(), file),
+  rc <- tryCatch(
+    expr = dbConnect(SQLite(), file),
     error = function(err) {
-      stop(paste0(UKBSCHEMAS_ERRORS$DB_NO_CONNECT, " (", file, ")"))
+      stop(paste0(UKBSCHEMAS_ERRORS[["DB_NO_CONNECT"]], " (", file, ")"))
     }
   )
   
-  invisible(db)
+  ## Output ##
+  return(invisible(rc))
+  
 }
 
 
-## SQL HELPERS
+###################
+### SQL HELPERS ###
+###################
+
 
 # Helper to send statement(s) from an installed SQL file
 .send_statements <- function(db, sql_file) {
   
-  sql <- readr::read_file(sql_file)
+  sql <- readLines(sql_file)
   
-  sql <- unlist(strsplit(sql, ";", fixed = TRUE)) %>% 
-    purrr::map_chr(~ gsub("[\r\n]", "", .x))
+  sql <- paste(sql, collapse = "")
+  sql <- strsplit(sql, ";", fixed = TRUE)[[1]]
   
-  sql[sql != ""] %>%
-    purrr::walk(
-      ~ DBI::dbClearResult(
-        DBI::dbSendStatement(db, .x)
+  rc <- lapply(
+    X = sql,
+    FUN = function(x, db){
+      dbClearResult(
+        dbSendStatement(db, x)
       )
-    )
+    },
+    db = db
+  )
   
-  invisible(TRUE)
+  ## Output ##
+  return(invisible(rc))
   
 }
 
 
-## TABLE I/O HELPERS
+#########################
+### TABLE I/O HELPERS ###
+#########################
+
 
 # Helper to clear the database of tables
 .drop_tables <- function(db) {
   
-  DBI::dbListTables(db) %>% 
-    purrr::map(~ {
-      DBI::dbClearResult(
-        DBI::dbSendStatement(db, paste0("DROP TABLE ", .x))
+  rc <- lapply(
+    X = dbListTables(db),
+    FUN = function(x, db){
+      dbClearResult(
+        dbSendStatement(db, paste0("DROP TABLE ", x))
       )
-    })
+    },
+    db = db
+  )
   
-  invisible(DBI::dbListTables(db) == character())
+  ## Output ##
+  return(invisible(dbListTables(db) == character()))
+  
 }
+
 
 # Write tables from a list of data-frame like objects to a database
 .write_tables <- function(tbls, db) {
- 
-  purrr::walk2(
-    tbls,
-    names(tbls),
-    ~ RSQLite::dbWriteTable(conn = db, name = .y, value = .x,
-                            row.names = FALSE, append = TRUE)
+  
+  rc <- mapply(
+    FUN = dbWriteTable,
+    name = names(tbls),
+    value = tbls,
+    MoreArgs = list(
+      conn = db,
+      row.names = FALSE,
+      append = TRUE
+    )
   )
   
-  invisible(TRUE)
+  ## Output ##
+  return(invisible(rc))
   
 }
+
 
 # Load tables from a database into a list. This should work with any 
 # DBI-compatible connection
 .read_tables <- function(db) {
   
-  tbl_names <- DBI::dbListTables(db)
+  tbl_names <- dbListTables(db)
   
-  tbls <- tbl_names %>%
-    purrr::map(
-      ~ tibble::as_tibble(DBI::dbReadTable(db, .x))
-    )
+  ## Import Tables ##
+  tbls <- lapply(
+    X = tbl_names,
+    FUN = dbReadTable,
+    conn = db
+  )
   
+  ## Name Output ##
   names(tbls) <- tbl_names
   
-  invisible(tbls)
+  ## Output ##
+  return(invisible(tbls))
+  
 }

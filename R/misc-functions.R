@@ -1,115 +1,336 @@
-# Confirm that the file and path are OK
-.check_file_path <- function(file, path, date_str, overwrite) {
+#' @importFrom data.table fread
+#' @importFrom parallel detectCores mcmapply
+#' @importFrom utils askYesNo download.file
+
+### Notes ###
+# - Alternatives to `lsof`: https://unix.stackexchange.com/questions/18614/alternatives-for-lsof-command
+
+
+### .autoISOdate() ###
+.autoISOdate <- function(data){
   
-  # Catch user attempts to force db creation in memory
-  if (file == ":memory:" | file == "file::memory:") {
-    file <- NULL
-    stop(UKBSCHEMAS_ERRORS$NO_IN_MEMORY)
-  }
+  ## Variables ##
+  vars <- names(data)
   
-  # Parse file name and path
-  if (file == "") file <- paste0("ukb-schemas-", date_str, ".sqlite")
-  full_path <- paste0(path.expand(path), "/", file)
+  ## Character Variables ##
+  vars_char <- vapply(
+    X = data,
+    FUN = is.character,
+    FUN.VALUE = logical(1L)
+  )
+  vars_char <- vars[vars_char]
   
-  # If `file`` exists, session is `interactive()` and `!overwrite`, then prompt 
-  # to overwrite the file
-  if (file.exists(full_path)) {
-    if (interactive() & !isTRUE(overwrite)) {
-      overwrite <- utils::askYesNo(
-        "Database file already exists. Overwrite?", 
-        default = FALSE
-      )
-    }
-    if (!isTRUE(overwrite)) 
-      stop(UKBSCHEMAS_ERRORS$OVERWRITE)
-    else tryCatch({
-      if (.Platform$OS.type == "unix"){
-          sys_command <- paste("lsof", full_path, "| wc -l")
-          processes_using_file <- as.numeric(system(sys_command, intern = TRUE,
-                                                    ignore.stdout = TRUE,
-                                                    ignore.stderr = TRUE))
-          if (processes_using_file>1) {
-            stop(UKBSCHEMAS_ERRORS$FAILED_OVERWRITE)
-          }
-        }
-        file.remove(full_path)
-      },
-      error = function(err) {
-        stop(UKBSCHEMAS_ERRORS$FAILED_OVERWRITE)
-      },
-      warning = function(warn) {
-        stop(UKBSCHEMAS_ERRORS$FAILED_OVERWRITE)
-      }
-    )
-  }
+  ## ISO Date Variables ##
+  vars_date <- vapply(
+    X = data[vars_char],
+    FUN = .isISOdate,
+    FUN.VALUE = logical(1L)
+  )
+  vars_date <- vars_char[vars_date]
   
-  full_path
+  ## Coerce to Date ##
+  data[, vars_date] <- lapply(
+    X = data[vars_date],
+    FUN = as.Date,
+    format = "%Y-%m-%d"
+  )
+  
+  ## Output ##
+  return(data)
   
 }
 
 
-# Get the schemas from the UK Biobank web server
-.get_schemas <- function(
-  url_prefix = UKB_URL_PREFIX, 
-  files = SCHEMA_FILENAMES,
-  delim = "\t",
-  quote = "\"",
-  silent = TRUE,
-  ...
-) {
+# Confirm that the file and path are OK
+### .check_file_path() ###
+.check_file_path <- function(file, path, date_str, overwrite) {
   
-  # Read each schema directly from the UK Biobank Data Showcase by ID
-  
-  # Hide column parsing report and progress bars if silent = TRUE
-  if (silent) {
-    on.exit(
-      options(
-        readr.num_columns = getOption("readr.num_columns"),
-        readr.show_progress = getOption("readr.show_progress")
-      )
-    )
-    options(
-      readr.num_columns = 0, 
-      readr.show_progress = FALSE
-    )
+  ## Catch User Attempts to Force db Creation in Memory ##
+  if (file == ":memory:" | file == "file::memory:") {
+    
+    file <- NULL
+    stop(UKBSCHEMAS_ERRORS[["NO_IN_MEMORY"]])
+    
   }
   
-  # Download the files
-  sch <- files$id %>% 
-    purrr::map(
-      ~ {
-        readr::read_delim(
-          paste0(url_prefix, .), 
-          delim = delim, 
-          quote = quote,
-          ...
-        )
-      }
-    )
+  # Parse file name and path
+  if (file == "") file <- paste0("ukbschemas-", date_str, ".sqlite")
   
-  names(sch) <- files$filename
+  ## Expand Path ##
+  full_path <- file.path(path.expand(path), file)
   
-  invisible(sch)
+  # If `file` exists, session is `interactive()` and `!overwrite`, then prompt 
+  # to overwrite the file
+  if (file.exists(full_path)) {
+    
+    if (interactive() & !isTRUE(overwrite)) {
+      
+      overwrite <- askYesNo(
+        msg = "Database file already exists. Overwrite?", 
+        default = FALSE
+      )
+    }
+    
+    if (!isTRUE(overwrite)) {
+      
+      stop(UKBSCHEMAS_ERRORS[["OVERWRITE"]])
+      
+    } else {
+      
+      # Stop Active Databases & Remove #
+      tryCatch(
+        expr = {
+          if (.Platform[["OS.type"]] == "unix") {
+            
+            if (!.inPATH("lsof"))
+              stop("'lsof' must be installed on Unix-like systems to check db connections.")
+            
+            sys_command <- paste("lsof", full_path, "| wc -l")
+            processes_using_file <- system(
+              command = sys_command,
+              intern = TRUE,
+              ignore.stdout = FALSE,
+              ignore.stderr = TRUE
+            )
+            processes_using_file <- as.integer(processes_using_file) - 1L
+            processes_using_file <- max(processes_using_file, 0L)
+            
+            if (processes_using_file > 1) {
+              
+              stop(UKBSCHEMAS_ERRORS[["FAILED_OVERWRITE"]])
+              
+            }
+            
+          }
+          
+          # Remove SQL Database #
+          file.remove(full_path)
+        },
+        error = function(err) {
+          stop(UKBSCHEMAS_ERRORS[["FAILED_OVERWRITE"]])
+        },
+        warning = function(warn) {
+          stop(UKBSCHEMAS_ERRORS[["FAILED_OVERWRITE"]])
+        }
+      )
+      
+    }
+  }
+  
+  ## Output ##
+  return(full_path)
   
 }
 
 
 # Create and populate the tables in the database
+### .create_tables() ###
 .create_tables <- function(db, as_is = FALSE) {
   
-  # Start with a blank slate
+  ## Start with a Blank Slate ##
   .drop_tables(db)
   
   if (!as_is) {
     
-    # CREATE TABLE(s)
+    ## Create Tables ##
     .send_statements(
       db, 
-      system.file("sql", "ukb-schemas.sql", package = "ukbschemas")
+      system.file(
+        "sql", "ukb-schemas.sql",
+        package = "ukbschemas",
+        mustWork = TRUE
+      )
     )
     
   }
   
-  invisible(TRUE)
+  ## Output ##
+  return(invisible(TRUE))
+  
+}
+
+
+# Get the schemas from the UK Biobank web server
+### .get_schemas() ###
+.get_schemas <- function(
+  sch_id = SCHEMA_FILENAMES[["id"]],
+  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  nThread = nThread,
+  silent = FALSE
+) {
+  
+  ## Checks ##
+  if (any(!{sch_id %in% c(1:18, 999L)}))
+    stop("One or more schema IDs does not exist")
+  
+  ## Create TempDir ##
+  dir.create(sch_path, showWarnings = FALSE, recursive = TRUE, mode = "0755")
+  
+  ## Subset Schema Table ##
+  schemas <- SCHEMA_FILENAMES[SCHEMA_FILENAMES[["id"]] %in% sch_id, ]
+  
+  ## Schemas to Download ##
+  schema_destfile <- file.path(sch_path, paste(schemas[["filename"]], "tsv", sep = "."))
+  schema_url <- paste0(UKB_URL_PREFIX, schemas[["id"]])
+  ind <- which(!file.exists(file.path(schema_destfile)))
+  schema_destfile <- schema_destfile[ind]
+  schema_url <- schema_url[ind]
+  
+  ## Download Schemas ##
+  rc <- if (.Platform[["OS.type"]] == "unix") {
+    
+    mcmapply(
+      FUN = download.file,
+      url = schema_url,
+      destfile = schema_destfile,
+      MoreArgs = list(
+        method = if (capabilities("libcurl")) "libcurl" else "auto",
+        quiet = silent,
+        mode = "w",
+        cacheOK = FALSE
+      ),
+      SIMPLIFY = FALSE,
+      mc.cores = nThread
+    )
+    
+  } else {
+    
+    mapply(
+      FUN = download.file,
+      url = schema_url,
+      destfile = schema_destfile,
+      MoreArgs = list(
+        method = if (capabilities("libcurl")) "libcurl" else "auto",
+        quiet = silent,
+        mode = "w",
+        cacheOK = FALSE
+      ),
+      SIMPLIFY = FALSE,
+    )
+    
+  }
+  
+  ## Check Download Success Return Codes ##
+  rc <- as.integer(unlist(rc))
+  if (length(rc) != 0L)
+    if (!all(rc == 0L))
+      warning(UKBSCHEMAS_ERRORS[["WARN_SCH_DOWNLOAD"]])
+  
+  ## Verbosity ##
+  if (!silent) {
+    
+    if (length(schemas[["filename"]][rc == 0L]) != 0L){
+      
+      message("Downloaded tables:")
+      message(paste(schemas[["filename"]][rc == 0L], collapse = ", "), "\n")
+      
+    }
+    
+  }
+  
+  ## Output ##
+  return(invisible(rc))
+  
+}
+
+
+### .import_schemas() ###
+.import_schemas <- function(
+  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  nThread = detectCores(),
+  silent = TRUE,
+  ...
+){
+  
+  ## Schema Filenames ##
+  schemas <- SCHEMA_FILENAMES[["filename"]]
+  schemas <- paste(schemas, collapse = "|")
+  schemas <- paste0("^(", schemas, ").tsv$")
+  schemas <- list.files(pattern = schemas, path = sch_path, full.names = TRUE)
+  
+  ## Checks ##
+  if (length(schemas) == 0L)
+    stop("Schemas not located on system")
+  
+  ## Parallelisation ##
+  nThread <- min(nThread, length(schemas))
+  
+  ## Import Schemas ##
+  sch <- lapply(
+    X = schemas,
+    FUN = fread,
+    sep = "\t",
+    quote = "",
+    header = TRUE,
+    na.strings = c("", "NA"),
+    verbose = FALSE,
+    blank.lines.skip = TRUE,
+    showProgress = !silent,
+    data.table = FALSE,
+    nThread = nThread,
+    logical01 = FALSE,
+    keepLeadingZeros = TRUE,
+    ...
+  )
+  
+  ## Coerce Dates ##
+  sch <- lapply(
+    X = sch,
+    FUN = .autoISOdate
+  )
+  
+  ## Name Schemas ##
+  names(sch) <- sub("\\.tsv$", "", basename(schemas))
+  
+  ## Sort schemas ##
+  sch <- sch[sort(names(sch))]
+  
+  ## Verbosity ##
+  if (!silent) {
+    
+    message("Imported tables:")
+    message(paste(names(sch), collapse = ", "), "\n")
+    
+  }
+  
+  ## Output ##
+  return(sch)
+  
+}
+
+
+### .inPATH() ###
+.inPATH <- function(prog){
+  
+  ## Look For Command in PATH ##
+  command <- suppressWarnings(
+    system(
+      command = paste("command -v", prog),
+      ignore.stdout = TRUE,
+      ignore.stderr = TRUE,
+      intern = TRUE
+    )
+  )
+  
+  ## Check Presence of Return Code ##
+  rc <- attributes(command)[["status"]]
+  inPATH <- if (is.null(rc)) TRUE else FALSE
+  
+  ## Output ##
+  return(inPATH)
+  
+}
+
+
+### .isISOdate() ###
+.isISOdate <- function(x){
+  
+  ## Pattern Match ##
+  isDate <- all(
+    grepl("^\\d{4}-\\d{2}-\\d{2}$", x, perl = TRUE)
+  )
+  
+  ## Output ##
+  return(isDate)
   
 }
