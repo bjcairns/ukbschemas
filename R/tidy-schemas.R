@@ -2,9 +2,11 @@
 ### .tidy_schemas() ###
 .tidy_schemas <- function(sch, silent = FALSE) {
   
+  ## Verbosity ##
   if (!silent) message("Tidying:")
   
-  # Add the missing valuetypes table
+  ## Add the Missing Tables ##
+  if (!silent) message("... Add property type tables")
   sch <- append(
     sch,
     list(
@@ -15,19 +17,21 @@
       sexed = SEXED
     )
   )
-  if (!silent) message("... Added property type tables")
   
-  # Rename columns as needed
+  ## Rename Columns - as Needed ##
+  if (!silent) {
+    message("... Rename coded properties in tables: `fields` and `encodings`")
+  }
   vars <- c("value_type", "stability", "item_type", "strata", "sexed")
   names(sch[["fields"]])[match(vars, names(sch[["fields"]]))] <- paste(vars, "id", sep = "_")
   names(sch[["fields"]])[names(sch[["fields"]]) == "main_category"] <- "category_id"
   
   names(sch[["encodings"]])[names(sch[["encodings"]]) == "coded_as"] <- "value_type_id"
-  if (!silent) {
-    message("... Rename coded properties in tables: `fields` and `encodings`")
-  }
   
   # Add parent_id column to categories
+  if (!silent) {
+    message("... Add parent_id from `catbrowse` to `categories` (delete former)")
+  }
   sch[["categories"]] <- merge(
     x = sch[["categories"]],
     y = sch[["catbrowse"]],
@@ -37,8 +41,10 @@
   )
   rownames(sch[["categories"]]) <- seq.int(nrow(sch[["categories"]]))
   sch["catbrowse"] <- NULL
+  
+  ## Harmonize esimp & ehier Tables ##
   if (!silent) {
-    message("... Add parent_id from `catbrowse` to `categories` (delete former)")
+    message("... Harmonise `esimp*` and `ehier*` tables to add to `encvalues`")
   }
   
   # Identify esimp* and ehier* tables
@@ -60,24 +66,23 @@
     FUN = .format_eheir
   )
   
-  if (!silent) {
-    message("... Harmonise `esimp*` and `ehier*` tables to add to `encvalues`")
-  }
-  
   # bind all the encoding values tables together and delete
+  if (!silent) {
+    message("... Bind `esimp*` and `ehier*` tables into `encvalues`")
+  }
   encvalues <- do.call(rbind, sch[is_esimp_table | is_ehier_table])
   sch[is_esimp_table | is_ehier_table] <- NULL
   sch[["encvalues"]] <- encvalues
   rownames(sch[["encvalues"]]) <- seq.int(nrow(sch[["encvalues"]]))
   
+  ## Table Summary ##
   if (!silent) {
-    message("... Bind `esimp*` and `ehier*` tables into `encvalues`")
     cat("\n\n")
     message("Tables after tidying:")
     message(paste(names(sch), collapse = ", "), "\n")
   }
   
-  ## Sort schemas ##
+  ## Sort Schemas ##
   sch <- sch[sort(names(sch))]
   
   ## Output ##

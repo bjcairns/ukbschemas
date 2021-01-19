@@ -70,7 +70,7 @@ save_db <- function(
     }
   )
   
-  ## Disconnect on Exit ##
+  ## Disconnect On Exit ##
   on.exit(.quiet_dbDisconnect(db = db))
   
   ## Populate Database ##
