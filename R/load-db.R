@@ -29,25 +29,23 @@
 #' @importFrom DBI dbIsValid
 
 
+### load_db() ###
 #' @export
 load_db <- function(db_file = NULL, db = NULL) {
   
-  # Attempt to connect to the database and handle failures
+  ## Attempt to Connect to the Database & Handle Failures ##
   if (!is.null(db_file)) 
     db <- .graceful_dbConnect_file(file = db_file)
   else if (!dbIsValid(db)) 
     db <- .graceful_dbConnect_db(db = db)
   
-  # Always disconnect
+  ## Disconnect On Exit ##
   on.exit(.quiet_dbDisconnect(db))
   
   ## Load the Tables from db ##
   sch <- .read_tables(db)
   
-  # Always, definitely, disconnect
-  .quiet_dbDisconnect(db)
-  
-  # Output
+  ## Output ##
   return(sch)
   
 }

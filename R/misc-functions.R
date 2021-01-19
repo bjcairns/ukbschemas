@@ -123,39 +123,12 @@
 }
 
 
-# Create and populate the tables in the database
-### .create_tables() ###
-.create_tables <- function(db, as_is = FALSE) {
-  
-  ## Start with a Blank Slate ##
-  .drop_tables(db)
-  
-  if (!as_is) {
-    
-    ## Create Tables ##
-    .send_statements(
-      db, 
-      system.file(
-        "sql", "ukb-schemas.sql",
-        package = "ukbschemas",
-        mustWork = TRUE
-      )
-    )
-    
-  }
-  
-  ## Output ##
-  return(invisible(TRUE))
-  
-}
-
-
 # Get the schemas from the UK Biobank web server
 ### .get_schemas() ###
 .get_schemas <- function(
   sch_id = SCHEMA_FILENAMES[["id"]],
   sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
-  nThread = nThread,
+  nThread = detectCores(),
   silent = FALSE
 ) {
   

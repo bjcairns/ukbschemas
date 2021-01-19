@@ -100,6 +100,7 @@
 
 
 # Helper to clear the database of tables
+### .drop_tables() ###
 .drop_tables <- function(db) {
   
   rc <- lapply(
@@ -118,7 +119,35 @@
 }
 
 
+# Create and populate the tables in the database
+### .create_tables() ###
+.create_tables <- function(db, as_is = FALSE) {
+  
+  ## Start with a Blank Slate ##
+  .drop_tables(db)
+  
+  if (!as_is) {
+    
+    ## Create Tables ##
+    .send_statements(
+      db = db, 
+      sql_file = system.file(
+        "sql", "ukb-schemas.sql",
+        package = "ukbschemas",
+        mustWork = TRUE
+      )
+    )
+    
+  }
+  
+  ## Output ##
+  return(invisible(TRUE))
+  
+}
+
+
 # Write tables from a list of data-frame like objects to a database
+### .write_tables() ###
 .write_tables <- function(tbls, db) {
   
   rc <- mapply(

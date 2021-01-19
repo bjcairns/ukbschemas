@@ -34,7 +34,7 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' db <- ukbschemas_db(path = tempdir())
+#' db <- ukbschemas_db(db_path = tempdir())
 #' }
 #' 
 #' @importFrom parallel detectCores
@@ -54,10 +54,7 @@ ukbschemas_db <- function(
   silent = !interactive()
 ){
   
-  # Careful to disconnect the database after function is done
-  on.exit(.quiet_dbDisconnect(db))
-  
-  # Get and process the schemas
+  ## Get and Process the Schemas ##
   sch <- ukbschemas(
     sch_id = sch_id,
     sch_path = sch_path,
@@ -66,7 +63,7 @@ ukbschemas_db <- function(
     silent = silent
   )
   
-  # Save to database
+  ## Save to Database ##
   db <- save_db(
     sch = sch,
     db_file = db_file,
@@ -77,7 +74,7 @@ ukbschemas_db <- function(
     as_is = as_is
   )
   
-  # Output
+  ## Output ##
   return(invisible(db))
   
 }

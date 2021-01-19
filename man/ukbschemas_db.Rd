@@ -30,7 +30,7 @@ to \code{.} (the current directory).}
 \code{SCHEMA_FILENAMES} for reference. Defaults to all.}
 
 \item{sch_path}{The directory path of the schema download cache. Defaults to
-/tmp/RtmpKCAHiF/ukbschemas/schemas.}
+/tmp/RtmpqSW0CE/ukbschemas/schemas.}
 
 \item{date_str}{The date-stamp for the default filename. Defaults to the
 current date in \code{YYYY-MM-DD} format.}
@@ -60,7 +60,7 @@ the result.
 }
 \examples{
 \dontrun{
-db <- ukbschemas_db(path = tempdir())
+db <- ukbschemas_db(db_path = tempdir())
 }
 
 }

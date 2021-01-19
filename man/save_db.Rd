@@ -55,7 +55,7 @@ partially or fully unless \code{as_is == TRUE}.
 \examples{
 \dontrun{
 sch <- ukbschemas()
-db <- save_db(sch, path = tempdir())
+db <- save_db(sch, db_path = tempdir())
 }
 
 }

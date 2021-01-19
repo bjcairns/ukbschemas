@@ -1,5 +1,3 @@
-#' @importFrom stats ave
-
 # Help to tidy up the schemas
 ### .tidy_schemas() ###
 .tidy_schemas <- function(sch, silent = FALSE) {
@@ -94,7 +92,18 @@
   dat[c("parent_id", "selectable")] <- NA_integer_
   dat[["type"]] <- class(dat[["value"]])[1]
   dat[["value"]] <- as.character(dat[["value"]])
-  dat[["code_id"]] <- ave(x = seq.int(nrow(dat)), dat[["encoding_id"]], FUN = seq_along)
+  
+  # Row Number by Group #
+  code_id <- unlist(
+    tapply(
+      X = seq.int(nrow(dat)),
+      INDEX = dat[["encoding_id"]],
+      FUN = seq_along,
+      simplify = FALSE
+    )
+  )
+  names(code_id) <- NULL
+  dat[["code_id"]] <- code_id
   
   ## Output ##
   return(dat)

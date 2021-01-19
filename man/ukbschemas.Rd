@@ -17,7 +17,7 @@ ukbschemas(
 \code{SCHEMA_FILENAMES} for reference. Defaults to all.}
 
 \item{sch_path}{The directory path of the schema download cache. Defaults to
-/tmp/RtmpKCAHiF/ukbschemas/schemas.}
+/tmp/RtmpqSW0CE/ukbschemas/schemas.}
 
 \item{as_is}{Import the schemas into the database without tidying? Defaults
 to \code{FALSE}.}

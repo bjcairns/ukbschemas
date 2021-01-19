@@ -1,6 +1,6 @@
 Package: ukbschemas
 Version: 0.3.0
-Date: 2021-01-17
+Date: 2021-01-19
 Title: Download the UK Biobank data schemas to an SQLite database
 Authors@R: c(person(c("Benjamin", "J."), "Cairns", role = c("aut", "cre"), email = "ben.cairns@ndph.ox.ac.uk", comment = c(ORCID = "0000-0001-7994-8213")),
              person(c("Benjamin", "G."), "Feakins", role = "ctb", email = "benjamin.feakins@ndph.ox.ac.uk", comment = c(ORCID = "0000-0002-3928-6750")),
@@ -19,7 +19,6 @@ Imports:
     data.table,
     parallel,
     RSQLite,
-    stats,
     utils
 Suggests:
     curl,

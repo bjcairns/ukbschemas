@@ -35,12 +35,14 @@
 #' @examples 
 #' \dontrun{
 #' sch <- ukbschemas()
-#' db <- save_db(sch, path = tempdir())
+#' db <- save_db(sch, db_path = tempdir())
 #' }
 #' 
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
 
+
+### save_db() ###
 #' @export
 save_db <- function(
   sch,
@@ -52,7 +54,7 @@ save_db <- function(
   as_is = FALSE
 ){
   
-  # Confirm file/path and remove if overwrite
+  ## Confirm File/Path & Remove if Overwrite ##
   full_path <- .check_file_path(
     file = db_file,
     path = db_path,
@@ -60,31 +62,35 @@ save_db <- function(
     overwrite = overwrite
   )
   
-  # Create database
+  ## Connect to Database ##
   db <- tryCatch(
-    expr = dbConnect(SQLite(), full_path),
+    expr = dbConnect(drv = SQLite(), full_path),
     error = function(err) {
       stop(UKBSCHEMAS_ERRORS[["DB_NO_CONNECT"]])
     }
   )
-  on.exit(.quiet_dbDisconnect(db))
   
-  # Create database
+  ## Disconnect on Exit ##
+  on.exit(.quiet_dbDisconnect(db = db))
+  
+  ## Populate Database ##
   tryCatch(
     expr = {
       .create_tables(db, as_is = as_is)
-      .write_tables(sch, db)
+      .write_tables(tbls = sch, db = db)
     },
     error = function(err) {
       stop(UKBSCHEMAS_ERRORS[["DB_POPULATE_ERROR"]])
     }
   )
   
-  # Wrap up and (extra careful) close the connection
-  if (!silent) print(db)
-  .quiet_dbDisconnect(db)
-  if (!silent) message("...DISCONNECTED")
+  ## Verbosity ##
+  if (!silent) {
+    print(db)
+    message("...DISCONNECTED")
+  }
   
+  ## Output ##
   return(invisible(db))
   
 }
