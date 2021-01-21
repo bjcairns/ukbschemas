@@ -1,41 +1,76 @@
 ## Generate test data to avoid pulling database in every time a test is run
 
-# normalizePath gives a message when the file/path does not exist
-.quiet_normalizePath <- function(path) suppressWarnings(normalizePath(path))
-
 
 # Function to locate local copy of downloaded files
-.test_data_path <- function() {
+### .test_data_path() ###
+.test_data_path <- function(test_data_dir = "test-data") {
   
-  test_data_dir <- "ukbschemas-test-data/"
+  ## Conditional Test Path Prefix ##
+  new_prefix <- if (identical(Sys.getenv("TRAVIS"), "true")) {
+    
+    file.path(Sys.getenv("HOME"), test_data_dir)
+    
+  } else {
+    
+    file.path(tempdir(), "ukbschemas", test_data_dir)
+    
+  }
   
-  new_prefix <- ifelse(
-    identical(Sys.getenv("TRAVIS"), "true"),
-    paste0(Sys.getenv("HOME"), "/", test_data_dir),
-    paste0("~/", test_data_dir)
-  )
+  ## Normalise Path ##
+  new_prefix <- normalizePath(new_prefix, mustWork = FALSE)
   
-  suppressWarnings(.quiet_normalizePath(new_prefix))
+  ## Output ##
+  return(new_prefix)
   
 }
 
 
-# Now set up the data
-cat("Setting up test data\n")
+### Test Data Set ###
+dat_mtcars <- mtcars
+rownames(dat_mtcars) <- seq.int(nrow(dat_mtcars))
+mtcars_sch <- list(mtcars = dat_mtcars)
 
-# Adapt to Travis-CI
-new_prefix <- .test_data_path()
+
+### Set Test Data Directory Prefix ###
+use_prefix <- .test_data_path()
+path_test_sch <- file.path(use_prefix, "schemas")
+path_test_db <- file.path(use_prefix, "db") # test_db_path <- file.path(use_prefix, "db")
 
 # Create the directory to hold the schema files if necessary
-if (!dir.exists(new_prefix)) dir.create(new_prefix)
-
-# Get the files
-SCHEMA_FILENAMES$id %>%
-  purrr::walk(
-    ~ if (!file.exists(paste0(new_prefix, .))) {
-      curl::curl_download(
-        url = paste0(UKB_URL_PREFIX, .),
-        destfile = paste0(new_prefix, .)
-      )
-    }
+if (!dir.exists(use_prefix)){
+  
+  message("Setting up test data...")
+  
+  ## Create Test Directories ##
+  dir.create(path = use_prefix, showWarnings = FALSE, recursive = TRUE)
+  dir.create(path = path_test_sch, showWarnings = FALSE, recursive = TRUE)
+  dir.create(path = path_test_db, showWarnings = FALSE, recursive = TRUE)
+  
+  ## Download the Schemas ##
+  rc <- mapply(
+    FUN = function(url, destfile){
+      if (!file.exists(file.path(destfile))) {
+        utils::download.file(
+          url = url,
+          destfile = destfile,
+          method = if (capabilities("libcurl")) "libcurl" else "auto",
+          quiet = TRUE,
+          mode = "w",
+          cacheOK = FALSE
+        )
+      } else {
+        0L
+      }
+    },
+    url = paste0(UKB_URL_PREFIX, SCHEMA_FILENAMES[["id"]]),
+    destfile = file.path(path_test_sch, paste(SCHEMA_FILENAMES[["filename"]], "tsv", sep = "."))
   )
+  
+  if (!all(rc == 0L))
+    warning(UKBSCHEMAS_ERRORS[["WARN_SCH_DOWNLOAD"]])
+  rm(rc)
+  
+}
+
+### Test DB File Function ###
+test_db_file <- function() basename(tempfile(tmpdir = path_test_db, fileext = ".sqlite"))
