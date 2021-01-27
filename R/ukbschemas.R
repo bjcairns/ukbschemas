@@ -4,7 +4,7 @@
 #' @param sch_id The id numbers of the schemas to download. Type
 #' `SCHEMA_FILENAMES` for reference. Defaults to all.
 #' @param sch_path The directory path of the schema download cache. Defaults to
-#' `r file.path(tempdir(), "ukbschemas", "schemas")`.
+#' `file.path(tempdir(), "ukbschemas", "schemas")`.
 #' @param as_is Import the schemas into the database without tidying? Defaults 
 #' to `FALSE`.
 #' @param nThread Number of threads to spawn for parallelisable tasks, such as

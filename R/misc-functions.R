@@ -1,4 +1,5 @@
 #' @importFrom data.table fread
+#' @importFrom readr read_delim
 #' @importFrom parallel detectCores mcmapply
 #' @importFrom utils askYesNo download.file
 
@@ -178,7 +179,7 @@
         mode = "w",
         cacheOK = FALSE
       ),
-      SIMPLIFY = FALSE,
+      SIMPLIFY = FALSE
     )
     
   }
@@ -231,7 +232,7 @@
   ## Import Schemas ##
   sch <- lapply(
     X = schemas,
-    FUN = fread,
+    FUN = .tryRead,
     sep = "\t",
     quote = "",
     header = TRUE,
@@ -306,4 +307,83 @@
   ## Output ##
   return(isDate)
   
+}
+
+.tryRead <- function(
+  x, 
+  sep = "\t",
+  quote = "",
+  header = TRUE,
+  na.strings = c("", "NA"),
+  verbose = FALSE,
+  blank.lines.skip = TRUE,
+  showProgress = TRUE,
+  data.table = FALSE,
+  nThread = detectCores(),
+  logical01 = FALSE,
+  keepLeadingZeros = TRUE,
+  ...) {
+  
+  ## Import Schemas ##
+  this_sch <- tryCatch(
+    expr = {
+      this_sch <- fread(
+        x,
+        sep = sep,
+        quote = quote,
+        header = header,
+        na.strings = na.strings,
+        verbose = verbose,
+        blank.lines.skip = blank.lines.skip,
+        showProgress = showProgress,
+        data.table = data.table,
+        nThread = nThread,
+        logical01 = logical01,
+        keepLeadingZeros = keepLeadingZeros
+      )
+    }, 
+    warning = function(warn) {
+      if (grepl("Stopped early", warn$message)) {
+        warning(paste0(
+          UKBSCHEMAS_ERRORS[["WARN_FREAD_STOP_EARLY"]], 
+          "\n  (in ", x, ")"
+        ))
+        tryCatch(
+          expr = {
+            this_sch <- as.data.frame(read_delim(
+              x, 
+              delim = sep,
+              quote = quote,
+              na = na.strings,
+              skip_empty_rows = blank.lines.skip,
+              progress = showProgress
+            ))
+          },
+          error = function(err) {
+            stop(UKBSCHEMAS_ERRORS[["SCH_READ_ERROR"]])
+          }
+        )
+      }
+    },
+    error = function(err) {
+      warning(UKBSCHEMAS_ERRORS[["WARN_FREAD_FAIL"]])
+      tryCatch(
+        expr = {
+          this_sch <- as.data.frame(readr::read_delim(
+            x, 
+            delim = sep,
+            quote = quote,
+            na = na.strings,
+            skip_empty_rows = blank.lines.skip,
+            progress = showProgress
+          ))
+        },
+        error = function(err) {
+          stop(UKBSCHEMAS_ERRORS[["SCH_READ_ERROR"]])
+        }
+      )
+    }
+  )
+  
+  return(this_sch)
 }

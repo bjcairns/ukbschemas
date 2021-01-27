@@ -30,7 +30,7 @@ to \code{.} (the current directory).}
 \code{SCHEMA_FILENAMES} for reference. Defaults to all.}
 
 \item{sch_path}{The directory path of the schema download cache. Defaults to
-/tmp/RtmpedznAW/ukbschemas/schemas.}
+C:\Users\bjcai\AppData\Local\Temp\RtmpeyS1PQ/ukbschemas/schemas.}
 
 \item{date_str}{The date-stamp for the default filename. Defaults to the
 current date in \code{YYYY-MM-DD} format.}

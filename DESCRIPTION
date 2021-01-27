@@ -18,6 +18,7 @@ Imports:
     DBI,
     data.table,
     parallel,
+    readr,
     RSQLite,
     utils
 Suggests:

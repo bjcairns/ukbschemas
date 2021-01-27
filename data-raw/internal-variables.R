@@ -11,7 +11,7 @@ filenames <- c(
   "fields" = 1L, # Data field properties.
   "encodings" = 2L, # Encoding dictionaries.
   "categories" = 3L, # Categories used to group data fields and other objects on Showcase interface.
-  # "returns" = 4L, # Returned datasets from Applications. # MALFORMED - parsing failure!
+  "returns" = 4L, # Returned datasets from Applications. # MALFORMED - parsing failure!
   "esimpint" = 5L, # Values for simple integer encodings.
   "esimpstring" = 6L, # Values for simple string encodings.
   "esimpreal" = 7L, # Values for simple real (floating-point) encodings.
@@ -41,10 +41,13 @@ UKBSCHEMAS_ERRORS <- list(
   FAILED_OVERWRITE = paste0("Could not overwrite existing file; ",
                             "is there an existing database connection?"),
   FILE_NOT_EXISTS = "Not a valid name of an existing file",
+  SCH_READ_ERROR = "Could not read schema (malformed rows in file?)",
   DB_NO_CONNECT = "Could not connect to database",
   DB_POPULATE_ERROR = "Error populating database",
   WARN_DB_CONNECTED = "Database object is already connected",
-  WARN_SCH_DOWNLOAD = "One or more schemas could not be downloaded"
+  WARN_SCH_DOWNLOAD = "One or more schemas could not be downloaded",
+  WARN_FREAD_FAIL = "data.table::fread failed, falling back to readr::read_delim",
+  WARN_FREAD_STOP_EARLY = "data.table::fread stopped early, falling back to readr::read_delim"
 )
 
 # Additional tables to add to the schemas
