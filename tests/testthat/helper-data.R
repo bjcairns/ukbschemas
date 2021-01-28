@@ -12,7 +12,7 @@
     
   } else {
     
-    file.path(tempdir(), "ukbschemas", test_data_dir)
+    file.path(Sys.getenv("HOME"), "ukbschemas", test_data_dir)
     
   }
   
