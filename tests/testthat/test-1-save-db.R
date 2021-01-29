@@ -9,8 +9,8 @@ test_that(
     expect_error(
       db <- save_db(
         sch = mtcars_sch, 
-        db_file = test_db_file(), 
-        db_path = path_test_db, 
+        file = test_db_file(), 
+        path = path_test_db, 
         as_is = TRUE
       ),
       NA
@@ -29,8 +29,8 @@ test_that(
     expect_silent(
       db <- save_db(
         sch = mtcars_sch,
-        db_file = test_db_file(),
-        db_path = path_test_db,
+        file = test_db_file(),
+        path = path_test_db,
         silent = TRUE,
         as_is = TRUE
       )
@@ -51,8 +51,8 @@ test_that(
     expect_error(
       db1 <- save_db(
         sch = mtcars_sch,
-        db_file = db_file,
-        db_path = path_test_db,
+        file = db_file,
+        path = path_test_db,
         as_is = TRUE
       ),
       NA
@@ -64,8 +64,8 @@ test_that(
       {
         db2 <- save_db(
           sch = mtcars_sch,
-          db_file = db_file,
-          db_path = path_test_db,
+          file = db_file,
+          path = path_test_db,
           as_is = TRUE
         )
         suppressWarnings(DBI::dbDisconnect(db2))
@@ -87,8 +87,8 @@ test_that(
       {
         db1 <- save_db(
           sch = mtcars_sch,
-          db_file = db_file,
-          db_path = path_test_db,
+          file = db_file,
+          path = path_test_db,
           as_is = TRUE
         )
         db1 <- DBI::dbConnect(db1)
@@ -104,8 +104,8 @@ test_that(
       {
         db2 <- save_db(
           sch = mtcars_sch,
-          db_file = db_file, 
-          db_path = path_test_db,
+          file = db_file, 
+          path = path_test_db,
           overwrite = TRUE,
           as_is = TRUE
         )
@@ -128,8 +128,8 @@ test_that(
       {
         db1 <- save_db(
           sch = mtcars_sch,
-          db_file = ":memory:",
-          db_path = path_test_db,
+          file = ":memory:",
+          path = path_test_db,
           as_is = TRUE
         )
         suppressWarnings(DBI::dbDisconnect(db1))
@@ -141,8 +141,8 @@ test_that(
       {
         db2 <- save_db(
           sch = mtcars_sch,
-          db_file = "file::memory:",
-          db_path = path_test_db,
+          file = "file::memory:",
+          path = path_test_db,
           as_is = TRUE
         )
         suppressWarnings(DBI::dbDisconnect(db2))
@@ -158,17 +158,19 @@ test_that(
   desc = "save_db() runs without errors or warnings with genuine data",
   code = {
     
-    sch <- ukbschemas(
-      sch_path = path_test_sch,
-      nThread = 1L
-    )
+    sch <- suppressWarnings(
+      ukbschemas(
+        sch_path = path_test_sch,
+        nThread = 1L
+      )
+    )    
     
     expect_error(
       object = {
         db1 <- save_db(
           sch = sch,
-          db_file = test_db_file(),
-          db_path = path_test_db
+          file = test_db_file(),
+          path = path_test_db
         )
       },
       regexp = NA
@@ -180,8 +182,8 @@ test_that(
       object = {
         db2 <- save_db(
           sch = sch,
-          db_file = test_db_file(),
-          db_path = path_test_db
+          file = test_db_file(),
+          path = path_test_db
         )
       },
       regexp = NA
