@@ -322,12 +322,15 @@
   na.strings = c("", "NA"),
   verbose = FALSE,
   blank.lines.skip = TRUE,
-  showProgress = TRUE,
+  showProgress = FALSE,
   data.table = FALSE,
   nThread = detectCores(),
   logical01 = FALSE,
   keepLeadingZeros = TRUE,
-  ...) {
+  ...
+) {
+  
+  silent <- !showProgress
   
   ## Import This Schema ##
   this_sch_and_warning <- tryCatch(
@@ -370,7 +373,7 @@
 
     ## If there was an error, also fall back to readr
     error = function(err) {
-      message(UKBSCHEMAS_ERRORS[["WARN_FREAD_FAIL"]])
+      if (!silent) message(UKBSCHEMAS_ERRORS[["WARN_FREAD_FAIL"]])
       return(list(this_sch = NULL, warn_text = NA_character_))
     }
   )
@@ -380,10 +383,12 @@
   
   ## Check if fread might have stopped early, and report warnings as needed
   if (!is.null(this_sch) & grepl("Stopped early", as.character(warn))) {
-    message(paste0(
-      UKBSCHEMAS_ERRORS[["WARN_FREAD_STOP_EARLY"]], 
-      "\n  (in ", x, ")"
-    ))
+    if (!silent) {
+      message(paste0(
+        UKBSCHEMAS_ERRORS[["WARN_FREAD_STOP_EARLY"]], 
+        "\n  (in ", x, ")"
+      ))
+    }
     this_sch <- NULL
   } else if (!is.na(warn)) {
     warning(warn)
@@ -392,13 +397,15 @@
   # If at this point this_sch is NULL, fall back to try readr::read_delim
   if (is.null(this_sch)) {
     
-    this_sch <- .readrFallback(
-      x, 
-      delim = sep,
-      quote = quote,
-      na = na.strings,
-      skip_empty_rows = blank.lines.skip,
-      progress = showProgress
+    this_sch <- suppressMessages(
+      .readrFallback(
+        x, 
+        delim = sep,
+        quote = quote,
+        na = na.strings,
+        skip_empty_rows = blank.lines.skip,
+        progress = showProgress
+      )
     )
     
   }
