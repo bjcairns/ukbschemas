@@ -5,12 +5,12 @@
 #' `ukbschemas_db()` generates an SQLite database containing the UK Biobank 
 #' data schemas from http://biobank.ctsu.ox.ac.uk/crystal/schema.cgi.
 #' 
-#' @param db_file The filename for the schema database. Defaults to `""`, which is 
+#' @param file The filename for the schema database. Defaults to `""`, which is 
 #' interpreted as `paste0("ukb-schemas-", date, ".sqlite")`. If this file 
 #' already exists in directory `path`, the session is interactive, and 
 #' `overwrite` is not `FALSE`, then the user will be prompted to decide whether 
 #' the file should be overwritten.
-#' @param db_path The path to the directory where the file will be saved. Defaults 
+#' @param path The path to the directory where the file will be saved. Defaults 
 #' to `.` (the current directory).
 #' @param sch_id The id numbers of the schemas to download. Type
 #' `SCHEMA_FILENAMES` for reference. Defaults to all.
@@ -43,31 +43,33 @@
 ### ukbschemas_db() ###
 #' @export
 ukbschemas_db <- function(
-  db_file = "",
-  db_path = ".",
-  sch_id = SCHEMA_FILENAMES[["id"]],
-  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  file = "",
+  path = ".",
   date_str = Sys.Date(),
   overwrite = FALSE,
+  silent = !interactive(),
   as_is = FALSE,
-  nThread = detectCores(),
-  silent = !interactive()
+  url_prefix = UKB_URL_PREFIX,
+  sch_id = SCHEMA_FILENAMES[["id"]],
+  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  nThread = detectCores()
 ){
   
   ## Get and Process the Schemas ##
   sch <- ukbschemas(
+    silent = silent,
+    as_is = as_is,
+    url_prefix = url_prefix,
     sch_id = sch_id,
     sch_path = sch_path,
-    as_is = as_is,
-    nThread = nThread,
-    silent = silent
+    nThread = nThread
   )
   
   ## Save to Database ##
   db <- save_db(
     sch = sch,
-    db_file = db_file,
-    db_path = db_path,
+    file = file,
+    path = path,
     date_str = date_str,
     silent = silent,
     overwrite = overwrite,
