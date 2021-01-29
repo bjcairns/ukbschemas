@@ -211,7 +211,7 @@
 
 ### .import_schemas() ###
 .import_schemas <- function(
-  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
   nThread = detectCores(),
   silent = TRUE,
   ...
