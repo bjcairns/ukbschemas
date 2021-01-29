@@ -150,16 +150,19 @@
 ### .write_tables() ###
 .write_tables <- function(tbls, db) {
   
-  rc <- mapply(
-    FUN = dbWriteTable,
-    name = names(tbls),
-    value = tbls,
-    MoreArgs = list(
+  tbl_names <- names(tbls)
+  rc <- logical()
+  
+  for (i in seq_along(tbls)) {
+    if (tbl_names[i] == "stability") next()
+    rc[i] <- dbWriteTable(
+      name = tbl_names[i], 
+      value = tbls[[i]],
       conn = db,
       row.names = FALSE,
       append = TRUE
     )
-  )
+  }
   
   ## Output ##
   return(invisible(rc))
