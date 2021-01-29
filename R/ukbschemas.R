@@ -1,16 +1,19 @@
 #' @title
 #' Load the UK Biobank data schemas from the Internet or other repository
 #' 
+#' @param silent Do not report progress. Defaults to `FALSE`.
+#' @param as_is Import the schemas into the database without tidying? Defaults 
+#' to `FALSE`.
+#' @param url_prefix First part of the URL at which the schema files can be 
+#' found. For local repositories, the directory with a trailing delimiter (i.e.
+#' `/` or `\\` or `\\\\` as appropriate to your operating system).
 #' @param sch_id The id numbers of the schemas to download. Type
 #' `SCHEMA_FILENAMES` for reference. Defaults to all.
 #' @param sch_path The directory path of the schema download cache. Defaults to
-#' `file.path(tempdir(), "ukbschemas", "schemas")`.
-#' @param as_is Import the schemas into the database without tidying? Defaults 
-#' to `FALSE`.
+#' `file.path(Sys.getenv("HOME"), "ukbschemas", "schemas")`.
 #' @param nThread Number of threads to spawn for parallelisable tasks, such as
 #' the downloading and importing of the schemas. Defaults to the number of
 #' logical cores present on the system.
-#' @param silent Do not report progress. Defaults to `FALSE`.
 #' 
 #' @return
 #' A list of objects of class `data.frame`.
@@ -39,15 +42,17 @@
 ### ukbschemas() ###
 #' @export
 ukbschemas <- function(
-  sch_id = SCHEMA_FILENAMES[["id"]],
-  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  silent = !interactive(),
   as_is = FALSE,
-  nThread = detectCores(),
-  silent = !interactive()
+  url_prefix = UKB_URL_PREFIX,
+  sch_id = SCHEMA_FILENAMES[["id"]],
+  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
+  nThread = detectCores()
 ){
   
   ## Download Schema Tables ##
   rc <- .get_schemas(
+    url_prefix = url_prefix,
     sch_id = sch_id,
     sch_path = sch_path,
     nThread = nThread,
