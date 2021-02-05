@@ -5,28 +5,33 @@
 \title{Load the UK Biobank data schemas from the Internet or other repository}
 \usage{
 ukbschemas(
-  sch_id = SCHEMA_FILENAMES[["id"]],
-  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  silent = !interactive(),
   as_is = FALSE,
-  nThread = detectCores(),
-  silent = !interactive()
+  url_prefix = UKB_URL_PREFIX,
+  sch_id = SCHEMA_FILENAMES[["id"]],
+  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
+  nThread = detectCores()
 )
 }
 \arguments{
-\item{sch_id}{The id numbers of the schemas to download. Type
-\code{SCHEMA_FILENAMES} for reference. Defaults to all.}
-
-\item{sch_path}{The directory path of the schema download cache. Defaults to
-\code{file.path(tempdir(), "ukbschemas", "schemas")}.}
+\item{silent}{Do not report progress. Defaults to \code{FALSE}.}
 
 \item{as_is}{Import the schemas into the database without tidying? Defaults
 to \code{FALSE}.}
 
+\item{url_prefix}{First part of the URL at which the schema files can be
+found. For local repositories, the directory with a trailing delimiter (i.e.
+\code{/} or \verb{\\\\} or \verb{\\\\\\\\} as appropriate to your operating system).}
+
+\item{sch_id}{The id numbers of the schemas to download. Type
+\code{SCHEMA_FILENAMES} for reference. Defaults to all.}
+
+\item{sch_path}{The directory path of the schema download cache. Defaults to
+\code{file.path(Sys.getenv("HOME"), "ukbschemas", "schemas")}.}
+
 \item{nThread}{Number of threads to spawn for parallelisable tasks, such as
 the downloading and importing of the schemas. Defaults to the number of
 logical cores present on the system.}
-
-\item{silent}{Do not report progress. Defaults to \code{FALSE}.}
 }
 \value{
 A list of objects of class \code{data.frame}.

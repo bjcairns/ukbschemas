@@ -12,17 +12,10 @@
 #' the file should be overwritten.
 #' @param path The path to the directory where the file will be saved. Defaults 
 #' to `.` (the current directory).
-#' @param sch_id The id numbers of the schemas to download. Type
-#' `SCHEMA_FILENAMES` for reference. Defaults to all.
-#' @param sch_path The directory path of the schema download cache. Defaults to
-#' `r file.path(tempdir(), "ukbschemas", "schemas")`.
 #' @param date_str The date-stamp for the default filename. Defaults to the
 #' current date in `YYYY-MM-DD` format.
 #' @param overwrite Always overwrite existing files? Helpful for non-interactive 
 #' use. Defaults to `FALSE`.
-#' @param nThread Number of threads to spawn for parallelisable tasks, such as
-#' the downloading and importing of the schemas. Defaults to the number of
-#' logical cores present on the system.
 #' @inheritParams ukbschemas
 #' 
 #' @return
@@ -51,7 +44,7 @@ ukbschemas_db <- function(
   as_is = FALSE,
   url_prefix = UKB_URL_PREFIX,
   sch_id = SCHEMA_FILENAMES[["id"]],
-  sch_path = file.path(tempdir(), "ukbschemas", "schemas"),
+  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
   nThread = detectCores()
 ){
   
