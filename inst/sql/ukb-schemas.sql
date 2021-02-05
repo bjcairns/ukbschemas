@@ -108,6 +108,24 @@ CREATE TABLE schema(
   "descript" TEXT,
   "notes" TEXT
 );
+CREATE TABLE recordtab(
+  "table_name" TEXT PRIMARY KEY,
+  "field_id" INTEGER,
+  "parent_name" TEXT,
+  "title" TEXT,
+  "available" INTEGER,
+  "private" INTEGER
+);
+CREATE TABLE recordcol(
+  "column_name" TEXT,
+  "table_name" TEXT,
+  "value_type_id" INTEGER,
+  "encoding_id" INTEGER,
+  "orda" INTEGER,
+  "units" TEXT,
+  "notes" TEXT,
+  PRIMARY KEY ("column_name", "table_name")
+);
 CREATE TABLE valuetypes(
   "value_type_id" INTEGER PRIMARY KEY,
   "title" TEXT,

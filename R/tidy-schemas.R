@@ -75,6 +75,24 @@
   sch[["encvalues"]] <- encvalues
   rownames(sch[["encvalues"]]) <- seq.int(nrow(sch[["encvalues"]]))
   
+  # Harmonize the recordtab and recordcol tables with each other and the rest
+  if (!silent) {
+    message("... Harmonise and tidy `recordtab` and `recordcol`")
+  }
+  names(sch[["recordtab"]])[names(sch[["recordtab"]]) == "record_field_id"] <- "field_id"
+  names(sch[["recordcol"]])[names(sch[["recordcol"]]) == "value_type"] <- "value_type_id"
+  recordtab_tables <- sch[["recordtab"]][["table_name"]]
+  recordcol_tables <- unique(sch[["recordcol"]][["table_name"]])
+  missing_tables <- recordcol_tables[!(recordcol_tables %in% recordtab_tables)]
+  recordtab_rows <- dim(sch[["recordtab"]])[1]
+  for (tbl in missing_tables) {
+    sch[["recordtab"]][recordtab_rows + 1, 1] <- tbl
+    recordtab_rows <- recordtab_rows + 1
+  }
+  sch[["recordtab"]][["parent_name"]] <- as.character(sch[["recordtab"]][["parent_name"]])
+  sch[["recordcol"]][["units"]] <- as.character(sch[["recordcol"]][["units"]])
+  
+  
   ## Table Summary ##
   if (!silent) {
     cat("\n\n")
