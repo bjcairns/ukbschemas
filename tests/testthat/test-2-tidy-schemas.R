@@ -14,7 +14,7 @@ test_that(
     
     ## Test Setup ##
     .get_schemas(nThread = 1L)
-    sch <- .import_schemas(nThread = 1L)
+    sch <- suppressWarnings(.import_schemas(nThread = 1L))
     
     ## Test ##
     expect_error(

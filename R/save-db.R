@@ -7,12 +7,12 @@
 #' 
 #' @param sch List of data frames, representing UK Biobank data schemas (unless 
 #' `as_is == TRUE`, in which case any list of data frames is permitted)
-#' @param db_file The filename for the schema database. Defaults to `""`, which is 
+#' @param file The filename for the schema database. Defaults to `""`, which is 
 #' interpreted as `paste0("ukb-schemas-", date, ".sqlite")`. If this file 
 #' already exists in directory `path`, the session is interactive, and 
 #' `overwrite` is not `FALSE`, then the user will be prompted to decide whether 
 #' the file should be overwritten.
-#' @param db_path The path to the directory where the file will be saved. Defaults 
+#' @param path The path to the directory where the file will be saved. Defaults 
 #' to `.` (the current directory).
 #' @param date_str The date-stamp for the default filename. Defaults to the 
 #' current date in `YYYY-MM-DD` format.
@@ -35,7 +35,7 @@
 #' @examples 
 #' \dontrun{
 #' sch <- ukbschemas()
-#' db <- save_db(sch, db_path = tempdir())
+#' db <- save_db(sch, path = tempdir())
 #' }
 #' 
 #' @importFrom DBI dbConnect
@@ -46,8 +46,8 @@
 #' @export
 save_db <- function(
   sch,
-  db_file = "",
-  db_path = ".",
+  file = "",
+  path = ".",
   date_str = Sys.Date(),
   silent = !interactive(),
   overwrite = FALSE,
@@ -56,8 +56,8 @@ save_db <- function(
   
   ## Confirm File/Path & Remove if Overwrite ##
   full_path <- .check_file_path(
-    file = db_file,
-    path = db_path,
+    file = file,
+    path = path,
     date_str = date_str,
     overwrite = overwrite
   )
@@ -86,7 +86,7 @@ save_db <- function(
   
   ## Verbosity ##
   if (!silent) {
-    print(db)
+    message("DB: ", db)
     message("...DISCONNECTED")
   }
   
