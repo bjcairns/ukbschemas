@@ -16,7 +16,7 @@ test_that(
           ukbschemas_db(
             file = test_db_file(), 
             path = path_test_db, 
-            sch_path = path_test_sch,
+            cache = path_test_sch,
             nThread = 1L
           )
         )
@@ -34,7 +34,7 @@ test_that(
         db2 <- ukbschemas_db(
           file = test_db_file(), 
           path = path_test_db,
-          sch_path = path_test_sch,
+          cache = path_test_sch,
           nThread = 1L
         )
       },
@@ -60,7 +60,7 @@ test_that(
             file = test_db_file(),
             path = path_test_db,
             silent = TRUE,
-            sch_path = path_test_sch,
+            cache = path_test_sch,
             nThread = 1L
           )
         )
@@ -87,7 +87,7 @@ test_that(
           ukbschemas_db(
             file = db_file, 
             path = path_test_db,
-            sch_path = path_test_sch,
+            cache = path_test_sch,
             nThread = 1L
           )
         )
@@ -105,7 +105,7 @@ test_that(
           ukbschemas_db(
             file = db_file, 
             path = path_test_db,
-            sch_path = path_test_sch,
+            cache = path_test_sch,
             nThread = 1L
           )
         )
@@ -130,7 +130,7 @@ test_that(
           ukbschemas_db(
             file = db_file, 
             path = path_test_db,
-            sch_path = path_test_sch,
+            cache = path_test_sch,
             nThread = 1L
           )
         )
@@ -150,7 +150,7 @@ test_that(
             file = db_file, 
             path = path_test_db,
             overwrite = TRUE,
-            sch_path = path_test_sch,
+            cache = path_test_sch,
             nThread = 1L,
           )
         )
@@ -175,7 +175,7 @@ test_that(
           ukbschemas_db(
             file = ":memory:",
             path = path_test_db,
-            sch_path = path_test_sch,
+            cache = path_test_sch,
             nThread = 1L
           )
         )
@@ -190,7 +190,7 @@ test_that(
           ukbschemas_db(
             file = "file::memory:",
             path = path_test_db,
-            sch_path = path_test_sch,
+            cache = path_test_sch,
             nThread = 1L
           )
         )

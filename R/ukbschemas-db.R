@@ -44,7 +44,7 @@ ukbschemas_db <- function(
   as_is = FALSE,
   url_prefix = UKB_URL_PREFIX,
   sch_id = SCHEMA_FILENAMES[["id"]],
-  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
+  cache = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
   nThread = detectCores()
 ){
   
@@ -54,7 +54,7 @@ ukbschemas_db <- function(
     as_is = as_is,
     url_prefix = url_prefix,
     sch_id = sch_id,
-    sch_path = sch_path,
+    cache = cache,
     nThread = nThread
   )
   
