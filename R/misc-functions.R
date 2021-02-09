@@ -348,6 +348,7 @@
             quote = quote,
             header = header,
             na.strings = na.strings,
+            integer64 = "double",
             verbose = verbose,
             blank.lines.skip = blank.lines.skip,
             showProgress = showProgress,
@@ -425,14 +426,16 @@
   
   tryCatch(
     expr = {
-      this_sch <- as.data.frame(readr::read_delim(
-        x, 
-        delim = delim,
-        quote = quote,
-        na = na,
-        skip_empty_rows = skip_empty_rows,
-        progress = progress
-      ))
+      this_sch <- as.data.frame(
+        read_delim(
+          x, 
+          delim = delim,
+          quote = quote,
+          na = na,
+          skip_empty_rows = skip_empty_rows,
+          progress = progress
+        )
+      )
     },
     error = function(err) {
       stop(UKBSCHEMAS_ERRORS[["SCH_READ_ERROR"]])
