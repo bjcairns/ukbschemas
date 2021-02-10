@@ -46,7 +46,7 @@ found. For local repositories, the directory with a trailing delimiter (i.e.
 \code{SCHEMA_FILENAMES} for reference. Defaults to all.}
 
 \item{sch_path}{The directory path of the schema download cache. Defaults to
-/tmp/RtmpAx2NTB/ukbschemas/schemas.}
+/tmp/RtmpHHB0wL/ukbschemas/schemas.}
 
 \item{nThread}{Number of threads to spawn for parallelisable tasks, such as
 the downloading and importing of the schemas. Defaults to the number of
