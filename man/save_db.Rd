@@ -6,8 +6,8 @@
 \usage{
 save_db(
   sch,
-  db_file = "",
-  db_path = ".",
+  file = "",
+  path = ".",
   date_str = Sys.Date(),
   silent = !interactive(),
   overwrite = FALSE,
@@ -18,13 +18,13 @@ save_db(
 \item{sch}{List of data frames, representing UK Biobank data schemas (unless
 \code{as_is == TRUE}, in which case any list of data frames is permitted)}
 
-\item{db_file}{The filename for the schema database. Defaults to \code{""}, which is
+\item{file}{The filename for the schema database. Defaults to \code{""}, which is
 interpreted as \code{paste0("ukb-schemas-", date, ".sqlite")}. If this file
 already exists in directory \code{path}, the session is interactive, and
 \code{overwrite} is not \code{FALSE}, then the user will be prompted to decide whether
 the file should be overwritten.}
 
-\item{db_path}{The path to the directory where the file will be saved. Defaults
+\item{path}{The path to the directory where the file will be saved. Defaults
 to \code{.} (the current directory).}
 
 \item{date_str}{The date-stamp for the default filename. Defaults to the
@@ -55,7 +55,7 @@ partially or fully unless \code{as_is == TRUE}.
 \examples{
 \dontrun{
 sch <- ukbschemas()
-db <- save_db(sch, db_path = tempdir())
+db <- save_db(sch, path = tempdir())
 }
 
 }

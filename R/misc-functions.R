@@ -7,36 +7,27 @@
 # - Alternatives to `lsof`: https://unix.stackexchange.com/questions/18614/alternatives-for-lsof-command
 
 
-### .autoISOdate() ###
-.autoISOdate <- function(data){
+### .IDateToDate() ###
+.IDateToDate <- function(data){
   
-  ## Variables ##
+  ### Variables ###
   vars <- names(data)
   
-  ## Character Variables ##
-  vars_char <- vapply(
+  ### IDate Variables ###
+  vars_IDate <- vapply(
     X = data,
-    FUN = is.character,
+    FUN = .isIDate,
     FUN.VALUE = logical(1L)
   )
-  vars_char <- vars[vars_char]
+  vars_IDate <- vars[vars_IDate]
   
-  ## ISO Date Variables ##
-  vars_date <- vapply(
-    X = data[vars_char],
-    FUN = .isISOdate,
-    FUN.VALUE = logical(1L)
-  )
-  vars_date <- vars_char[vars_date]
-  
-  ## Coerce to Date ##
-  data[, vars_date] <- lapply(
-    X = data[vars_date],
-    FUN = as.Date,
-    format = "%Y-%m-%d"
+  ## Coerce IDates to Dates ##
+  data[vars_IDate] <- lapply(
+    X = data[vars_IDate],
+    FUN = as.Date
   )
   
-  ## Output ##
+  ### Output ###
   return(data)
   
 }
@@ -234,7 +225,7 @@
   sch <- list()
   for (i in seq_along(schemas)) {
     sch[[i]] <- .tryRead(
-      x = schemas[i],
+      file = schemas[i],
       sep = "\t",
       quote = "",
       header = TRUE,
@@ -245,15 +236,14 @@
       data.table = FALSE,
       nThread = nThread,
       logical01 = FALSE,
-      keepLeadingZeros = TRUE,
       ...
     )  
   }
   
-  ## Coerce Dates ##
+  ## Coerce IDates to Dates ##
   sch <- lapply(
     X = sch,
-    FUN = .autoISOdate
+    FUN = .IDateToDate
   )
   
   ## Name Schemas ##
@@ -299,23 +289,20 @@
 }
 
 
-### .isISOdate() ###
-.isISOdate <- function(x){
+### .isIDate() ###
+.isIDate <- function(x){
   
-  ## Pattern Match ##
-  isDate <- all(
-    grepl("^\\d{4}-\\d{2}-\\d{2}$", x, perl = TRUE)
-  )
+  isIDate <- "IDate" %in% class(x)
   
   ## Output ##
-  return(isDate)
+  return(isIDate)
   
 }
 
 
 ### .tryRead() - read a UKB schema with error handling/fallback
 .tryRead <- function(
-  x, 
+  file,
   sep = "\t",
   quote = "",
   header = TRUE,
@@ -326,7 +313,6 @@
   data.table = FALSE,
   nThread = detectCores(),
   logical01 = FALSE,
-  keepLeadingZeros = TRUE,
   ...
 ) {
   
@@ -343,18 +329,18 @@
         
         list(
           this_sch = fread(
-            x,
+            file = file,
             sep = sep,
             quote = quote,
             header = header,
             na.strings = na.strings,
+            integer64 = "double",
             verbose = verbose,
             blank.lines.skip = blank.lines.skip,
             showProgress = showProgress,
             data.table = data.table,
             nThread = nThread,
-            logical01 = logical01,
-            keepLeadingZeros = keepLeadingZeros
+            logical01 = logical01
           ),
           warn = warn_text
         )
@@ -386,7 +372,7 @@
     if (!silent) {
       message(paste0(
         UKBSCHEMAS_ERRORS[["WARN_FREAD_STOP_EARLY"]], 
-        "\n  (in ", x, ")"
+        "\n  (in ", file, ")"
       ))
     }
     this_sch <- NULL
@@ -399,7 +385,7 @@
     
     this_sch <- suppressMessages(
       .readrFallback(
-        x, 
+        file = file,
         delim = sep,
         quote = quote,
         na = na.strings,
@@ -415,24 +401,29 @@
 
 
 .readrFallback <- function(
-  x,
+  file,
   delim = "\t",
   quote = "",
   na = c("", "NA"),
   skip_empty_rows = TRUE,
   progress = TRUE
 ) {
-  
   tryCatch(
     expr = {
-      this_sch <- as.data.frame(readr::read_delim(
-        x, 
+      ## Import ##
+      this_sch <- read_delim(
+        file = file, 
         delim = delim,
         quote = quote,
         na = na,
         skip_empty_rows = skip_empty_rows,
         progress = progress
-      ))
+      )
+      
+      ## Coerce & Strip readr Attributes ##
+      this_sch <- as.data.frame(this_sch)
+      attributes(this_sch) <- attributes(this_sch)[c("names", "class", "row.names")]
+      this_sch
     },
     error = function(err) {
       stop(UKBSCHEMAS_ERRORS[["SCH_READ_ERROR"]])
@@ -441,7 +432,3 @@
   
   return(this_sch)
 }
-
-
-
-

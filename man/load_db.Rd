@@ -4,10 +4,10 @@
 \alias{load_db}
 \title{Load schemas from a ukbschemas SQLite database}
 \usage{
-load_db(db_file = NULL, db = NULL)
+load_db(file = NULL, db = NULL)
 }
 \arguments{
-\item{db_file}{Full path to an SQLite database, or \code{NULL}.}
+\item{file}{Full path to an SQLite database, or \code{NULL}.}
 
 \item{db}{A (possibly disconnected) database connection, or \code{NULL}.}
 }
@@ -21,7 +21,7 @@ load tables from a ukbschemas database (or in fact, any database; see
 \link[DBI:DBI-package]{DBI::DBI-package}).
 }
 \details{
-\code{load_db()} will attempt to open an SQLite database from file \code{db_file} or
+\code{load_db()} will attempt to open an SQLite database from file \code{file} or
 from connection \code{db}. It will throw errors if the file is not a valid
 database or it is impossible to create a valid connection from \code{db}. Tables
 are read with \link[DBI:dbReadTable]{DBI::dbReadTable} and converted to data frames. The database
