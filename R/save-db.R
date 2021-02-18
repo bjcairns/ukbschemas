@@ -2,25 +2,23 @@
 #' Save a list of UK Biobank data schemas to an SQLite database
 #' 
 #' @description 
-#' `save_db()` saves a list of UK Biobank data schemas (or, if `as_is == TRUE`, 
-#' any list of data frames) to an SQLite database.
+#' `save_db()` saves a list of UK Biobank data schemas (or, if `as_is == TRUE`, any list of data
+#' frames) to an SQLite database.
 #' 
-#' @param sch List of data frames, representing UK Biobank data schemas (unless 
-#' `as_is == TRUE`, in which case any list of data frames is permitted)
-#' @param file The filename for the schema database. Defaults to `""`, which is 
-#' interpreted as `paste0("ukb-schemas-", date, ".sqlite")`. If this file 
-#' already exists in directory `path`, the session is interactive, and 
-#' `overwrite` is not `FALSE`, then the user will be prompted to decide whether 
-#' the file should be overwritten.
-#' @param path The path to the directory where the file will be saved. Defaults 
-#' to `.` (the current directory).
-#' @param date_str The date-stamp for the default filename. Defaults to the 
-#' current date in `YYYY-MM-DD` format.
+#' @param sch List of data frames, representing UK Biobank data schemas (unless `as_is == TRUE`, in
+#' which case any list of data frames is permitted).
+#' @param file The filename for the schema database. Defaults to `""`, which is interpreted as
+#' `paste0("ukb-schemas-", date, ".sqlite")`. If this file already exists in directory `path`, the
+#' session is interactive, and `overwrite` is not `FALSE`, then the user will be prompted to decide
+#' whether the file should be overwritten.
+#' @param path The path to the directory where the file will be saved. Defaults to `.` (the current
+#' directory).
+#' @param date_str The date-stamp for the default filename. Defaults to the current date in
+#' `YYYY-MM-DD` format.
 #' @param silent Do not report progress. Defaults to `FALSE`.
-#' @param overwrite Always overwrite existing files? Helpful for 
-#' non-interactive use. Defaults to `FALSE`.
-#' @param as_is Import the schemas into the database without tidying? Defaults 
-#' to `FALSE`.
+#' @param overwrite Always overwrite existing files? Helpful for non-interactive use. Defaults to
+#' `FALSE`.
+#' @param as_is Import the schemas into the database without tidying? Defaults to `FALSE`.
 #' 
 #' @return
 #' A database connection object of class 

@@ -16,22 +16,20 @@ ukbschemas(
 \arguments{
 \item{silent}{Do not report progress. Defaults to \code{FALSE}.}
 
-\item{as_is}{Import the schemas into the database without tidying? Defaults
-to \code{FALSE}.}
+\item{as_is}{Import the schemas into the database without tidying? Defaults to \code{FALSE}.}
 
-\item{url_prefix}{First part of the URL at which the schema files can be
-found. For local repositories, the directory with a trailing delimiter (i.e.
-\code{/} or \verb{\\\\} or \verb{\\\\\\\\} as appropriate to your operating system).}
+\item{url_prefix}{First part of the URL at which the schema files can be found. For local
+repositories, the directory with a trailing delimiter (i.e. \code{/} or \verb{\\\\} or \verb{\\\\\\\\} as appropriate
+to your operating system).}
 
-\item{sch_id}{The id numbers of the schemas to download. Type
-\code{SCHEMA_FILENAMES} for reference. Defaults to all.}
+\item{sch_id}{The id numbers of the schemas to download. Type \code{SCHEMA_FILENAMES} for reference.
+Defaults to all.}
 
 \item{cache}{The directory path of the schema download cache. Defaults to
 \code{file.path(Sys.getenv("HOME"), "ukbschemas", "schemas")}.}
 
-\item{nThread}{Number of threads to spawn for parallelisable tasks, such as
-the downloading and importing of the schemas. Defaults to the number of
-logical cores present on the system.}
+\item{nThread}{Number of threads to spawn for parallelisable tasks, such as the downloading and
+importing of the schemas. Defaults to the number of logical cores present on the system.}
 }
 \value{
 A list of objects of class \code{data.frame}.
@@ -40,15 +38,14 @@ A list of objects of class \code{data.frame}.
 Load the UK Biobank data schemas from the Internet or other repository
 }
 \details{
-The UK Biobank data schemas are fetched via the Internet unless a  different
-\code{url_prefix} is provided. If \code{!as_is}, they are tidied. Note that  if the
-table structure has changed (i.e. has been changed by UK Biobank), then the
-function may fail partially or fully unless \code{as_is == TRUE}.
+The UK Biobank data schemas are fetched via the Internet unless a  different \code{url_prefix} is
+provided. If \code{!as_is}, they are tidied. Note that  if the table structure has changed (i.e. has
+been changed by UK Biobank), then the function may fail partially or fully unless
+\code{as_is == TRUE}.
 }
 \note{
-This is a convenience function to load the schemas directly from the UK
-Biobank website. For most purposes, it is recommended to use \link{ukbschemas_db}
-and \link{load_db} instead.
+This is a convenience function to load the schemas directly from the UK Biobank website. For most
+purposes, it is recommended to use \link{ukbschemas_db} and \link{load_db} instead.
 }
 \examples{
 \dontrun{
