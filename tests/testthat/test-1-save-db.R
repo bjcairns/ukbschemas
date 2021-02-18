@@ -160,7 +160,7 @@ test_that(
     
     sch <- suppressWarnings(
       ukbschemas(
-        sch_path = path_test_sch,
+        cache = path_test_sch,
         nThread = 1L
       )
     )    
