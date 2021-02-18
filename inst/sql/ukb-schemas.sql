@@ -1,5 +1,5 @@
-/* 
-   Note several "*_id" fields are renamed from similarly-named fields in the 
+/*
+   Note several "*_id" fields are renamed from similarly-named fields in the
    original tables. See R/tidy-schemas.R for details.
 */
 CREATE TABLE fields(
@@ -10,8 +10,8 @@ CREATE TABLE fields(
   "private" INTEGER,
   "value_type_id" INTEGER,
   "base_type" INTEGER,
-  "item_type_id" INTEGER, 
-  "strata_id" INTEGER, 
+  "item_type_id" INTEGER,
+  "strata_id" INTEGER,
   "instanced" INTEGER,
   "arrayed" INTEGER,
   "sexed_id" INTEGER,
@@ -107,6 +107,24 @@ CREATE TABLE schema(
   "name" TEXT,
   "descript" TEXT,
   "notes" TEXT
+);
+CREATE TABLE recordtab(
+  "table_name" TEXT PRIMARY KEY,
+  "field_id" INTEGER,
+  "parent_name" TEXT,
+  "title" TEXT,
+  "available" INTEGER,
+  "private" INTEGER
+);
+CREATE TABLE recordcol(
+  "column_name" TEXT,
+  "table_name" TEXT,
+  "value_type_id" INTEGER,
+  "encoding_id" INTEGER,
+  "orda" INTEGER,
+  "units" TEXT,
+  "notes" TEXT,
+  PRIMARY KEY ("column_name", "table_name")
 );
 CREATE TABLE valuetypes(
   "value_type_id" INTEGER PRIMARY KEY,
