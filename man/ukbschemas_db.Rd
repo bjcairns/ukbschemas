@@ -13,7 +13,7 @@ ukbschemas_db(
   as_is = FALSE,
   url_prefix = UKB_URL_PREFIX,
   sch_id = SCHEMA_FILENAMES[["id"]],
-  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
+  cache = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
   nThread = detectCores()
 )
 }
@@ -45,7 +45,7 @@ found. For local repositories, the directory with a trailing delimiter (i.e.
 \item{sch_id}{The id numbers of the schemas to download. Type
 \code{SCHEMA_FILENAMES} for reference. Defaults to all.}
 
-\item{sch_path}{The directory path of the schema download cache. Defaults to
+\item{cache}{The directory path of the schema download cache. Defaults to
 \code{file.path(Sys.getenv("HOME"), "ukbschemas", "schemas")}.}
 
 \item{nThread}{Number of threads to spawn for parallelisable tasks, such as

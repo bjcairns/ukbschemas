@@ -9,7 +9,7 @@
 #' `/` or `\\` or `\\\\` as appropriate to your operating system).
 #' @param sch_id The id numbers of the schemas to download. Type
 #' `SCHEMA_FILENAMES` for reference. Defaults to all.
-#' @param sch_path The directory path of the schema download cache. Defaults to
+#' @param cache The directory path of the schema download cache. Defaults to
 #' `file.path(Sys.getenv("HOME"), "ukbschemas", "schemas")`.
 #' @param nThread Number of threads to spawn for parallelisable tasks, such as
 #' the downloading and importing of the schemas. Defaults to the number of
@@ -46,7 +46,7 @@ ukbschemas <- function(
   as_is = FALSE,
   url_prefix = UKB_URL_PREFIX,
   sch_id = SCHEMA_FILENAMES[["id"]],
-  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
+  cache = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
   nThread = detectCores()
 ){
   
@@ -54,14 +54,14 @@ ukbschemas <- function(
   rc <- .get_schemas(
     url_prefix = url_prefix,
     sch_id = sch_id,
-    sch_path = sch_path,
+    cache = cache,
     nThread = nThread,
     silent = silent
   )
   
   ## Import Schema Tables ##
   sch <- .import_schemas(
-    sch_path = sch_path,
+    cache = cache,
     nThread = nThread,
     silent = silent
   )

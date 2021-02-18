@@ -5,7 +5,7 @@
 
 ### .import_schemas() ###
 .import_schemas <- function(
-  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
+  cache = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
   nThread = detectCores(),
   silent = TRUE,
   ...
@@ -15,7 +15,7 @@
   schemas <- SCHEMA_FILENAMES[["filename"]]
   schemas <- paste(schemas, collapse = "|")
   schemas <- paste0("^(", schemas, ").tsv$")
-  schemas <- list.files(pattern = schemas, path = sch_path, full.names = TRUE)
+  schemas <- list.files(pattern = schemas, path = cache, full.names = TRUE)
   
   ## Checks ##
   if (length(schemas) == 0L)

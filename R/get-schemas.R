@@ -7,7 +7,7 @@
 .get_schemas <- function(
   url_prefix = UKB_URL_PREFIX,
   sch_id = SCHEMA_FILENAMES[["id"]],
-  sch_path = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
+  cache = file.path(Sys.getenv("HOME"), "ukbschemas", "schemas"),
   nThread = detectCores(),
   silent = FALSE
 ) {
@@ -17,13 +17,13 @@
     stop("One or more schema IDs does not exist")
   
   ## Create TempDir ##
-  dir.create(sch_path, showWarnings = FALSE, recursive = TRUE, mode = "0755")
+  dir.create(cache, showWarnings = FALSE, recursive = TRUE, mode = "0755")
   
   ## Subset Schema Table ##
   schemas <- SCHEMA_FILENAMES[SCHEMA_FILENAMES[["id"]] %in% sch_id, ]
   
   ## Schemas to Download ##
-  schema_destfile <- file.path(sch_path, paste(schemas[["filename"]], "tsv", sep = "."))
+  schema_destfile <- file.path(cache, paste(schemas[["filename"]], "tsv", sep = "."))
   schema_url <- paste0(url_prefix, schemas[["id"]])
   ind <- which(!file.exists(file.path(schema_destfile)))
   schema_destfile <- schema_destfile[ind]

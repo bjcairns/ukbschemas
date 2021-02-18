@@ -11,7 +11,7 @@ test_that(
     expect_error(
       sch <- suppressWarnings(
         ukbschemas(
-          sch_path = path_test_sch,
+          cache = path_test_sch,
           nThread = 1L
         )
       ),
@@ -21,7 +21,7 @@ test_that(
     skip("ukbschemas returns warnings")
     expect_warning(
       sch <- ukbschemas(
-        sch_path = path_test_sch,
+        cache = path_test_sch,
         nThread = 1L
       ),
       NA
@@ -37,7 +37,7 @@ test_that(
     expect_error(
       sch <- suppressWarnings(
         ukbschemas(
-          sch_path = path_test_sch,
+          cache = path_test_sch,
           as_is = TRUE,
           nThread = 1L,
           silent = TRUE
@@ -49,7 +49,7 @@ test_that(
     skip("ukbschemas returns warnings")
     expect_warning(
       sch <- ukbschemas(
-        sch_path = path_test_sch,
+        cache = path_test_sch,
         as_is = TRUE,
         nThread = 1L,
         silent = TRUE
@@ -68,7 +68,7 @@ test_that(
     expect_silent(
       object = {
         sch <- ukbschemas(
-          sch_path = path_test_sch,
+          cache = path_test_sch,
           nThread = 1L,
           silent = TRUE
         )
@@ -96,7 +96,7 @@ test_that(
     expect_error(
       object = {
         sch <- ukbschemas(
-          sch_path = path_test_sch,
+          cache = path_test_sch,
           nThread = 1L
         )
       }
