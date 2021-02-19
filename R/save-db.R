@@ -21,14 +21,12 @@
 #' @param as_is Import the schemas into the database without tidying? Defaults to `FALSE`.
 #' 
 #' @return
-#' A database connection object of class 
-#' [RSQLite::SQLiteConnection-class]. 
+#' A database connection object of class [RSQLite::SQLiteConnection-class]. 
 #' 
 #' @details
-#' `save_db()` takes a list of UK Biobank schemas and saves them to an SQLite
-#' database. If `!as_is`, they are tidied. Note that if the table structure has
-#' changed (i.e. has been changed by UK Biobank), then the function may fail
-#' partially or fully unless `as_is == TRUE`.
+#' `save_db()` takes a list of UK Biobank schemas and saves them to an SQLite database. If
+#' `as_is == FALSE`, they are tidied. Note that if the table structure has changed (i.e. has been
+#' changed by UK Biobank), then the function may fail partially or fully unless `as_is == TRUE`.
 #' 
 #' @examples 
 #' \dontrun{
@@ -38,6 +36,7 @@
 #' 
 #' @importFrom DBI dbConnect
 #' @importFrom RSQLite SQLite
+#' @importFrom utils capture.output
 
 
 ### save_db() ###
@@ -52,8 +51,8 @@ save_db <- function(
   as_is = FALSE
 ){
   
-  ## Confirm File/Path & Remove if Overwrite ##
-  full_path <- .check_file_path(
+  ## Confirm File/Path & Remove if Overwrite ###
+  file_path <- .check_file_path(
     file = file,
     path = path,
     date_str = date_str,
@@ -62,7 +61,7 @@ save_db <- function(
   
   ## Connect to Database ##
   db <- tryCatch(
-    expr = dbConnect(drv = SQLite(), full_path),
+    expr = dbConnect(drv = SQLite(), file_path),
     error = function(err) {
       stop(UKBSCHEMAS_ERRORS[["DB_NO_CONNECT"]])
     }
@@ -84,7 +83,9 @@ save_db <- function(
   
   ## Verbosity ##
   if (!silent) {
-    message("DB: ", db)
+    msg <- capture.output(db)
+    msg <- paste(msg, collapse = "\n")
+    message(msg)
     message("...DISCONNECTED")
   }
   

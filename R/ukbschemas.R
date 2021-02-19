@@ -18,8 +18,8 @@
 #' 
 #' @details
 #' The UK Biobank data schemas are fetched via the Internet unless a  different `url_prefix` is
-#' provided. If `!as_is`, they are tidied. Note that  if the table structure has changed (i.e. has
-#' been changed by UK Biobank), then the function may fail partially or fully unless
+#' provided. If `as_is == FALSE`, they are tidied. Note that if the table structure has changed
+#' (i.e. has been changed by UK Biobank), then the function may fail partially or fully unless
 #' `as_is == TRUE`. 
 #'
 #' @note
