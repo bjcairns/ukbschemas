@@ -37,18 +37,16 @@ directory).}
 \item{as_is}{Import the schemas into the database without tidying? Defaults to \code{FALSE}.}
 }
 \value{
-A database connection object of class
-\link[RSQLite:SQLiteConnection-class]{RSQLite::SQLiteConnection}.
+A database connection object of class \link[RSQLite:SQLiteConnection-class]{RSQLite::SQLiteConnection}.
 }
 \description{
 \code{save_db()} saves a list of UK Biobank data schemas (or, if \code{as_is == TRUE}, any list of data
 frames) to an SQLite database.
 }
 \details{
-\code{save_db()} takes a list of UK Biobank schemas and saves them to an SQLite
-database. If \code{!as_is}, they are tidied. Note that if the table structure has
-changed (i.e. has been changed by UK Biobank), then the function may fail
-partially or fully unless \code{as_is == TRUE}.
+\code{save_db()} takes a list of UK Biobank schemas and saves them to an SQLite database. If
+\code{as_is == FALSE}, they are tidied. Note that if the table structure has changed (i.e. has been
+changed by UK Biobank), then the function may fail partially or fully unless \code{as_is == TRUE}.
 }
 \examples{
 \dontrun{

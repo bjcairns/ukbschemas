@@ -28,7 +28,8 @@ test_that(
       object = DBI::dbIsValid(db1)
     ) # Fails because above fails
     
-    skip("ukbschemas returns warnings")
+    skip("Upstream problems means this throws warnings.")
+    
     expect_warning(
       object = {
         db2 <- ukbschemas_db(
@@ -121,6 +122,8 @@ test_that(
 test_that(
   desc = "ukbschemas_db() fails to overwrite when db is connected",
   code = {
+    
+    skip("Functionality removed as no longer required.")
     
     db_file <- test_db_file()
     

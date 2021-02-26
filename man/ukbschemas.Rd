@@ -39,8 +39,8 @@ Load the UK Biobank data schemas from the Internet or other repository
 }
 \details{
 The UK Biobank data schemas are fetched via the Internet unless a  different \code{url_prefix} is
-provided. If \code{!as_is}, they are tidied. Note that  if the table structure has changed (i.e. has
-been changed by UK Biobank), then the function may fail partially or fully unless
+provided. If \code{as_is == FALSE}, they are tidied. Note that if the table structure has changed
+(i.e. has been changed by UK Biobank), then the function may fail partially or fully unless
 \code{as_is == TRUE}.
 }
 \note{
