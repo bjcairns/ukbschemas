@@ -34,9 +34,8 @@
 #' db <- save_db(sch, path = tempdir())
 #' }
 #' 
-#' @importFrom DBI dbConnect
+#' @importFrom DBI dbConnect dbGetInfo
 #' @importFrom RSQLite SQLite
-#' @importFrom utils capture.output
 
 
 ### save_db() ###
@@ -83,9 +82,8 @@ save_db <- function(
   
   ## Verbosity ##
   if (!silent) {
-    msg <- capture.output(db)
-    msg <- paste(msg, collapse = "\n")
-    message(msg)
+    msg <- normalizePath(DBI::dbGetInfo(db)[["dbname"]])
+    message(paste0("Saved to database:\n  ", msg))
     message("...DISCONNECTED")
   }
   
