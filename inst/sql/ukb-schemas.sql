@@ -1,10 +1,14 @@
+/*
+   Note several "*_id" fields are renamed from similarly-named fields in the
+   original tables. See R/tidy-schemas.R for details.
+*/
 CREATE TABLE fields(
   "field_id" INTEGER PRIMARY KEY,
   "title" TEXT,
   "availability" INTEGER,
   "stability_id" INTEGER,
   "private" INTEGER,
-  "value_type_id" INTEGER, /* In the original table this column is called "value_type" */
+  "value_type_id" INTEGER,
   "base_type" INTEGER,
   "item_type_id" INTEGER,
   "strata_id" INTEGER,
@@ -30,7 +34,7 @@ CREATE TABLE encodings(
   "encoding_id" INTEGER PRIMARY KEY,
   "title" TEXT,
   "availability" INTEGER,
-  "value_type_id" INTEGER, /* In the original table this column is called "coded_as" */
+  "value_type_id" INTEGER,
   "structure" INTEGER,
   "num_members" INTEGER,
   "descript" TEXT
@@ -45,7 +49,7 @@ CREATE TABLE categories(
   "parent_id" INTEGER,
   "showcase_order" INTEGER
 );
-CREATE TABLE archives(
+CREATE TABLE returns(
   "archive_id" INTEGER PRIMARY KEY,
   "application_id" INTEGER,
   "title" TEXT,
@@ -69,6 +73,24 @@ CREATE TABLE recommended(
   "category_id" INTEGER,
   "field_id" INTEGER
 );
+CREATE TABLE snps(
+  "affy_id" INTEGER PRIMARY KEY,
+  "rs_id" INTEGER,
+  "chr_id" INTEGER,
+  "pos_int" INTEGER,
+  "pos_end_int" INTEGER,
+  "nitems" INTEGER,
+  "num_aa0" INTEGER,
+  "num_ab1" INTEGER,
+  "num_bb2" INTEGER,
+  "num_xx3" INTEGER,
+  "loctype_int" INTEGER,
+  "strand" TEXT,
+  "strand_vs_snp" TEXT,
+  "ref" TEXT,
+  "allele_a" TEXT,
+  "allele_b" TEXT
+);
 CREATE TABLE encvalues(
   "encoding_id" INTEGER,
   "code_id" INTEGER,
@@ -85,6 +107,24 @@ CREATE TABLE schema(
   "name" TEXT,
   "descript" TEXT,
   "notes" TEXT
+);
+CREATE TABLE recordtab(
+  "table_name" TEXT PRIMARY KEY,
+  "field_id" INTEGER,
+  "parent_name" TEXT,
+  "title" TEXT,
+  "available" INTEGER,
+  "private" INTEGER
+);
+CREATE TABLE recordcol(
+  "column_name" TEXT,
+  "table_name" TEXT,
+  "value_type_id" INTEGER,
+  "encoding_id" INTEGER,
+  "orda" INTEGER,
+  "units" TEXT,
+  "notes" TEXT,
+  PRIMARY KEY ("column_name", "table_name")
 );
 CREATE TABLE valuetypes(
   "value_type_id" INTEGER PRIMARY KEY,

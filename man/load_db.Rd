@@ -12,25 +12,22 @@ load_db(file = NULL, db = NULL)
 \item{db}{A (possibly disconnected) database connection, or \code{NULL}.}
 }
 \value{
-A named list with elements of class \code{tbl_df}, containing the tables
-from \code{db}.
+A named list with elements of class \code{data.frame}, containing the tables from \code{db}.
 }
 \description{
-\code{load_db()} is a simple front-end to \link{DBI} functions which can be
-used to load tables from a ukbschemas database (or in fact, any database;
-see \link[DBI:DBI-package]{DBI::DBI-package}).
+\code{load_db()} is a simple front-end to \link{DBI} functions which can be used to load tables from a
+ukbschemas database (or in fact, any database; see \link[DBI:DBI-package]{DBI::DBI-package}).
 }
 \details{
-\code{load_db()} will attempt to open an SQLite database from file
-\code{file} or from connection \code{db}. It will throw errors if the file is not a
-valid databse or it is impossible to create a valid connection from \code{db}.
-Tables are read with \link[DBI:dbReadTable]{DBI::dbReadTable} and converted to data frames of
-class \code{tbl_df} (see \link[tibble:tibble]{tibble::tibble}). The database connection is always
-closed before the function returns its result.
+\code{load_db()} will attempt to open an SQLite database from file \code{file} or from connection \code{db}. It
+will throw errors if the file is not a valid database or it is impossible to create a valid
+connection from \code{db}. Tables are read with \link[DBI:dbReadTable]{DBI::dbReadTable} and converted to data frames. The
+database connection is always closed before the function returns its result.
 }
 \examples{
 \dontrun{
 db <- ukbschemas_db(path = tempdir())
 sch <- load_db(db = db)
 }
+
 }
